@@ -1,0 +1,188 @@
+@charset "utf-8";
+
+/*all action pullout (input) stuff here*/
+.modeling { bottom: 150px; }
+.modeling p { padding: 5px 10px; }
+#modeling-err { padding: 8px 0px 7px }
+
+#rookattack-input input {
+	width: 20px;
+	padding: 8px;
+	margin-right: 2px;
+	float:left;
+}
+#rookattack-input p { padding: 5px 8px; float : left;}
+#rookattack-go p
+{ 
+	padding: 8px 8px 7px; 
+	float:right;
+}
+#rookattack-board 
+{
+	height: 470px;
+	width: 600px;
+	margin-left: -300px;
+	margin-top: -235px;
+}
+
+.modeling-actions {
+	bottom: 200px;
+	left: 200px;
+	float:left;
+}
+	.modeling-actions p { padding: 5px 10px; cursor: pointer; }
+	.modeling-actions p:hover { background: black; color: white;}
+	.modeling-actions p:first-of-type { padding-top: 10px; }
+	.modeling-actions p:last-of-type { padding-bottom: 10px; }
+	.modeling-actions-hide {
+		bottom: 60px;
+		left: 0px;
+		padding-left: 14px;
+		padding-right: 15px;
+	}
+
+
+#baseball-input input {
+	width: 25px;
+	padding: 8px;
+	margin-right: 2px;
+	float:left;
+}
+#baseball-input p { padding: 5px 8px; float : left;}
+#baseball-go p
+{ 
+	padding: 8px 8px 7px; 
+	float:right;
+}
+#baseball-board 
+{
+	height: 470px;
+	width: 600px;
+	margin-left: -300px;
+	margin-top: -235px;
+}
+#baseball-board input
+{
+	width: 25px;
+	padding: 8px;
+	margin-right: 2px;
+}
+
+#bipartite0
+{
+	float:left;
+	padding: 2px;
+}
+#bipartite1
+{
+	float:left;
+	padding: 2px;
+}
+#bipartite2
+{
+	float:left;
+	padding: 2px;
+}
+#bipartite3
+{
+	float:left;
+	padding: 2px;
+}
+
+
+.create { bottom: 120px; }
+	#create-err { padding: 8px 0px 7px }
+
+.samples { bottom: 90px; }
+	.samples p { padding: 5px 8px; }
+	#samples-err { padding: 5px 0px; }
+
+.countmaxflow { bottom: 60px; }
+.countmaxflow p { padding: 5px 8px; }
+#countmaxflow-input input {
+	width: 25px;
+	padding: 8px;
+}
+#countmaxflow-go p { padding: 8px 8px 7px; }
+#countmaxflow-algorithm p 
+{ 
+	padding: 8px 8px 7px; 
+}
+#countmaxflow-fordfulkerson {float:left;}
+#countmaxflow-edmondskarp {float:left;}
+#countmaxflow-dinic {float:left;}
+#countmaxflow-err { padding: 8px 0px 7px; }
+
+/*all tutorial stuff here*/
+#maxflow-tutorial-1 {
+	top: 60px;
+	left: 60px;
+	width: 250px;
+}
+#maxflow-tutorial-2 {
+	bottom: 225px;
+	left: 60px;
+	width: 350px;
+}
+#maxflow-tutorial-2:before {
+	top: 100%;
+	left: 15%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#maxflow-tutorial-3 {
+	bottom: 225px;
+	left: 60px;
+	width: 350px;
+}
+#maxflow-tutorial-3:before {
+	top: 100%;
+	left: 15%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#maxflow-tutorial-4 {
+	bottom: 335px;
+	right: 150px;
+	width: 200px;
+}
+#maxflow-tutorial-4:before {
+	top: 100%;
+	left: 20%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#maxflow-tutorial-5 {
+	bottom: 275px;
+	right: 170px;
+	width: 180px;
+}
+#maxflow-tutorial-5:before {
+	top: 100%;
+	left: 20%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#maxflow-tutorial-6 {
+	bottom: 70px;
+	left: 50%;
+	width: 260px;
+	margin-left: -142px;
+}
+#maxflow-tutorial-6:before {
+	top: 100%;
+	left: 50%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#maxflow-tutorial-7 {
+	top: 70px;
+	right: 60px;
+	width: 150px;
+}
+#maxflow-tutorial-7:before {
+	bottom: 100%;
+	left: 50%;
+	border-bottom-color: black;
+	margin-left: -10px;
+}

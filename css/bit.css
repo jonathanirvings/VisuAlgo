@@ -1,0 +1,102 @@
+@charset "utf-8";
+
+/*all action pullout (input) stuff here*/
+
+.update { bottom: 60px;}
+.update p { padding: 5px 8px;}
+#update-input input {
+	width: 25px;
+	padding: 8px;
+}
+#update-go p { padding: 8px 8px 7px; }
+
+.query { bottom: 90px;}
+.query p { padding: 5px 8px;}
+#query-input input {
+	width: 25px;
+	padding: 8px;
+}
+#query-go p { padding: 8px 8px 7px; }
+
+.create { bottom: 119px;}
+#create-input input {
+	width: 200px;
+	padding: 8px;
+}
+#create-go p { padding: 8px 8px 7px; }
+#create-randomize p { padding: 8px 8px 7px; }
+
+/*all tutorial stuff here*/
+#bit-tutorial-1 {
+	top: 60px;
+	left: 60px;
+	width: 250px;
+}
+#bit-tutorial-2 {
+	bottom: 225px;
+	left: 60px;
+	width: 350px;
+}
+#bit-tutorial-2:before {
+	top: 100%;
+	left: 15%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-3 {
+	top: 400px;
+	left: 50%;
+	width: 200px;
+	margin-left: -110px;
+}
+#bit-tutorial-3:before {
+	bottom: 100%;
+	left: 50%;
+	border-bottom-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-4 {
+	bottom: 335px;
+	right: 150px;
+	width: 200px;
+}
+#bit-tutorial-4:before {
+	top: 100%;
+	left: 20%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-5 {
+	bottom: 275px;
+	right: 170px;
+	width: 180px;
+}
+#bit-tutorial-5:before {
+	top: 100%;
+	left: 20%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-6 {
+	bottom: 70px;
+	left: 50%;
+	width: 260px;
+	margin-left: -142px;
+}
+#bit-tutorial-6:before {
+	top: 100%;
+	left: 50%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-7 {
+	top: 70px;
+	right: 60px;
+	width: 150px;
+}
+#bit-tutorial-7:before {
+	bottom: 100%;
+	left: 50%;
+	border-bottom-color: black;
+	margin-left: -10px;
+}

@@ -1,0 +1,139 @@
+@charset "utf-8";
+
+/*all action pullout (input) stuff here*/
+.create { bottom: 227px; }
+	#create-random p { padding: 7px 8px 8px; }
+	#create-skewed-left p { padding: 7px 8px 8px; }
+	#create-skewed-right p { padding: 7px 8px 8px; }
+	#create-err { padding: 8px 0px 7px; } /* currently unused*/
+
+.search { bottom: 200px; }
+	#find-min p { padding: 5px 8px; }
+	#find-max p { padding: 5px 8px; }
+	#search-input input {
+		width: 25px;
+		padding: 6px 8px 5px;
+	}
+	#search-go p { padding: 5px 8px; }
+	#search-err { padding: 5px 0px; } /* currently unused*/
+		
+.insert { bottom: 173px; }
+	#insert-input input {
+		width: 140px;
+		padding: 6px 8px 5px;
+	}
+	#insert-go p { padding: 5px 8px; }
+	#insert-err { padding: 5px 0px; }
+		
+.remove { bottom: 146px; }
+	#remove-input input {
+		width: 140px;
+		padding: 6px 8px 5px;
+	}
+	#remove-go p { padding: 5px 8px; }
+	#remove-err { padding: 5px 0px; } /* currently unused*/ 
+
+.successor { bottom: 119px; }
+	#succ-input input {
+		width: 25px;
+		padding: 6px 8px 5px;
+	}
+	#succ-go p { padding: 5px 8px; }
+	#succ-err { padding: 5px 0px; } /* currently unused*/
+
+.predecessor { bottom: 92px; }
+	#pred-input input {
+		width: 25px;
+		padding: 6px 8px 5px;
+	}
+	#pred-go p { padding: 5px 8px; }
+	#pred-err { padding: 5px 0px; }
+	
+.inorder { bottom: 60px; }
+	#inorder-err { padding: 8px 0px 7px; } /* currently unused*/
+	
+/*all tutorial stuff here*/
+#bst-tutorial-1 {
+	top: 60px;
+	left: 60px;
+	width: 250px;
+}
+#bst-tutorial-2 {
+	top: 60px;
+	left: 220px;
+	width: 230px;
+}
+	#bst-tutorial-2:before {
+		bottom: 100%;
+		left: 50%;
+		border-bottom-color: black;
+		margin-left: -10px;
+	}
+#bst-tutorial-3 {
+	bottom: 280px;
+	left: 60px;
+	width: 220px;
+}
+	#bst-tutorial-3:before {
+		top: 100%;
+		left: 20%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#bst-tutorial-4 {
+	top: 300px;
+	left: 50%;
+	width: 200px;
+	margin-left: -110px;
+}
+	#bst-tutorial-4:before {
+		bottom: 100%;
+		left: 50%;
+		border-bottom-color: black;
+		margin-left: -10px;
+	}
+#bst-tutorial-5 {
+	bottom: 335px;
+	right: 150px;
+	width: 200px;
+}
+	#bst-tutorial-5:before {
+		top: 100%;
+		left: 20%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#bst-tutorial-6 {
+	bottom: 275px;
+	right: 170px;
+	width: 180px;
+}
+	#bst-tutorial-6:before {
+		top: 100%;
+		left: 20%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#bst-tutorial-7 {
+	bottom: 70px;
+	left: 50%;
+	width: 220px;
+	margin-left: -120px;
+}
+	#bst-tutorial-7:before {
+		top: 100%;
+		left: 50%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#bst-tutorial-8 {
+	top: 70px;
+	right: 60px;
+	width: 150px;
+}
+	#bst-tutorial-8:before {
+		bottom: 100%;
+		left: 50%;
+		border-bottom-color: black;
+		margin-left: -10px;
+	}

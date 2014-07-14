@@ -1,0 +1,119 @@
+@charset "utf-8";
+
+/*all action pullout (input) stuff here*/
+.create { bottom: 146px; }
+	#create-err { padding: 8px 0px 7px }
+
+.samples { bottom: 119px; }
+	.samples p { padding: 5px 8px; }
+	#samples-err { padding: 5px 0px; }
+
+.kruskals { bottom: 92px; }
+	#kruskals-err { padding: 5px 0px; }
+	
+.prims { bottom: 60px; }
+	#prims-input input {
+		width: 25px;
+		padding: 8px;
+	}
+	#prims-go p { padding: 8px 8px 7px; }
+	#prims-err { padding: 8px 0px 7px; }
+
+#drawgraph 
+{
+	height: 700px;
+	width: 1200px;
+	margin-left: -600px;
+	margin-top: -400px;
+}
+
+#drawgraph-actions {
+	bottom: 200px;
+	left: 200px;
+	float:left;
+}
+#drawgraph-actions p { padding: 5px 10px; cursor: pointer; float:left;}
+#drawgraph-actions p:hover { background: black; color: white;}
+#drawgraph-actions p:first-of-type { padding-top: 10px; }
+#drawgraph-actions p:last-of-type { padding-bottom: 10px; }
+#drawgraph-actions-hide {
+	bottom: 60px;
+	left: 0px;
+	padding-left: 14px;
+	padding-right: 15px;
+}
+
+/*all tutorial stuff here*/
+#mst-tutorial-1 {
+	top: 60px;
+	left: 60px;
+	width: 250px;
+}
+#mst-tutorial-2 {
+	bottom: 200px;
+	left: 60px;
+	width: 220px;
+}
+	#mst-tutorial-2:before {
+		top: 100%;
+		left: 20%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#mst-tutorial-3 {
+	top: 450px;
+	left: 50%;
+	width: 200px;
+	margin-left: -110px;
+}
+	#mst-tutorial-3:before {
+		bottom: 100%;
+		left: 50%;
+		border-bottom-color: black;
+		margin-left: -10px;
+	}
+#mst-tutorial-4 {
+	bottom: 335px;
+	right: 150px;
+	width: 200px;
+}
+	#mst-tutorial-4:before {
+		top: 100%;
+		left: 20%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#mst-tutorial-5 {
+	bottom: 275px;
+	right: 170px;
+	width: 180px;
+}
+	#mst-tutorial-5:before {
+		top: 100%;
+		left: 20%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#mst-tutorial-6 {
+	bottom: 70px;
+	left: 50%;
+	width: 220px;
+	margin-left: -120px;
+}
+	#mst-tutorial-6:before {
+		top: 100%;
+		left: 50%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#mst-tutorial-7 {
+	top: 70px;
+	right: 60px;
+	width: 150px;
+}
+	#mst-tutorial-7:before {
+		bottom: 100%;
+		left: 50%;
+		border-bottom-color: black;
+		margin-left: -10px;
+	}

@@ -1,0 +1,330 @@
+
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<title>VisuAlgo - Graphs</title>
+<link rel="icon" type="image/png" href="http://www.comp.nus.edu.sg/~stevenha/visualization/img/favicon.png">
+
+<!--css-->
+<link rel="stylesheet" href="http://www.comp.nus.edu.sg/~stevenha/visualization/css/normalize.css">
+<link rel="stylesheet" href="http://www.comp.nus.edu.sg/~stevenha/visualization/css/common.css">
+<link rel="stylesheet" href="http://www.comp.nus.edu.sg/~stevenha/visualization/css/viz.css">
+
+<link rel="stylesheet" href="http://www.comp.nus.edu.sg/~stevenha/visualization/css/heap.css">
+
+<!--js-->
+
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/external/jquery-1.10.2.js"></script><style type="text/css"></style>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/external/jquery-ui.js"></script>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/viz.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/common.js"></script>
+
+<!--script src="//connect.facebook.net/en_US/all.js"></script-->
+<!-- Graphds scripts are below-->
+<link rel="stylesheet" href="./visual.css">
+<script src="./visual_uu.js"></script>
+<script src="./visual_uw.js"></script>
+<script src="./visual_du.js"></script>
+<script src="./visual_dw.js"></script>
+<!--fonts-->
+<link href="http://rosemarietan.com/fyp/fonts/silkscreen/stylesheet.css" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
+
+</head>
+
+<div id="top-bar">
+	<a id="home" href="http://www.comp.nus.edu.sg/~stevenha/visualization/index.html">Visu<span class="colour">Algo</span></a>
+    <span id="title">
+    	<a class="selected-viz" onClick = "runUU();">Undirected / Unweighted</a>
+		<a class="selected-viz" onClick = "runUW();">Undirected / Weighted</a>
+		<a class="selected-viz" onClick = "runDU();">Directed / Unweighted</a>
+		<a class="selected-viz" onClick = "runDW();">Directed / Weighted</a>
+    </span>
+    
+    <div id="mode-menu">
+    	<div id="mode-button">Exploration Mode<img src="http://rosemarietan.com/fyp/img/arrow_white.png" alt="Home"></div>
+        <div id="other-modes">
+            <a href="http://www.comp.nus.edu.sg/~stevenha/visualization/graphds_buggy.html#">Tutorial Mode</a>
+            <!--<a href="#">Training Mode</a>--> <!--under construction-->
+        </div>
+    </div>
+</div>
+
+<div id="main">
+    
+    <div id="viz">
+    <svg width="960" height="500" class="">
+		<path class="link dragline hidden" d="M290.5,179L290.5,179"></path><g><path class="link" d="M108.48528137423857,108.48528137423857L191.51471862576142,191.51471862576142"></path><path class="link" d="M208.48528137423858,208.48528137423858L291.5147186257614,291.5147186257614"></path></g><g><g><circle class="node" r="16" cx="100" cy="100" style="fill: rgb(238, 238, 238);"></circle><text x="100" y="103.5" class="id">0</text></g><g><circle class="node" r="16" cx="200" cy="200" style="fill: rgb(238, 238, 238);"></circle><text x="200" y="203.5" class="id">1</text></g><g><circle class="node" r="16" cx="300" cy="300" style="fill: rgb(238, 238, 238);"></circle><text x="300" y="303.5" class="id">2</text></g></g>
+		<text x = "500" y = "100"> &bull; Click on empty space to add node</text>
+		<text x = "500" y = "125"> &bull; Drag from node to node to add edge</text>
+		<text x = "500" y = "150"> &bull; Select + Delete to delete node/edge</text>
+		<text x = "500" y = "175"> &bull; Select Edge + Enter to change edge's weight</text>
+		<text x = "500" y = "200"> &bull; Press Ctrl to Drag node around</text>
+		<text x = "500" y = "250"> &bull; Choose one of item on the menu above to start</text>
+	</svg>
+	
+	</div>
+    <div id="fake" width="100px">
+    	<div> 
+				<div style="float:left" left="100px"> 
+					<table id="myTablefake" border="1" width="180px" border-collapse:collapse="" style="visibility:hidden">
+					</table>
+				</div> 
+    	</div>
+    </div>
+    <div id="isTree0" style="float:left">Is tree</div>
+    <div id="isTree" style="float:left">: No</div>
+
+    <div id="fake2" width="20px">
+    	<div> 
+				<div style="float:left" left="10px"> 
+					<table id="myTablefake" border="1" width="30px" border-collapse:collapse="" style="visibility:hidden">
+					</table>
+				</div> 
+    </div>
+    <div id="isComplete0" style="float:left">Is complete</div>
+    <div id="isComplete" style="float:left">: No</div>
+    <div id="fake2" width="20px">
+    	<div> 
+				<div style="float:left" left="10px"> 
+					<table id="myTablefake" border="1" width="30px" border-collapse:collapse="" style="visibility:hidden">
+					</table>
+				</div> 
+    </div>
+    <div id="isBipartite0" style="float:left">Is bipartite</div>
+    <div id="isBipartite" style="float:left">: Yes</div>
+    <div id="fake" width="20px">
+    	<div> 
+				<div style="float:left" left="100px"> 
+					<table id="myTablefake" border="1" width="200px" border-collapse:collapse="" style="visibility:hidden">
+					</table>
+				</div> 
+    </div>
+    <div style="float:left">
+    	<input id="direct_checkbox" type="checkbox" value="Submit" style="vertical-align: middle;visibility:hidden" onclick="switchDirectIndirect()"> &nbsp 
+    </div>
+	<div> 
+			<div style="float:left" left="100px"> 
+				<table id="myTablefake" border="1" width="30px" border-collapse:collapse="" style="visibility:hidden">
+				</table>
+			</div> 
+    </div>
+	<input id="weighted_checkbox" type="checkbox" value="Submit" style="vertical-align: middle;visibility:hidden" checked="true" onclick="convertDirectIndirectGraph()">&nbsp
+    <div id="fake" width="100px">
+    	<div> 
+				<div style="float:left" left="100px"> 
+					<table id="myTablefake" border="1" width="180px" border-collapse:collapse="" style="visibility:hidden">
+					</table>
+				</div> 
+    </div>
+
+    <div id="adj_matrix"> 
+    	<div style="float:left; border:1px solid; max-height: 200px; max-width:400px; overflow: auto" left="100px"> 
+    		<div style="float:left"> Adjacency matrix </div>
+    		<table id="adj_matrix_table" border="0" width="400px" border-collapse:collapse="" style="border-top:1px solid; table-layout:fixed"><tbody><tr><td> </td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr><tr><td>0</td><td>0</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>3</td><td>0</td><td>0</td><td>0</td></tr><tr><td>1</td><td>3</td><td>0</td><td>7</td><td>40</td><td>0</td><td>0</td><td>7</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>2</td><td>0</td><td>7</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>3</td><td>0</td><td>40</td><td>0</td><td>0</td><td>64</td><td>64</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>4</td><td>0</td><td>0</td><td>0</td><td>64</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>5</td><td>0</td><td>0</td><td>0</td><td>64</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>6</td><td>0</td><td>7</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>7</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>7</td><td>7</td><td>0</td></tr><tr><td>8</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>7</td><td>0</td><td>0</td><td>0</td></tr><tr><td>9</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>7</td><td>0</td><td>0</td><td>0</td></tr><tr><td>10</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table>
+    	</div> 
+    </div>
+     <div id="fake2" width="2px">
+    	<div> 
+				<div style="float:left" left="1px"> 
+					<table id="myTablefake" border="1" width="1px" border-collapse:collapse="" style="visibility:hidden">
+					</table>
+				</div> 
+    </div>
+
+    <div id="adj_list"> 
+    	<div style="float:left; border:1px solid; max-height: 200px; max-width:200px; overflow-y: scroll; overflow-x:hidden"> 
+    		<div style="float:left"> Adjacency list </div>
+    		<table id="adj_list_table" border="0" width="200px" border-collapse:collapse="" style="border-top:1px solid; table-layout:fixed; overflow-x: hidden"><tbody><tr><td>0:</td><td>(3,1)</td><td>(3,7)</td></tr><tr><td>1:</td><td>(3,0)</td><td>(7,2)</td><td>(40,3)</td><td>(7,6)</td></tr><tr><td>2:</td><td>(7,1)</td></tr><tr><td>3:</td><td>(40,1)</td><td>(64,4)</td><td>(64,5)</td></tr><tr><td>4:</td><td>(64,3)</td></tr><tr><td>5:</td><td>(64,3)</td></tr><tr><td>6:</td><td>(7,1)</td></tr><tr><td>7:</td><td>(3,0)</td><td>(7,8)</td><td>(7,9)</td></tr><tr><td>8:</td><td>(7,7)</td></tr><tr><td>9:</td><td>(7,7)</td></tr><tr><td>10:</td></tr></tbody></table>
+    	</div> 
+    </div>
+    <div id="fake3" width="2px">
+    	<div> 
+				<div style="float:left" left="1px"> 
+					<table id="myTablefake" border="1" width="1px" border-collapse:collapse="" style="visibility:hidden">
+					</table>
+				</div> 
+    </div>
+
+    <div id="edge_list"> 
+    	<div style="float:left; border:1px solid; max-height: 200px; max-width:200px; overflow-y: scroll; overflow-x:hidden"> 
+    		<div style="float:left"> Edge list </div>
+    		<table id="edge_list_table" border="0" width="200px" border-collapse:collapse="" style="border-top:1px solid; table-layout:fixed; overflow-x: hidden"><tbody><tr><td>0:</td><td>3</td><td>0</td><td>1</td></tr><tr><td>1:</td><td>7</td><td>1</td><td>2</td></tr><tr><td>2:</td><td>3</td><td>0</td><td>7</td></tr><tr><td>3:</td><td>40</td><td>1</td><td>3</td></tr><tr><td>4:</td><td>64</td><td>3</td><td>4</td></tr><tr><td>5:</td><td>64</td><td>3</td><td>5</td></tr><tr><td>6:</td><td>7</td><td>1</td><td>6</td></tr><tr><td>7:</td><td>7</td><td>7</td><td>8</td></tr><tr><td>8:</td><td>7</td><td>7</td><td>9</td></tr><tr><td>9:</td></tr><tr><td>10:</td></tr></tbody></table>
+    	</div> 
+    </div>
+
+    <div id="fake3" width="2px">
+    	<div> 
+				<div style="float:left" left="1px"> 
+					<table id="myTablefake" border="1" width="1px" border-collapse:collapse="" style="visibility:hidden">
+					</table>
+				</div> 
+    </div>
+
+    <div id="current-action" class="panel"><p></p></div>
+    
+    <div id="actions" class="panel" style="height: 226px;">
+        <p id="tree_graph" class="execAction" onclick="clearScreen()">Clear</p>
+		<p id="tree_graph" class="execAction" onclick="showTree()">Tree</p>
+		<p id="tree_graph" class="execAction" onclick="showStar()">Star</p>
+		<p id="tree_graph" class="execAction" onclick="showCP45()">CP4.5</p>	
+		<p id="tree_graph" class="execAction" onclick="showCP48()">CP4.8</p>	
+		<p id="tree_graph" class="execAction" onclick="showCP22()">CP2.2</p>	
+		<p id="tree_graph" class="execAction" onclick="showCP42()">CP4.2</p>	
+		<p id="tree_graph" class="execAction" onclick="showK5()">K5</p>
+
+	</div>
+    <div id="actions-hide" class="panel-hide" style="height:36px"><img src="http://rosemarietan.com/fyp/img/arrow_white_right.png" title="show/hide actions panel"></div>
+    <!--put all the extra action pullouts (input) and error messages here-->
+    
+    <div id="status" class="panel"><p></p></div>
+    <div id="status-hide" class="panel-hide"><img src="http://rosemarietan.com/fyp/img/arrow_white_right.png" title="show/hide status panel"></div>
+    
+    <div id="codetrace" class="panel">
+    	<!--can add class "highlighed" to hightlight one line-->
+    	<p id="code1" style="padding-top: 10px;"></p>
+        <p id="code2"></p>
+        <p id="code3"></p>
+		<p id="code4"></p>
+		<p id="code5"></p>
+		<p id="code6"></p>
+		<p id="code7" style="padding-bottom: 10px;"></p>
+    </div>
+    <div id="codetrace-hide" class="panel-hide"><img src="http://rosemarietan.com/fyp/img/arrow_white_right.png" title="show/hide codetrace panel"></div>
+    
+</div>
+
+<div id="left-bar"></div>
+<div id="right-bar"></div>
+<!-- Bottom bar and overlay popups -->
+<div id="bottom-bar">
+	<a id="trigger-about">About</a>
+    <a id="trigger-team">Team</a>
+    <a id="trigger-terms">Terms of use</a>
+</div>
+
+
+<div id="dark-overlay"></div>
+
+<div id="help" class="overlays">
+	<h4>Help</h4>
+    <img class="close-overlay" src="http://rosemarietan.com/fyp/img/cross_white.png">
+    <div class="content">
+        <p>The <strong style="color: #ed5a7d;">ACTIONS</strong> panel on the bottom left displays all available operations on this data structure. Experiment with them!</p>
+        <p>The <strong style="color: #2ebbd1;">STATUS</strong> panel on the right displays the status of the current operation. The <strong style="color: #52bc69;">CODETRACE</strong> panel below it displays the pseudocode for the current operation, and uses code highlighting to show you which step is being carried out.</p>
+        <p>During each action, you can use the playback controls at the bottom of the screen to control the animation. Note that you have to click 'stop' first before you can issue another action.</p>
+    </div>
+</div>
+
+<div id="about" class="overlays">
+	<h4>About the project</h4>
+    <img class="close-overlay" src="http://rosemarietan.com/fyp/img/cross_white.png">
+    <div class="content">
+        <p><strong><span style="line-height: 200%;">Motivation</span></strong><br>
+        	WeNeedAName was conceptualised in 2011 by Dr Steven Halim as a tool to help his students better understand data structures and algorithms, by allowing them to learn the basics on their own and at their own pace. Together with two of his students from the National University of Singapore, a series of visualisations were developed and consolidated, from simple sorting algorithms to complex graph data structures.</p>
+        <p>Though specifically designed for the use of NUS students taking various data structure and algorithm classes (CS1020, CS2010, CS2020, and CS3233), as advocators of online learning, we hope that curious minds around the world will find these visualisations useful as well.</p>
+        <p><strong><span style="line-height: 200%;">Ongoing developments</span></strong><br>
+        	WeNeedAName is an ongoing project (as is evident from its name!), and more complex visualisations are still being developed. Originally developed using HTML5 Canvas, we are currently redesigning the site to harness the power of Scalable Vector Graphics (SVG) instead. An automated testing system is also in the works.</p>
+        <p><strong><span style="line-height: 200%;">Publications</span></strong><br>
+        	This work has been presented briefly at the CLI Workshop at the ACM ICPC World Finals 2012 (Poland, Warsaw) and at the <a href="http://www.mii.lt/olympiads_in_informatics/htm/INFOL099.htm" target="_blank">IOI Conference at IOI 2012</a> (Sirmione-Montichiari, Italy).</p>
+    </div>
+</div>
+
+<div id="team" class="overlays">
+	<h4>The team</h4>
+    <img class="close-overlay" src="http://rosemarietan.com/fyp/img/cross_white.png">
+    <div class="content">
+        <p><strong><span style="line-height: 200%;">Project leader</span></strong><br><a href="http://www.comp.nus.edu.sg/~stevenha/" target="_blank">Dr Steven Halim</a>, Lecturer, SoC, NUS</p>
+        <p><strong><span style="line-height: 200%;">Initial Programmers</span></strong><br>
+        	<a href="http://zichun.i-xo.net/" target="_blank">Koh Zi Chun</a><br>
+            <a href="http://roticv.rantx.com/" target="_blank">Victor Loh Bo Huai</a></p>
+        <p><strong><span style="line-height: 200%;">Past Final Year Project students</span></strong><br>
+            Phan Thi Quynh Trang<br>
+            Peter Phandi<br>
+            Albert Millardo Tjindradinata<br>
+            Nguyen Hoang Duy<br>
+        </p><p><strong><span style="line-height: 200%;">Present Final Year Project students</span></strong><br>
+            <a href="http://www.rosemarietan.com/" target="_blank">Rose Marie Tan Zhao Yun</a><br>
+            Ivan Reinaldo</p>
+        <p><strong><span style="line-height: 200%;">Advisor</span></strong><br><a href="http://felix-halim.net/" target="_blank">Felix Halim</a></p>
+    </div>
+</div>
+
+<div id="termsofuse" class="overlays">
+	<h4>Terms of use</h4>
+    <img class="close-overlay" src="http://rosemarietan.com/fyp/img/cross_white.png">
+    <div class="content">
+        <p>If you are a data structure and algorithm teacher, you are allowed to use this website for your classes. You can take screen shots from this website and use the screen shots elsewhere as long as you cite this website as a reference.</p><!--I think we need a better copyright/terms of use statement-->
+    </div>
+</div>
+<!--
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/constant.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/properties.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/helperObjects.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/misc.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/Widget.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/GraphWidget.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/GraphVertexWidget.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/GraphEdgeWidget.js"></script>
+<script src="http://www.comp.nus.edu.sg/~stevenha/visualization/js/graph_library/GraphDSWidget.js"></script>
+
+<script type="text/javascript">
+	//start by showing actions panel
+	//enableActionsOnly();
+	$('#play').hide();
+	$("#fb-login").css("display", "block");
+
+	var GraphDTWidget = new Graph();
+	var gw = GraphDTWidget.getGraphWidget();
+		
+	showTree();
+
+	function switchDirectIndirect() {
+		GraphDTWidget.switchDirectIndirect();
+	}
+
+	function convertDirectIndirectGraph() {
+		GraphDTWidget.convertDirectIndirectGraph();
+	}
+
+	function showTree() {
+		GraphDTWidget.showTree();
+	}
+	
+	function showStar() {
+		GraphDTWidget.showStar();
+	}
+
+	function showK5() {
+		GraphDTWidget.showK5();
+	}
+
+	function showCP22() {
+		GraphDTWidget.showCP22();
+	}
+
+	function showCP42() {
+		GraphDTWidget.showCP42();
+	}
+
+	function showCP45() {
+		GraphDTWidget.showCP45();
+	}
+
+	function showCP48() {
+		GraphDTWidget.showCP48();
+	}	
+
+    function clearScreen() {
+        GraphDTWidget.clrscr();
+    }
+</script>
+
+-->
+
+</div></div></div></div></div></div></div></body></html>
+
+
