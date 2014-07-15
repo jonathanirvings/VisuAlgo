@@ -1,6 +1,9 @@
 @charset "utf-8";
 
 /*all action pullout (input) stuff here*/
+.draw { bottom: 173px; }
+	#draw-err { padding: 8px 0px 7px }
+
 .create { bottom: 146px; }
 	#create-err { padding: 8px 0px 7px }
 
@@ -21,10 +24,10 @@
 
 #drawgraph 
 {
-	height: 700px;
-	width: 1200px;
-	margin-left: -600px;
-	margin-top: -400px;
+	height: 600px;
+	width: 1100px;
+	margin-left: -550px;
+	margin-top: -350px;
 }
 
 #drawgraph-actions {
@@ -33,7 +36,7 @@
 	left: 200px;
 	float:left;
 }
-#drawgraph-actions p { padding: 5px 10px; cursor: pointer; float:left;}
+#drawgraph-actions p { padding: 10px; cursor: pointer; float:left;}
 #drawgraph-actions p:hover { background: black; color: white;}
 #drawgraph-actions p:first-of-type { padding-top: 10px; }
 #drawgraph-actions p:last-of-type { padding-bottom: 10px; }

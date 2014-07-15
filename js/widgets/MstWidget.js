@@ -923,6 +923,36 @@ var MST = function(){
       internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
     }
     
+    //check connected
+    var visited = [];
+
+    for (var key in internalAdjList)
+    {
+      var stack = [];
+      var numberOfVisited = 1;
+      stack.push(key);
+      visited[key] = true;
+      while (stack.length > 0)
+      {
+        var now = stack.pop();
+        for (var key2 in internalAdjList[now]) if(key2 != "cx" && key2 != "cy")
+        {
+          if (!visited[key2])
+          {
+            visited[key2] = true;
+            numberOfVisited++;
+            stack.push(+key2);
+          }
+        }
+      }
+      if (numberOfVisited != amountVertex)
+      {
+        $("#draw-err").html("Graph is not connected");
+        return false;
+      }
+      break;
+    }
+
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
   }

@@ -1,10 +1,26 @@
 var actionsWidth = 150;
 var statusCodetraceWidth = 430;
 
+var isDrawOpen = false;
 var isCreateOpen = false;
 var isSamplesOpen = false;
 var isKruskalsOpen = false;
 var isPrimsOpen = false;
+
+function openDraw() {
+	if(!isDrawOpen) {
+		$('.draw').fadeIn('fast');
+		isDrawOpen = true;
+	}
+}
+
+function closeDraw() {
+	if(isDrawOpen) {
+		$('.draw').fadeOut('fast');
+		$('#draw-err').html("");
+		isDrawOpen = false;
+	}
+}
 
 function openCreate() {
 	if(!isCreateOpen) {
@@ -60,6 +76,7 @@ function closePrims() {
 }
 
 function hideEntireActionsPanel() {
+	closeDraw();
 	closeCreate();
 	closeSamples();
 	closeKruskals();
@@ -70,7 +87,16 @@ function hideEntireActionsPanel() {
 $( document ).ready(function() {
 	
 	//action pullouts
+	$('#draw').click(function() {
+		openDraw();
+		closeSamples();
+		closePrims();
+		closeKruskals();
+		closeCreate();
+	});
+
 	$('#create').click(function() {
+		closeDraw();
 		closeSamples();
 		closePrims();
 		closeKruskals();
@@ -78,6 +104,7 @@ $( document ).ready(function() {
 	});
 
 	$('#samples').click(function() {
+		closeDraw();
 		closeCreate();
 		closePrims();
 		closeKruskals();
@@ -85,6 +112,7 @@ $( document ).ready(function() {
 	})
 	
 	$('#prims').click(function() {
+		closeDraw();
 		closeCreate();
 		closeSamples();
 		closeKruskals();
@@ -92,6 +120,7 @@ $( document ).ready(function() {
 	});
 	
 	$('#kruskals').click(function() {
+		closeDraw();
 		closeCreate();
 		closeSamples();
 		closePrims();
