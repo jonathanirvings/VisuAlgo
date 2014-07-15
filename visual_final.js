@@ -19,10 +19,7 @@ function GraphVisu(arg1, arg2)
 
 	var countNodeId = new Array(maxNumberVertex);
 	for (var i = countNodeId.length; i >= 0; -- i) countNodeId[i] = 0;
-	countNodeId[0]++;
-	countNodeId[1]++;
-	countNodeId[2]++;
-
+	
 	var nodes = [ 	{id : 0, x : 100, y : 100 },
 					{id : 1, x : 200, y : 200 },
 					{id : 2, x : 300, y : 300 }],
