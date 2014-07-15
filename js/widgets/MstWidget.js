@@ -201,8 +201,6 @@ var MST = function(){
     currentState["lineNo"] = 7;
     stateList.push(currentState);
 
-    console.log(stateList);
-
     populatePseudocode(0);
     graphWidget.startAnimation(stateList);
     return true;
@@ -885,18 +883,24 @@ var MST = function(){
     graph = JSON.parse(graph);
     amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
     amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
-    for (var key in graph["el"])
-    {
-      graph["el"][key]["type"] = EDGE_TYPE_UDE;
-      graph["el"][key]["weight"] = 1000;
-      graph["el"][key]["displayWeight"] = true;
-    }
-    for (var key in graph["vl"])
-      delete graph["vl"][key]["text"];
     internalAdjList = graph["vl"];
     internalEdgeList = graph["el"];
-    console.log(internalAdjList);
-    console.log(internalEdgeList);;
+    for (var key in internalEdgeList)
+    {
+      internalEdgeList[key]["type"] = EDGE_TYPE_UDE;
+      internalEdgeList[key]["displayWeight"] = true;
+    }
+    for (var key in internalAdjList) //prim algorithm can't handle these two. have to be deleted.
+    {
+      delete internalAdjList[key]["text"];
+      delete internalAdjList[key]["state"];
+    }
+    for (var key in internalEdgeList)
+    {
+      internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
+      internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
+    }
+    
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
   }

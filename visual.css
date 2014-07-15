@@ -60,3 +60,43 @@
   text-anchor: middle;
   font-weight: bold;
 }
+
+#drawgraph .tableTitle
+{
+  width: 100%;
+  background-color: #009900;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px 0px 10px 0px;
+  text-align: center;
+}
+#drawgraph .graphTable
+{
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+#drawgraph .graphTable td
+{
+  border-width:0px 1px 1px 0px;
+  border:1px solid #000000;
+  text-align: center;
+  padding : 0;
+}
+
+#drawgraph .graphTable tr:hover
+{
+  background-color: #ffffff;
+}
+
+#drawgraph #IsTree, #drawgraph #IsTree0, #drawgraph #IsComplete, #drawgraph #IsComplete0, #drawgraph #IsBipartite, #drawgraph #IsBipartite0, #drawgraph #IsDAG0, #drawgraph #IsDAG
+{
+  font-family: Arial;
+  font-size:14px;
+}
+
+#drawgraph .bold
+{
+  font-weight: bold;
+}
