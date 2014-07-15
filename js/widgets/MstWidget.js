@@ -889,17 +889,25 @@ var MST = function(){
     {
       graph["el"][key]["type"] = EDGE_TYPE_UDE;
       graph["el"][key]["weight"] = 1000;
+      graph["el"][key]["displayWeight"] = true;
     }
+    for (var key in graph["vl"])
+      delete graph["vl"][key]["text"];
+    internalAdjList = graph["vl"];
+    internalEdgeList = graph["el"];
+    console.log(internalAdjList);
+    console.log(internalEdgeList);;
+    graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
   }
 
   function createState(internalAdjListObject, internalEdgeListObject, vertexHighlighted, edgeHighlighted, vertexTraversed, edgeTraversed, edgeQueued){
 	var isDefaultGrey = true;
 	if((vertexHighlighted == null)&&(edgeHighlighted == null)&&(vertexTraversed == null)&&(edgeTraversed == null)&&(edgeQueued == null)) isDefaultGrey = false;
-    if(vertexHighlighted == null) vertexHighlighted = {};
-    if(edgeHighlighted == null) edgeHighlighted = {};
-    if(vertexTraversed == null) vertexTraversed = {};
-    if(edgeTraversed == null) edgeTraversed = {};
+  if(vertexHighlighted == null) vertexHighlighted = {};
+  if(edgeHighlighted == null) edgeHighlighted = {};
+  if(vertexTraversed == null) vertexTraversed = {};
+  if(edgeTraversed == null) edgeTraversed = {};
 	if(edgeQueued == null) edgeQueued = {};
 
   	var key;
