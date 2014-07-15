@@ -42,6 +42,8 @@ function GraphVisu(arg1, arg2)
 				{source : nodes[1], target : nodes[2], weight : 2 }];
 	}
 
+	nodes = []; lastNodeId = 0; links = [];
+
 	svg.append('svg:defs').append('svg:marker')
 		.attr('id', 'end-arrow')
 		.attr('viewBox', '0 -5 10 10')
