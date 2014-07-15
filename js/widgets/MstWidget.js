@@ -885,10 +885,32 @@ var MST = function(){
     amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
     internalAdjList = graph["vl"];
     internalEdgeList = graph["el"];
+
+    console.log(internalEdgeList);
+    console.log(internalAdjList);
     for (var key in internalEdgeList)
     {
       internalEdgeList[key]["type"] = EDGE_TYPE_UDE;
       internalEdgeList[key]["displayWeight"] = true;
+    }
+    for (var key in internalEdgeList)
+    {
+      for (var key2 in internalAdjList)
+      {
+        if (internalAdjList[key2]["text"] == internalEdgeList[key]["vertexA"])
+        {
+          internalEdgeList[key]["vertexA"] = +key2;
+          break;
+        }
+      }
+      for (var key2 in internalAdjList)
+      {
+        if (internalAdjList[key2]["text"] == internalEdgeList[key]["vertexB"])
+        {
+          internalEdgeList[key]["vertexB"] = +key2;
+          break;
+        }
+      }
     }
     for (var key in internalAdjList) //prim algorithm can't handle these two. have to be deleted.
     {
