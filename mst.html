@@ -64,7 +64,7 @@
     <div id="actions-extras">
     <!--put all the extra action pullouts (input) and error messages here-->
         <div class="draw action-menu-pullout">
-          <div id="draw-err" class="err"></div>
+          
         </div>
         <div class="create action-menu-pullout">
           <div id="create-err" class="err"></div>
@@ -135,7 +135,7 @@
   <div id="main">
     <div id="viz">
 
-      <svg onClick = "GraphVisu(true,false); highlight(); " width="960" height="450"><defs><marker id="end-arrow" viewBox="0 -5 10 10" refX="6" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,-5L10,0L0,5" fill="#000"></path></marker></defs><path class="link dragline hidden" d="M0,0L0,0"></path><g><path class="link" d="M108.48528137423857,108.48528137423857L191.51471862576142,191.51471862576142"></path><path class="link" d="M208.48528137423858,208.48528137423858L291.5147186257614,291.5147186257614"></path></g><g><g><circle class="node" r="16" cx="100" cy="100" style="fill: rgb(238, 238, 238);"></circle><text x="100" y="105.33333333333333" class="id">0</text></g><g><circle class="node" r="16" cx="200" cy="200" style="fill: rgb(238, 238, 238);"></circle><text x="200" y="205.33333333333334" class="id">1</text></g><g><circle class="node" r="16" cx="300" cy="300" style="fill: rgb(238, 238, 238);"></circle><text x="300" y="305.3333333333333" class="id">2</text></g></g><g></g>
+      <svg onClick = "GraphVisu(true,false); " width="960" height="450"><defs><marker id="end-arrow" viewBox="0 -5 10 10" refX="6" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,-5L10,0L0,5" fill="#000"></path></marker></defs><path class="link dragline hidden" d="M0,0L0,0"></path><g><path class="link" d="M108.48528137423857,108.48528137423857L191.51471862576142,191.51471862576142"></path><path class="link" d="M208.48528137423858,208.48528137423858L291.5147186257614,291.5147186257614"></path></g><g><g><circle class="node" r="16" cx="100" cy="100" style="fill: rgb(238, 238, 238);"></circle><text x="100" y="105.33333333333333" class="id">0</text></g><g><circle class="node" r="16" cx="200" cy="200" style="fill: rgb(238, 238, 238);"></circle><text x="200" y="205.33333333333334" class="id">1</text></g><g><circle class="node" r="16" cx="300" cy="300" style="fill: rgb(238, 238, 238);"></circle><text x="300" y="305.3333333333333" class="id">2</text></g></g><g></g>
       <text x = "400" y = "100"> &bull; Click on empty space to add vertex</text>
       <text x = "400" y = "125"> &bull; Drag from vertex to vertex to add edge</text>
       <text x = "400" y = "150"> &bull; Select + Delete to delete vertex/edge</text>
@@ -152,6 +152,7 @@
     <p onclick=drawCancel()>Cancel</p>
     <p onclick=GraphVisu(true,false)>Clear</p>
   </div>
+  <div id="draw-err" class="err"></div>
 
 </div>
 <div id="about" class="overlays"></div>
@@ -239,9 +240,10 @@
 
   function drawDone()
   {
+    if (!mstWidget.draw(JSONresult)) return false;
+    $("#draw-err").html("");
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
-    mstWidget.draw(JSONresult);
   }
 
   function drawCancel()

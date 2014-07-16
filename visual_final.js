@@ -18,10 +18,10 @@ function GraphVisu(arg1, arg2, arg3)
 		colors = d3.scale.category10();
 
 	// clear stuff
-	d3.select("#viz").selectAll('svg').remove();
+	d3.select("#drawgraph #viz").selectAll('svg').remove();
 
 
-	var svg = d3.select('#viz')
+	var svg = d3.select('#drawgraph #viz')
 				.append('svg')
 				.attr('width',width)
 				.attr('height',height);
@@ -47,6 +47,8 @@ function GraphVisu(arg1, arg2, arg3)
 		links = [	{source : nodes[0], target : nodes[1], weight : 2},
 				{source : nodes[1], target : nodes[2], weight : 2 }];
 	}
+	
+	nodes = []; lastNodeId = 0; links = [];
 	
 	if (arg3 === "tree")
 	{
@@ -419,7 +421,7 @@ function GraphVisu(arg1, arg2, arg3)
 			adjMat[i] = [];
 			for (var j = 0; j < maxNodeId; j++)
 				if (validNode[i] === true && validNode[j] === true) adjMat[i][j] = "0";
-				else adjMat[i][j] = x;
+				//else adjMat[i][j] = x;
 		}
 		
 		
@@ -650,6 +652,8 @@ function GraphVisu(arg1, arg2, arg3)
 	json = json.concat(add);
 	
 	console.log(json);
+	
+	JSONresult = json;
 	
 		// IsTree
 		var IsTree = false;
