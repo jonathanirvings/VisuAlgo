@@ -31,17 +31,10 @@
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css">
 
 <script>
-		function changeclass(element) {
-			$("#menu1").removeClass('selected-viz');
-			$("#menu2").removeClass('selected-viz');
-			$("#menu3").removeClass('selected-viz');
-			$("#menu4").removeClass('selected-viz');
-			$(element).toggleClass('selected-viz');
-}
 		
-		function highlight()
+		function toggleActionMenu()
 		{
-			$("#menu1").toggleClass('selected-viz');
+			$("#actions").toggle();
 		}
 </script>
 
@@ -50,10 +43,10 @@
 <div id="top-bar">
 	<a id="home" href="http://www.comp.nus.edu.sg/~stevenha/visualization/index.html">Visu<span class="colour">Algo</span></a>
     <span id="title">
-    	<a id = "menu1" onClick = "GraphVisu(true,true); changeclass(this);">Undirected / Unweighted</a>
-		<a id = "menu2" onClick = "GraphVisu(true,false); changeclass(this);">Undirected / Weighted</a>
-		<a id = "menu3" onClick = "GraphVisu(false,true); changeclass(this);">Directed / Unweighted</a>
-		<a id = "menu4" onClick = "GraphVisu(false,false); changeclass(this);">Directed / Weighted</a>
+    	<a id = "menu1" onClick = "GraphVisu(true,true);">Undirected / Unweighted</a>
+		<a id = "menu2" onClick = "GraphVisu(true,false);">Undirected / Weighted</a>
+		<a id = "menu3" onClick = "GraphVisu(false,true);">Directed / Unweighted</a>
+		<a id = "menu4" onClick = "GraphVisu(false,false);">Directed / Weighted</a>
 	
 
     </span>
@@ -71,7 +64,7 @@
     
     <div id="viz">
 
-    <svg onClick = "GraphVisu(true,true); highlight(); " width="960" height="450"><defs><marker id="end-arrow" viewBox="0 -5 10 10" refX="6" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,-5L10,0L0,5" fill="#000"></path></marker></defs><path class="link dragline hidden" d="M0,0L0,0"></path><g><path class="link" d="M108.48528137423857,108.48528137423857L191.51471862576142,191.51471862576142"></path><path class="link" d="M208.48528137423858,208.48528137423858L291.5147186257614,291.5147186257614"></path></g><g><g><circle class="node" r="16" cx="100" cy="100" style="fill: rgb(238, 238, 238);"></circle><text x="100" y="105.33333333333333" class="id">0</text></g><g><circle class="node" r="16" cx="200" cy="200" style="fill: rgb(238, 238, 238);"></circle><text x="200" y="205.33333333333334" class="id">1</text></g><g><circle class="node" r="16" cx="300" cy="300" style="fill: rgb(238, 238, 238);"></circle><text x="300" y="305.3333333333333" class="id">2</text></g></g><g></g>
+    <svg onClick = "GraphVisu(true,true); " width="960" height="450"><defs><marker id="end-arrow" viewBox="0 -5 10 10" refX="6" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,-5L10,0L0,5" fill="#000"></path></marker></defs><path class="link dragline hidden" d="M0,0L0,0"></path><g><path class="link" d="M108.48528137423857,108.48528137423857L191.51471862576142,191.51471862576142"></path><path class="link" d="M208.48528137423858,208.48528137423858L291.5147186257614,291.5147186257614"></path></g><g><g><circle class="node" r="16" cx="100" cy="100" style="fill: rgb(238, 238, 238);"></circle><text x="100" y="105.33333333333333" class="id">0</text></g><g><circle class="node" r="16" cx="200" cy="200" style="fill: rgb(238, 238, 238);"></circle><text x="200" y="205.33333333333334" class="id">1</text></g><g><circle class="node" r="16" cx="300" cy="300" style="fill: rgb(238, 238, 238);"></circle><text x="300" y="305.3333333333333" class="id">2</text></g></g><g></g>
 		<text x = "400" y = "100"> &bull; Click on empty space to add vertex</text>
 		<text x = "400" y = "125"> &bull; Drag from vertex to vertex to add edge</text>
 		<text x = "400" y = "150"> &bull; Select + Delete to delete vertex/edge</text>
@@ -140,7 +133,7 @@
     </div>
 
     <div id="adj_matrix"> 
-    	<div style="float:left; border:0px solid; max-height: 500px; max-width:500px; overflow: auto" left="100px"> 
+    	<div style="float:left; border:0px solid; max-height: 500px; max-width:500px; overflow: auto; margin-left: 25px;" > 
     		<div class="tableTitle"> Adjacency matrix </div>
     		<table class="graphTable" id="adj_matrix_table" style=" width: 500px;"><tbody><tr><td> </td><td class="bold">0</td><td class="bold">1</td><td class="bold">2</td></tr><tr><td class="bold">0</td><td>0</td><td>1</td><td>0</td></tr><tr><td class="bold">1</td><td>1</td><td>0</td><td>1</td></tr><tr><td class="bold">2</td><td>0</td><td>1</td><td>0</td></tr></tbody></table>
     	</div> 
@@ -184,18 +177,26 @@
 
     <div id="current-action" class="panel"><p></p></div>
     
-    <div id="actions" class="panel" style="height: 226px;">
-        <p id="tree_graph" class="execAction" onclick="clearScreen()">Clear</p>
-		<p id="tree_graph" class="execAction" onclick="showTree()">Tree</p>
-		<p id="tree_graph" class="execAction" onclick="showStar()">Star</p>
-		<p id="tree_graph" class="execAction" onclick="showCP45()">CP4.5</p>	
-		<p id="tree_graph" class="execAction" onclick="showCP48()">CP4.8</p>	
-		<p id="tree_graph" class="execAction" onclick="showCP22()">CP2.2</p>	
-		<p id="tree_graph" class="execAction" onclick="showCP42()">CP4.2</p>	
-		<p id="tree_graph" class="execAction" onclick="showK5()">K5</p>
+    
+    <div id="actions" class="panel" style="padding-bottom: 10px; font-family: Arial; height: 300px; width: 145px; background-color: rgb(75,101,186);">
+		<p onClick = "GraphVisu(true,true,'tree');" >Tree Graph </p>
+		<p onClick = "GraphVisu(true,true,'star');" >Star Graph </p>
+		<p onClick = "GraphVisu(true,true,'k5');" >K5 Graph </p>
+		<p onClick = "GraphVisu(true,true,'CP2.2');" >CP2.2</p>
+		<p onClick = "GraphVisu(true,true,'CP2.5A');" >CP2.5A - Grid Graph </p>
+        <p onClick = "GraphVisu(true,true,'CP2.5B');">CP2.5B - Grid Graph </p>
+        <p onClick = "GraphVisu(true,true,'CP2.5C');">CP2.5C - Knight Jump <br /> Graph </p>
+		<p onClick = "GraphVisu(true,false,'MST');" >CP4.3.1 - MST</p>
+		<p onClick = "GraphVisu(true,true,'CP4.2');" >CP4.2</p>
+		<p onClick = "GraphVisu(false,true,'DAG');" >CP4.2.5 - DAG</p>
+		<p onClick = "GraphVisu(true,true,'CP4.5');" >CP4.5</p>
+		<p onClick = "GraphVisu(false,false,'Flow');" >CP4.6.1 - Flow Graph</p>
+		<p onClick = "GraphVisu(true,true,'CP4.8');" >CP4.8</p>
+        
+    </div>
 
 	</div>
-    <div id="actions-hide" class="panel-hide" style="padding: 19px 14px 19px 15px; background-color: rgb(75,101,186);"><img src="http://rosemarietan.com/fyp/img/arrow_white_right.png" title="show/hide actions panel"></div>
+    <div id="actions-hide" onClick = "toggleActionMenu();" class="panel-hide" style="padding: 19px 14px 19px 15px; background-color: rgb(75,101,186);"><img src="http://rosemarietan.com/fyp/img/arrow_white_right.png" title="show/hide actions panel"></div>
     <!--put all the extra action pullouts (input) and error messages here-->
     
     <div id="status" class="panel" "><p></p></div>

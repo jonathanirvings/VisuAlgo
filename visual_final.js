@@ -1,5 +1,14 @@
-function GraphVisu(arg1, arg2)
+function GraphVisu(arg1, arg2, arg3)
 {
+	// toggle correct menu item
+	var menu = (arg1 === false ? 1 : 0)*2 + (arg2 === false ? 1 : 0) + 1;
+	//alert(menu);
+	$("#menu1").removeClass('selected-viz');
+	$("#menu2").removeClass('selected-viz');
+	$("#menu3").removeClass('selected-viz');
+	$("#menu4").removeClass('selected-viz');
+	$("#menu"+menu.toString()).toggleClass('selected-viz');
+	
 	var UNDIRECTED = arg1, UNWEIGHTED = arg2;
 	var maxNumberVertex = 10;
 	var grid = 20;
@@ -9,17 +18,17 @@ function GraphVisu(arg1, arg2)
 		colors = d3.scale.category10();
 
 	// clear stuff
-	d3.select("#drawgraph #viz").selectAll('svg').remove();
+	d3.select("#viz").selectAll('svg').remove();
 
 
-	var svg = d3.select('#drawgraph #viz')
+	var svg = d3.select('#viz')
 				.append('svg')
 				.attr('width',width)
 				.attr('height',height);
 
 	var countNodeId = new Array(maxNumberVertex);
 	for (var i = countNodeId.length; i >= 0; -- i) countNodeId[i] = 0;
-	
+
 	var nodes = [ 	{id : 0, x : 100, y : 100 },
 					{id : 1, x : 200, y : 200 },
 					{id : 2, x : 300, y : 300 }],
@@ -38,9 +47,100 @@ function GraphVisu(arg1, arg2)
 		links = [	{source : nodes[0], target : nodes[1], weight : 2},
 				{source : nodes[1], target : nodes[2], weight : 2 }];
 	}
-
-	nodes = []; lastNodeId = 0; links = [];
-
+	
+	if (arg3 === "tree")
+	{
+		nodes = [{id:0,x:420,y:80},{id:1,x:200,y:200},{id:2,x:120,y:300},{id:3,x:200,y:300},{id:4,x:140,y:380},{id:5,x:240,y:380},{id:6,x:280,y:300},{id:7,x:600,y:200},{id:8,x:500,y:360},{id:9,x:700,y:360}];
+		links = [{source:{id:0,x:420,y:80},target:{id:1,x:200,y:200}},{source:{id:1,x:200,y:200},target:{id:2,x:120,y:300}},{source:{id:1,x:200,y:200},target:{id:3,x:200,y:300}},{source:{id:3,x:200,y:300},target:{id:4,x:140,y:380}},{source:{id:3,x:200,y:300},target:{id:5,x:240,y:380}},{source:{id:1,x:200,y:200},target:{id:6,x:280,y:300}},{source:{id:0,x:420,y:80},target:{id:7,x:600,y:200}},{source:{id:7,x:600,y:200},target:{id:8,x:500,y:360}},{source:{id:7,x:600,y:200},target:{id:9,x:700,y:360}}];
+	}
+	
+	if (arg3 === "star")
+	{
+		nodes = [{id:0,x:240,y:160},{id:1,x:560,y:160},{id:2,x:300,y:320},{id:3,x:400,y:80},{id:4,x:500,y:320}];
+		links = [{source:{id:0,x:240,y:160},target:{id:1,x:560,y:160}},{source:{id:1,x:560,y:160},target:{id:2,x:300,y:320}},{source:{id:2,x:300,y:320},target:{id:3,x:400,y:80}},{source:{id:3,x:400,y:80},target:{id:4,x:500,y:320}},{source:{id:4,x:500,y:320},target:{id:0,x:240,y:160}}];
+	}
+	
+	if (arg3 === "k5")
+	{
+		nodes = [{id:0,x:240,y:160},{id:1,x:560,y:160},{id:2,x:300,y:320},{id:3,x:400,y:80},{id:4,x:500,y:320}];
+		links = [{source:{id:0,x:240,y:160},target:{id:1,x:560,y:160}},{source:{id:1,x:560,y:160},target:{id:2,x:300,y:320}},{source:{id:2,x:300,y:320},target:{id:3,x:400,y:80}},{source:{id:3,x:400,y:80},target:{id:4,x:500,y:320}},{source:{id:4,x:500,y:320},target:{id:0,x:240,y:160}},{source:{id:0,x:240,y:160},target:{id:3,x:400,y:80}},{source:{id:3,x:400,y:80},target:{id:1,x:560,y:160}},{source:{id:1,x:560,y:160},target:{id:4,x:500,y:320}},{source:{id:4,x:500,y:320},target:{id:2,x:300,y:320}},{source:{id:2,x:300,y:320},target:{id:0,x:240,y:160}}];
+	}
+	
+	if (arg3 === "CP2.2")
+	{
+		nodes = [{id:0,x:280,y:320},{id:1,x:180,y:220},{id:2,x:360,y:220},{id:3,x:180,y:100},{id:4,x:360,y:100},{id:5,x:520,y:100},{id:6,x:520,y:220}];
+		links = [{source:{id:0,x:280,y:320},target:{id:1,x:180,y:220}},{source:{id:1,x:180,y:220},target:{id:2,x:360,y:220}},{source:{id:3,x:180,y:100},target:{id:1,x:180,y:220}},{source:{id:3,x:180,y:100},target:{id:4,x:360,y:100}},{source:{id:4,x:360,y:100},target:{id:2,x:360,y:220}},{source:{id:4,x:360,y:100},target:{id:5,x:520,y:100}},{source:{id:5,x:520,y:100},target:{id:6,x:520,y:220}},{source:{id:2,x:360,y:220},target:{id:0,x:280,y:320}}];
+	}
+	
+	if (arg3 === "CP4.2")
+	{
+		nodes = [{id:0,x:220,y:100},{id:1,x:220,y:200},{id:2,x:220,y:300},{id:3,x:220,y:400},{id:4,x:360,y:100},{id:5,x:360,y:200},{id:6,x:360,y:400},{id:7,x:500,y:100},{id:8,x:500,y:200},{id:9,x:500,y:400}];
+		links = [{source:{id:0,x:220,y:100},target:{id:1,x:220,y:200}},{source:{id:1,x:220,y:200},target:{id:2,x:220,y:300}},{source:{id:0,x:220,y:100},target:{id:4,x:360,y:100}},{source:{id:4,x:360,y:100},target:{id:7,x:500,y:100}},{source:{id:5,x:360,y:200},target:{id:8,x:500,y:200}},{source:{id:4,x:360,y:100},target:{id:5,x:360,y:200}},{source:{id:5,x:360,y:200},target:{id:6,x:360,y:400}},{source:{id:7,x:500,y:100},target:{id:8,x:500,y:200}},{source:{id:8,x:500,y:200},target:{id:9,x:500,y:400}},{source:{id:2,x:220,y:300},target:{id:3,x:220,y:400}},{source:{id:3,x:220,y:400},target:{id:6,x:360,y:400}},{source:{id:6,x:360,y:400},target:{id:9,x:500,y:400}}];
+	}
+	
+	if (arg3 === "CP4.5")
+	{
+		nodes = [{id:0,x:200,y:100},{id:1,x:400,y:100},{id:2,x:580,y:100},{id:3,x:200,y:240},{id:4,x:400,y:240},{id:5,x:580,y:240}];
+		links = [{source:{id:0,x:200,y:100},target:{id:1,x:400,y:100}},{source:{id:1,x:400,y:100},target:{id:2,x:580,y:100}},{source:{id:1,x:400,y:100},target:{id:3,x:200,y:240}},{source:{id:1,x:400,y:100},target:{id:4,x:400,y:240}},{source:{id:4,x:400,y:240},target:{id:5,x:580,y:240}},{source:{id:1,x:400,y:100},target:{id:5,x:580,y:240}}];
+	}
+	
+	if (arg3 === "CP4.8")
+	{
+		nodes = [{id:0,x:100,y:100},{id:1,x:260,y:100},{id:2,x:260,y:240},{id:3,x:400,y:100},{id:4,x:540,y:100},{id:5,x:680,y:100},{id:6,x:540,y:240},{id:7,x:680,y:240}];
+		links = [{source:{id:0,x:100,y:100},target:{id:1,x:260,y:100}},{source:{id:1,x:260,y:100},target:{id:2,x:260,y:240}},{source:{id:1,x:260,y:100},target:{id:3,x:400,y:100}},{source:{id:2,x:260,y:240},target:{id:3,x:400,y:100}},{source:{id:3,x:400,y:100},target:{id:4,x:540,y:100}},{source:{id:4,x:540,y:100},target:{id:5,x:680,y:100}},{source:{id:5,x:680,y:100},target:{id:7,x:680,y:240}},{source:{id:7,x:680,y:240},target:{id:6,x:540,y:240}},{source:{id:6,x:540,y:240},target:{id:4,x:540,y:100}}];
+	}
+	if (arg3 === "CP2.5A")
+	{
+		nodes = [{id:0,x:100,y:100},{id:1,x:100,y:200},{id:2,x:100,y:300},{id:3,x:260,y:100},{id:4,x:260,y:200},{id:5,x:260,y:300},{id:6,x:420,y:100},{id:7,x:420,y:200},{id:8,x:420,y:300}];
+		links = [{source:{id:0,x:100,y:100},target:{id:1,x:100,y:200}},{source:{id:1,x:100,y:200},target:{id:2,x:100,y:300}},{source:{id:2,x:100,y:300},target:{id:5,x:260,y:300}},{source:{id:5,x:260,y:300},target:{id:8,x:420,y:300}},{source:{id:8,x:420,y:300},target:{id:7,x:420,y:200}},{source:{id:7,x:420,y:200},target:{id:6,x:420,y:100}}];
+	}
+	
+	if (arg3 === "CP2.5B")
+	{
+		nodes = [{id:0,x:100,y:100},{id:1,x:100,y:200},{id:2,x:100,y:300},{id:3,x:260,y:100},{id:4,x:260,y:200},{id:5,x:260,y:300},{id:6,x:420,y:100},{id:7,x:420,y:200},{id:8,x:420,y:300}];
+		links = [{source:{id:0,x:100,y:100},target:{id:1,x:100,y:200}},{source:{id:1,x:100,y:200},target:{id:2,x:100,y:300}},{source:{id:2,x:100,y:300},target:{id:5,x:260,y:300}},{source:{id:5,x:260,y:300},target:{id:8,x:420,y:300}},{source:{id:8,x:420,y:300},target:{id:7,x:420,y:200}},{source:{id:7,x:420,y:200},target:{id:6,x:420,y:100}},{source:{id:3,x:260,y:100},target:{id:4,x:260,y:200}},{source:{id:4,x:260,y:200},target:{id:5,x:260,y:300}},{source:{id:1,x:100,y:200},target:{id:4,x:260,y:200}},{source:{id:0,x:100,y:100},target:{id:3,x:260,y:100}}];
+	}
+	
+	if (arg3 === "CP2.5C")
+	{
+		nodes = [{id:0,x:100,y:100},{id:1,x:100,y:200},{id:2,x:100,y:300},{id:3,x:260,y:100},{id:4,x:260,y:200},{id:5,x:260,y:300},{id:6,x:420,y:100},{id:7,x:420,y:200},{id:8,x:420,y:300}];
+		links = [{source:{id:0,x:100,y:100},target:{id:7,x:420,y:200}},{source:{id:0,x:100,y:100},target:{id:5,x:260,y:300}},{source:{id:3,x:260,y:100},target:{id:2,x:100,y:300}},{source:{id:3,x:260,y:100},target:{id:8,x:420,y:300}},{source:{id:6,x:420,y:100},target:{id:1,x:100,y:200}},{source:{id:6,x:420,y:100},target:{id:5,x:260,y:300}},{source:{id:1,x:100,y:200},target:{id:8,x:420,y:300}},{source:{id:7,x:420,y:200},target:{id:2,x:100,y:300}}];
+	}
+	
+	if (arg3 === "DAG")
+	{
+		nodes = [{id:0,x:100,y:100},{id:1,x:220,y:100},{id:2,x:220,y:220},{id:3,x:340,y:100},{id:4,x:460,y:100},{id:5,x:600,y:100},{id:6,x:460,y:220},{id:7,x:600,y:220}];
+		links = [{source:{id:0,x:100,y:100},target:{id:1,x:220,y:100}},{source:{id:1,x:220,y:100},target:{id:2,x:220,y:220}},{source:{id:7,x:600,y:220},target:{id:6,x:460,y:220}},{source:{id:2,x:220,y:220},target:{id:5,x:600,y:100}},{source:{id:3,x:340,y:100},target:{id:4,x:460,y:100}},{source:{id:1,x:220,y:100},target:{id:3,x:340,y:100}},{source:{id:2,x:220,y:220},target:{id:3,x:340,y:100}}];
+	}
+	
+	if (arg3 === "MST")
+	{
+		nodes = [{id:0,x:100,y:140},{id:1,x:240,y:40},{id:2,x:360,y:140},{id:3,x:240,y:240},{id:4,x:100,y:360}];
+		links = [{source:{id:0,x:100,y:140},target:{id:1,x:240,y:40},weight:"4"},{source:{id:1,x:240,y:40},target:{id:2,x:360,y:140},weight:2},{source:{id:2,x:360,y:140},target:{id:3,x:240,y:240},weight:"8"},{source:{id:3,x:240,y:240},target:{id:0,x:100,y:140},weight:"6"},{source:{id:0,x:100,y:140},target:{id:2,x:360,y:140},weight:"4"},{source:{id:3,x:240,y:240},target:{id:4,x:100,y:360},weight:"9"},{source:{id:4,x:100,y:360},target:{id:0,x:100,y:140},weight:"6"}];
+	}
+	
+	if (arg3 === "Flow")
+	{
+		nodes = [{id:0,x:280,y:100},{id:1,x:580,y:300},{id:2,x:280,y:300},{id:3,x:580,y:100}];
+		links = [{source:{id:0,x:280,y:100},target:{id:2,x:280,y:300},weight:"70"},{source:{id:2,x:280,y:300},target:{id:0,x:280,y:100},weight:"70"},{source:{id:0,x:280,y:100},target:{id:3,x:580,y:100},weight:"30"},{source:{id:3,x:580,y:100},target:{id:0,x:280,y:100},weight:"30"},{source:{id:2,x:280,y:300},target:{id:1,x:580,y:300},weight:"25"},{source:{id:1,x:580,y:300},target:{id:2,x:280,y:300},weight:"25"},{source:{id:3,x:580,y:100},target:{id:1,x:580,y:300},weight:"70"},{source:{id:1,x:580,y:300},target:{id:3,x:580,y:100},weight:"70"},{source:{id:3,x:580,y:100},target:{id:2,x:280,y:300},weight:"5"},{source:{id:2,x:280,y:300},target:{id:3,x:580,y:100},weight:"5"}];
+	}
+	
+	// magic function
+	lastNodeId = nodes.length;
+	
+	for (var i = 0; i < nodes.length; i++) countNodeId[nodes[i].id]++;
+	
+	for (var i = 0; i < links.length; i++)
+	{
+		for (var j = 0; j < nodes.length; j++)
+		{
+			if (nodes[j].id === links[i].source.id) links[i].source = nodes[j];
+			if (nodes[j].id === links[i].target.id) links[i].target = nodes[j];
+		}
+	}
+	
+	// end of magic
+	
 	svg.append('svg:defs').append('svg:marker')
 		.attr('id', 'end-arrow')
 		.attr('viewBox', '0 -5 10 10')
@@ -319,7 +419,7 @@ function GraphVisu(arg1, arg2)
 			adjMat[i] = [];
 			for (var j = 0; j < maxNodeId; j++)
 				if (validNode[i] === true && validNode[j] === true) adjMat[i][j] = "0";
-				else adjMat[i][j] = "x";
+				else adjMat[i][j] = x;
 		}
 		
 		
@@ -520,8 +620,12 @@ function GraphVisu(arg1, arg2)
 		var first = "\"" + i + "\":";
 		
 		var obj = new Object();
-		obj.vertexA = links[i].source.id;
-		obj.vertexB = links[i].target.id;
+		
+		for (var j = 0; j < nodes.length; j++)
+		{
+			if (nodes[j].id === links[i].source.id) obj.vertexA = j;
+			if (nodes[j].id === links[i].target.id) obj.vertexB = j;
+		}
 		
 		obj.type = 0;
 		if (UNDIRECTED === false) obj.type = 1;
@@ -546,8 +650,6 @@ function GraphVisu(arg1, arg2)
 	json = json.concat(add);
 	
 	console.log(json);
-
-	JSONresult = json;
 	
 		// IsTree
 		var IsTree = false;
@@ -640,6 +742,11 @@ function GraphVisu(arg1, arg2)
 		
 		if (IsDAG === true) d3.select("#isDAG").text(" : Yes");
 		else d3.select("#isDAG").text(" : No");
+		
+		// testing nodes & links
+		
+		console.log(JSON.stringify(nodes));
+		console.log(JSON.stringify(links));
 		
 		
 	}
