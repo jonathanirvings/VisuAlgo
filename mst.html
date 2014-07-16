@@ -221,22 +221,6 @@
       isPlaying = false;
     }
   }
-  
-  /*function drawGraph() {
-    if(isPlaying) { stop(); }
-    if (mode=="exploration") {
-      var n = Math.floor(5 + Math.random()*6);
-      $.ajax({
-        url: "php/Graph.php?numVertex="+n+"&directed="+0+"&connected="+1
-      }).done(function(graph){
-        graph = extractQnGraph(JSON.parse(graph));
-        mstWidget.initRandom(graph);
-      })
-      $('#progress-bar').slider( "option", "max", 0);
-      closeSamples();
-      isPlaying = false;
-    }
-  }*/
 
   function drawDone()
   {
