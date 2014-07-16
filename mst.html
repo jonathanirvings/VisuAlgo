@@ -64,7 +64,7 @@
     <div id="actions-extras">
     <!--put all the extra action pullouts (input) and error messages here-->
         <div class="draw action-menu-pullout">
-          
+          <div id="draw-err" class="err"></div>
         </div>
         <div class="create action-menu-pullout">
           <div id="create-err" class="err"></div>
@@ -152,7 +152,6 @@
     <p onclick=drawCancel()>Cancel</p>
     <p onclick=GraphVisu(true,false)>Clear</p>
   </div>
-  <div id="draw-err" class="err"></div>
 
 </div>
 <div id="about" class="overlays"></div>
@@ -240,10 +239,9 @@
 
   function drawDone()
   {
-    if (!mstWidget.draw(JSONresult)) return false;
-    $("#draw-err").html("");
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
+    mstWidget.draw(JSONresult);
   }
 
   function drawCancel()
