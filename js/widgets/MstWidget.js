@@ -886,8 +886,6 @@ var MST = function(){
     internalAdjList = graph["vl"];
     internalEdgeList = graph["el"];
 
-    console.log(internalEdgeList);
-    console.log(internalAdjList);
     for (var key in internalEdgeList)
     {
       internalEdgeList[key]["type"] = EDGE_TYPE_UDE;
@@ -955,6 +953,7 @@ var MST = function(){
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
+    return true;
   }
 
   function createState(internalAdjListObject, internalEdgeListObject, vertexHighlighted, edgeHighlighted, vertexTraversed, edgeTraversed, edgeQueued){
