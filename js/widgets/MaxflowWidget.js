@@ -44,7 +44,7 @@ var MAXFLOW = function(){
   }
   
   this.draw = function(graph) {
-	console.log(graph);
+	 console.log(graph);
     graph = JSON.parse(graph);
     amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
     amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
@@ -62,42 +62,35 @@ var MAXFLOW = function(){
       internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
     }
     
-    //check connected
-    /*var visited = [];
-
-    for (var key in internalAdjList)
+    //check source-sink connected
+    var visited = [];
+    var stack = [];
+    stack.push(0);
+    visited[0] = true;
+    while (stack.length > 0)
     {
-      var stack = [];
-      var numberOfVisited = 1;
-      stack.push(key);
-      visited[key] = true;
-      while (stack.length > 0)
+      var now = stack.pop();
+		  for (var key2 in internalEdgeList) if(internalEdgeList[key2]["vertexA"] == now)
       {
-        var now = stack.pop();
-		for (var key2 in internalEdgeList)
-        for (var key2 in internalAdjList[now]) if(key2 != "cx" && key2 != "cy")
+        if (!visited[internalEdgeList[key2]["vertexB"]])
         {
-          if (!visited[key2])
-          {
-            visited[key2] = true;
-            numberOfVisited++;
-            stack.push(+key2);
-          }
+          visited[internalEdgeList[key2]["vertexB"]] = true;
+          stack.push(+internalEdgeList[key2]["vertexB"]);
         }
       }
-      if (numberOfVisited != amountVertex)
-      {
-        $("#draw-err").html("Graph is not connected");
-        return false;
-      }
-      break;
-    }*/
+    }
+    if (!visited[amountVertex-1])
+    {
+      $("#draw-err").html("Source and sink is not connected");
+      return false;
+    }
+
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
 	
-	$('#sourcevertex').val(0);
-	$('#sinkvertex').val(amountVertex-1);
+    $('#sourcevertex').val(0);
+    $('#sinkvertex').val(amountVertex-1);
     return true;
   }
 

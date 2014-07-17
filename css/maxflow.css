@@ -2,6 +2,8 @@
 
 /*all action pullout (input) stuff here*/
 
+.draw { bottom: 173px; }
+	#draw-err { padding: 8px 0px 7px }
 #drawgraph 
 {
 	height: 600px;
