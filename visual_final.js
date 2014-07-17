@@ -421,7 +421,7 @@ function GraphVisu(arg1, arg2, arg3)
 			adjMat[i] = [];
 			for (var j = 0; j < maxNodeId; j++)
 				if (validNode[i] === true && validNode[j] === true) adjMat[i][j] = "0";
-				//else adjMat[i][j] = x;
+				else adjMat[i][j] = "x";
 		}
 		
 		
