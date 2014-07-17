@@ -1,6 +1,7 @@
 var actionsWidth = 150;
 var statusCodetraceWidth = 410;
 
+var isDrawOpen = false;
 var isModelingOpen = false;
 var isCreateOpen = false;
 var isBipartiteOpen = false;
@@ -15,6 +16,19 @@ function openModeling() {
 	if(!isModelingOpen) {
 		$('.modeling').fadeIn('fast');
 		isModelingOpen = true;
+	}
+}
+function closeDraw() {
+	if(isDrawOpen) {
+		$('.draw').fadeOut('fast');
+		$('#draw-err').html("");
+		isDrawOpen = false;
+	}
+}
+function openDraw() {
+	if(!isDrawOpen) {
+		$('.draw').fadeIn('fast');
+		isDrawOpen = true;
 	}
 }
 function closeModeling() {
@@ -67,6 +81,7 @@ function closeCountMaximumFlow() {
 }
 
 function hideEntireActionsPanel() {
+	closeDraw()
 	closeModeling();
 	closeCreate();
 	closeSamples();
@@ -75,7 +90,16 @@ function hideEntireActionsPanel() {
 }
 
 $( document ).ready(function() {
+	$('#draw').click(function() {
+		openDraw()
+		closeModeling();
+		closeCreate();
+		closeSamples();
+		closeCountMaximumFlow();
+	});
+
 	$('#modeling').click(function() {
+		closeDraw()
 		openModeling();
 		closeCreate();
 		closeSamples();
@@ -83,6 +107,7 @@ $( document ).ready(function() {
 	});
 
 	$('#create').click(function() {
+		closeDraw()
 		closeModeling();
 		openCreate();
 		closeSamples();
@@ -90,6 +115,7 @@ $( document ).ready(function() {
 	});
 
 	$('#sample').click(function() {
+		closeDraw()
 		closeModeling();
 		closeCreate();
 		openSamples();
@@ -97,6 +123,7 @@ $( document ).ready(function() {
 	});
 
 	$('#countmaxflow').click(function() {
+		closeDraw()
 		closeModeling();
 		closeCreate();
 		closeSamples();
