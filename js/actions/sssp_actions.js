@@ -1,12 +1,27 @@
 var actionsWidth = 150;
 var statusCodetraceWidth = 410;
 
+var isDrawOpen = false;
 var isCreateOpen = false;
 var isSamplesOpen = false;
 var isBFSOpen = false;
 var isBellmanFordsOpen = false;
 var isDijkstrasOpen = false;
 
+function openDraw() {
+	if(!isDrawOpen) {
+		$('.draw').fadeIn('fast');
+		isDrawOpen = true;
+	}
+}
+function closeDraw() {
+	if(isDrawOpen) {
+		$('.draw').fadeOut('fast');
+		$('#draw-err').html("");
+		$('#draw-warn').html("");
+		isDrawOpen = false;
+	}
+}
 function openCreate() {
 	if(!isCreateOpen) {
 		$('.create').fadeIn('fast');
@@ -74,6 +89,7 @@ function closeDijkstras() {
 }
 
 function hideEntireActionsPanel() {
+	closeDraw();
 	closeCreate();
 	closeSamples();
 	closeBFS();
@@ -83,7 +99,17 @@ function hideEntireActionsPanel() {
 }
 
 $( document ).ready(function() {
+	$('#draw').click(function() {
+		openDraw();
+		closeCreate();
+		closeSamples();
+		closeBFS();
+		closeBellmanFords();
+		closeDijkstras();
+	});
+
 	$('#create').click(function() {
+		closeDraw();
 		openCreate();
 		closeSamples();
 		closeBFS();
@@ -92,6 +118,7 @@ $( document ).ready(function() {
 	});
 
 	$('#sample').click(function() {
+		closeDraw();
 		closeCreate();
 		openSamples();
 		closeBFS();
@@ -100,6 +127,7 @@ $( document ).ready(function() {
 	});
 	
 	$('#bfs').click(function() {
+		closeDraw();
 		closeCreate();
 		closeSamples();
 		openBFS();
@@ -108,6 +136,7 @@ $( document ).ready(function() {
 	});
 
 	$('#bellmanford').click(function() {
+		closeDraw();
 		closeCreate();
 		closeSamples();
 		closeBFS();
@@ -116,6 +145,7 @@ $( document ).ready(function() {
 	});
 	
 	$('#dijkstra').click(function() {
+		closeDraw();
 		closeCreate();
 		closeSamples();
 		closeBFS();

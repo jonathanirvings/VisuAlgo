@@ -1,8 +1,9 @@
 @charset "utf-8";
 
 /*all action pullout (input) stuff here*/
-.draw { bottom: 173px; }
+.draw { bottom: 200px; }
 	#draw-err { padding: 8px 0px 7px }
+	#draw-warn { padding: 8px 0px 7px }
 
 #drawgraph 
 {

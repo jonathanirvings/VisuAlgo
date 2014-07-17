@@ -60,7 +60,7 @@ var SSSP = function(){
     }
     
     //check source-sink connected
-    /*var visited = [];
+    var visited = [];
     var stack = [];
     stack.push(0);
     visited[0] = true;
@@ -76,11 +76,11 @@ var SSSP = function(){
         }
       }
     }
-    if (!visited[amountVertex-1])
+    for (var key in internalAdjList) if(!visited[key])
     {
-      $("#draw-err").html("Source and sink is not connected");
-      return false;
-    }*/
+      $("#draw-warn").html("Vertex 0 is not connected to vertex " + (+key));
+      break;
+    }
 
 
     graph = createState(internalAdjList,internalEdgeList);
