@@ -56,6 +56,8 @@ var MAXFLOW = function(){
       internalEdgeList[key]["type"] = EDGE_TYPE_UDE;
       internalEdgeList[key]["displayWeight"] = true;
     }
+    for (var key in internalAdjList)
+      internalAdjList[key]["text"] = key;
     for (var key in internalEdgeList)
     {
       internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;

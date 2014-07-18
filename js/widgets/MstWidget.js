@@ -880,7 +880,6 @@ var MST = function(){
   }
 
   this.draw = function(graph) {
-  console.log(graph);
     graph = JSON.parse(graph);
     amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
     amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
