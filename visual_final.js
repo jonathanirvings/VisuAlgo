@@ -986,7 +986,7 @@ function GraphVisu(arg1, arg2, arg3)
 		});
 
 	function keydown() {
-	  d3.event.preventDefault();
+	  //d3.event.preventDefault();
 	 
 	  //if(lastKeyDown !== -1) return;
 	  lastKeyDown = d3.event.keyCode;
@@ -1006,12 +1006,28 @@ function GraphVisu(arg1, arg2, arg3)
 		  {
 			nodes.splice(nodes.indexOf(selected_node), 1);
 			spliceLinksForNode(selected_node);
+			/* comment out this
 			countNodeId[selected_node.id] = 0;
+			
 			for (var i = 0; i < maxNumberVertex; i++)
 				if (countNodeId[i] === 0) 
 				{
 				   lastNodeId = i;
 				   break;
+				}
+			*/
+			
+			// new change : re-number vertex
+			for (var i = 0; i < nodes.length; i++)
+				if (nodes[i].id > selected_node.id) nodes[i].id--;
+			
+			for (var i = 0; i < maxNumberVertex; i++) countNodeId[i] = 0;
+			for (var i = 0; i < nodes.length; i++) countNodeId[nodes[i].id]++;
+			for (var i = 0; i < maxNumberVertex; i++)
+				if (countNodeId[i] === 0)
+				{
+					lastNodeId = i;
+					break;
 				}
 		  } else if(selected_link) {
 			links.splice(links.indexOf(selected_link), 1);

@@ -42,9 +42,9 @@ var MAXFLOW = function(){
   this.getGraphWidget = function(){
     return graphWidget;
   }
-  
-  this.draw = function(graph) {
-	 console.log(graph);
+
+  takeJSON = function(graph)
+  {
     graph = JSON.parse(graph);
     amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
     amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
@@ -63,8 +63,21 @@ var MAXFLOW = function(){
       internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
       internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
     }
-    
-    //check source-sink connected
+  }
+
+  statusChecking = function()
+  {
+    $("#draw-status p").html("Source is vertex #0. Sink is vertex #" + (amountVertex-1));
+  }
+
+  warnChecking = function()
+  {
+
+  }
+
+  errorChecking = function()
+  {
+    var error = "";
     var visited = [];
     var stack = [];
     stack.push(0);
@@ -72,7 +85,7 @@ var MAXFLOW = function(){
     while (stack.length > 0)
     {
       var now = stack.pop();
-		  for (var key2 in internalEdgeList) if(internalEdgeList[key2]["vertexA"] == now)
+      for (var key2 in internalEdgeList) if(internalEdgeList[key2]["vertexA"] == now)
       {
         if (!visited[internalEdgeList[key2]["vertexB"]])
         {
@@ -81,12 +94,34 @@ var MAXFLOW = function(){
         }
       }
     }
-    if (!visited[amountVertex-1])
+    if (!visited[amountVertex-1]) 
+      error = error + "Source and sink is not connected. "
+    var leftmost = INF, rightmost = -INF;
+    for (var key in internalAdjList)
     {
-      $("#draw-err").html("Source and sink is not connected");
-      return false;
+      leftmost = Math.min(leftmost,internalAdjList[key]["cx"]);
+      rightmost = Math.max(rightmost,internalAdjList[key]["cx"]);
     }
+    if (leftmost < internalAdjList[0]["cx"])
+      error = error + "Source is not the left most vertex. "
+    if (rightmost > internalAdjList[amountVertex-1]["cx"])
+      error = error + "Sink is not the right most vertex. "
 
+    if (error == "") $("#draw-err p").html("No Error");
+    else $("#draw-err p").html(error);
+  }
+
+  setInterval(function()
+  {
+    takeJSON(JSONresult);
+    statusChecking();
+    warnChecking();
+    errorChecking();
+  },100);
+  
+  this.draw = function() 
+  {
+    if ($("#draw-err p").html() != "No Error") return false;
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
