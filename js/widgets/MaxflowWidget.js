@@ -67,7 +67,10 @@ var MAXFLOW = function(){
 
   statusChecking = function()
   {
-    $("#draw-status p").html("Source is vertex #0. Sink is vertex #" + (amountVertex-1));
+    if (amountVertex == 0)
+      $("#draw-status p").html("Graph is empty");
+    else
+      $("#draw-status p").html("Source is vertex #0. Sink is vertex #" + (amountVertex-1));
   }
 
   warnChecking = function()
@@ -78,6 +81,12 @@ var MAXFLOW = function(){
   errorChecking = function()
   {
     var error = "";
+    if (amountVertex == 0)
+    {
+      $("#draw-err p").html("Graph cannot be empty. ");
+      return;
+    }
+    
     var visited = [];
     var stack = [];
     stack.push(0);
