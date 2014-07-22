@@ -62,6 +62,7 @@ var MAXFLOW = function(){
     {
       internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
       internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
+	  internalEdgeList[key]["weight"] = +internalEdgeList[key]["weight"];
     }
   }
 
@@ -214,14 +215,14 @@ var MAXFLOW = function(){
               edgeYellow[forwardEdge] = true;
             }
             currentState = createState(internalAdjList, internalEdgeList, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow);
-            currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + MaxFlow;
+            currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + MaxFlow;
             currentState["status"] += '<br>Find an augmenting path. Bottleneck is ' + internalEdgeList[bottleneck[0]]["weight"] + ' (indicated by red)</br>';
             currentState["lineNo"] = [3];
             stateList.push(currentState);
           }
 
           currentState = createState(internalAdjList, internalEdgeList, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow);
-          currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + MaxFlow;
+          currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + MaxFlow;
           currentState["status"] += '<br>Got an augmenting path by BFS. Bottleneck is ' + nowCapacity + ' (indicated by red)</br>';
           currentState["lineNo"] = [3];
           stateList.push(currentState);
@@ -278,7 +279,7 @@ var MAXFLOW = function(){
           existAugmentingPath = true;
           MaxFlow += nowCapacity;
           currentState = createState(internalAdjList, internalEdgeList, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow, edgeBlue);
-          currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + MaxFlow;
+          currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + MaxFlow;
           currentState["status"] += '<br>Maximum flow increased by ' + nowCapacity + '</br>';
           currentState["lineNo"] = [7];
           stateList.push(currentState);
@@ -302,7 +303,7 @@ var MAXFLOW = function(){
     }
 
     currentState = createState(internalAdjList, internalEdgeList, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow, edgeBlue);
-    currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + MaxFlow;
+    currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + MaxFlow;
     currentState["status"] += '<br>No more augmenting path</br>';
     currentState["lineNo"] = [];
     stateList.push(currentState);
@@ -376,7 +377,7 @@ var MAXFLOW = function(){
               edgeYellow[forwardEdge] = true;
             }
             currentState = createState(internalAdjList, internalEdgeList, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow);
-            currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + MaxFlow;
+            currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + MaxFlow;
             currentState["status"] += '<br>Find an augmenting path. Bottleneck is ' + internalEdgeList[bottleneck[0]]["weight"] + ' (indicated by red)</br>';
             currentState["lineNo"] = [3];
             stateList.push(currentState);
@@ -533,7 +534,7 @@ var MAXFLOW = function(){
       if (distance[sinkVertex] == INF) break;
       
       currentState = createState(internalAdjList, internalEdgeList, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow, edgeBlue);
-      currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + MaxFlow;
+      currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + MaxFlow;
       currentState["status"] += '<br>Got the level graph (indicated by blue). Sink is level ' + distance[sinkVertex] + '</br>';
       currentState["lineNo"] = [3];
       stateList.push(currentState);
@@ -636,7 +637,7 @@ var MAXFLOW = function(){
     }
 
     currentState = createState(internalAdjList, internalEdgeList, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow, edgeBlue);
-    currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + MaxFlow;
+    currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + MaxFlow;
     currentState["status"] += '<br>No more flow from source to sink</br>';
     currentState["lineNo"] = [];
     stateList.push(currentState);
