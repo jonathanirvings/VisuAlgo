@@ -44,6 +44,105 @@ var MST = function(){
   this.getGraphWidget = function(){
     return graphWidget;
   }
+  
+  takeJSON = function(graph)
+  {
+    graph = JSON.parse(graph);
+    amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
+    amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
+    internalAdjList = graph["vl"];
+    internalEdgeList = graph["el"];
+
+    for (var key in internalEdgeList)
+    {
+      delete internalEdgeList[key]["type"];
+      delete internalEdgeList[key]["displayWeight"];
+    }
+    for (var key in internalAdjList)
+	{
+      delete internalAdjList[key]["text"];
+	  delete internalAdjList[key]["state"];
+	}
+	for (var key in internalEdgeList)
+    {
+      internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
+      internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
+	  internalEdgeList[key]["weight"] = +internalEdgeList[key]["weight"];
+    }
+  }
+
+  statusChecking = function()
+  {
+    if (amountVertex == 0)
+      $("#draw-status p").html("Graph is empty");
+    else
+      $("#draw-status p").html("");
+  }
+
+  warnChecking = function()
+  {
+
+  }
+
+  errorChecking = function()
+  {
+    var error = "";
+    if (amountVertex == 0)
+    {
+      $("#draw-err p").html("Graph cannot be empty. ");
+      return;
+    }
+    
+    var visited = [];
+    var stack = [];
+    stack.push(0);
+    visited[0] = true;
+    while (stack.length > 0)
+    {
+      var now = stack.pop();
+      for (var key2 in internalEdgeList)
+      {
+        if (internalEdgeList[key2]["vertexA"] == now && !visited[internalEdgeList[key2]["vertexB"]])
+        {
+          visited[internalEdgeList[key2]["vertexB"]] = true;
+          stack.push(+internalEdgeList[key2]["vertexB"]);
+        }
+		if (internalEdgeList[key2]["vertexB"] == now && !visited[internalEdgeList[key2]["vertexA"]])
+        {
+          visited[internalEdgeList[key2]["vertexA"]] = true;
+          stack.push(+internalEdgeList[key2]["vertexA"]);
+        }
+      }
+    }
+    for (var i = 0; i < amountVertex; ++i) if(!visited[i]) 
+	{
+      error = error + "Vertex 0 and vertex " + (i) + " is not connected. "
+	  break;
+	}
+
+    if (error == "") $("#draw-err p").html("No Error");
+    else $("#draw-err p").html(error);
+  }
+
+  setInterval(function()
+  {
+    takeJSON(JSONresult);
+    statusChecking();
+    warnChecking();
+    errorChecking();
+  },100);
+  
+  this.draw = function() 
+  {
+    if ($("#draw-err p").html() != "No Error") return false;
+
+    graph = createState(internalAdjList,internalEdgeList);
+    graphWidget.updateGraph(graph, 500);
+	
+    $('#sourcevertex').val(0);
+    $('#sinkvertex').val(amountVertex-1);
+    return true;
+  }
 
   this.prim = function(startVertexText, mstTypeConstant){
     var key;
@@ -877,64 +976,6 @@ var MST = function(){
     var newState = createState(internalAdjList, internalEdgeList);
 
     graphWidget.updateGraph(newState, 500);
-  }
-
-  this.draw = function(graph) {
-    graph = JSON.parse(graph);
-    amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
-    amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
-    internalAdjList = graph["vl"];
-    internalEdgeList = graph["el"];
-
-    for (var key in internalEdgeList)
-    {
-      internalEdgeList[key]["type"] = EDGE_TYPE_UDE;
-      internalEdgeList[key]["displayWeight"] = true;
-    }
-    for (var key in internalAdjList) //prim algorithm can't handle these two. have to be deleted.
-    {
-      delete internalAdjList[key]["text"];
-      delete internalAdjList[key]["state"];
-    }
-    for (var key in internalEdgeList)
-    {
-      internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
-      internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
-    }
-    
-    //check connected
-    var visited = [];
-
-    for (var key in internalAdjList)
-    {
-      var stack = [];
-      var numberOfVisited = 1;
-      stack.push(key);
-      visited[key] = true;
-      while (stack.length > 0)
-      {
-        var now = stack.pop();
-        for (var key2 in internalAdjList[now]) if(key2 != "cx" && key2 != "cy")
-        {
-          if (!visited[key2])
-          {
-            visited[key2] = true;
-            numberOfVisited++;
-            stack.push(+key2);
-          }
-        }
-      }
-      if (numberOfVisited != amountVertex)
-      {
-        $("#draw-err").html("Graph is not connected");
-        return false;
-      }
-      break;
-    }
-
-    graph = createState(internalAdjList,internalEdgeList);
-    graphWidget.updateGraph(graph, 500);
-    return true;
   }
 
   function createState(internalAdjListObject, internalEdgeListObject, vertexHighlighted, edgeHighlighted, vertexTraversed, edgeTraversed, edgeQueued){

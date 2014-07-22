@@ -676,7 +676,7 @@ var MAXFLOW = function(){
       if (i >= amountEdge) delete internalEdgeList[i];
 
     var currentState = createState(internalAdjList, internalEdgeList);
-    currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + 0;
+    currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + 0;
     currentState["status"] += '<br>The original graph</br>';
     stateList.push(currentState);
 
@@ -698,7 +698,7 @@ var MAXFLOW = function(){
     }
 
     var currentState = createState(internalAdjList, internalEdgeList);
-    currentState["status"] = 'Maximum flow from ' + sourceVertex + ' ' + sinkVertex + ' is ' + 0;
+    currentState["status"] = 'Maximum flow from ' + sourceVertex + ' to ' + sinkVertex + ' is ' + 0;
     currentState["status"] += '<br>Preparing residual graph</br>';
     stateList.push(currentState);
 

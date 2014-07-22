@@ -17,7 +17,6 @@ function openDraw() {
 function closeDraw() {
 	if(isDrawOpen) {
 		$('.draw').fadeOut('fast');
-		$('#draw-err').html("");
 		isDrawOpen = false;
 	}
 }
