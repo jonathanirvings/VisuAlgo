@@ -44,7 +44,8 @@ var GraphTraversal = function(){
     return graphWidget;
   }
 
-  this.draw = function(graph) {
+  takeJSON = function(graph)
+  {
     graph = JSON.parse(graph);
     amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
     amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
@@ -53,49 +54,65 @@ var GraphTraversal = function(){
 
     for (var key in internalEdgeList)
     {
-      internalEdgeList[key]["type"] = EDGE_TYPE_DE;
-      internalEdgeList[key]["displayWeight"] = false;
+      delete internalEdgeList[key]["type"];
+      delete internalEdgeList[key]["displayWeight"];
+      delete internalEdgeList[key]["animateHighlighed"];
+      delete internalEdgeList[key]["state"];
+      delete internalEdgeList[key]["weight"];
     }
     for (var key in internalAdjList)
+    {
       internalAdjList[key]["text"] = key;
-    for (var key in internalEdgeList)
+      delete internalAdjList[key]["state"];
+    }
+  }
+
+  statusChecking = function()
+  {
+    if (amountVertex == 0)
+      $("#draw-status p").html("Graph is empty");
+    else
+      $("#draw-status p").html("");
+  }
+
+  warnChecking = function()
+  {
+
+  }
+
+  errorChecking = function()
+  {
+    var error = "";
+    if (amountVertex == 0)
     {
-      internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
-      internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
+      $("#draw-err p").html("Graph cannot be empty. ");
+      return;
     }
 
-    /*//check connected
-    var visited = [];
+    if (error == "") $("#draw-err p").html("No Error");
+    else $("#draw-err p").html(error);
+  }
 
-    for (var key in internalAdjList)
-    {
-      var stack = [];
-      var numberOfVisited = 1;
-      stack.push(key);
-      visited[key] = true;
-      while (stack.length > 0)
-      {
-        var now = stack.pop();
-        for (var key2 in internalAdjList[now]) if(key2 != "cx" && key2 != "cy")
-        {
-          if (!visited[key2])
-          {
-            visited[key2] = true;
-            numberOfVisited++;
-            stack.push(+key2);
-          }
-        }
-      }
-      if (numberOfVisited != amountVertex)
-      {
-        $("#draw-err").html("Graph is not connected");
-        return false;
-      }
-      break;
-    }*/
+  setInterval(function()
+  {
+    takeJSON(JSONresult);
+    statusChecking();
+    warnChecking();
+    errorChecking();
+  },100);
+  
+  this.draw = function() 
+  {
+    if ($("#draw-err p").html() != "No Error") return false;
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
+  
+    $('#sourcevertex').val(0);
+    $('#sinkvertex').val(amountVertex-1);
+
+    console.log(internalAdjList);
+    console.log(internalEdgeList);
     return true;
   }
 

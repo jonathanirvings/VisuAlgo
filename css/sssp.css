@@ -1,34 +1,6 @@
 @charset "utf-8";
 
 /*all action pullout (input) stuff here*/
-.draw { bottom: 200px; }
-	#draw-err { padding: 8px 0px 7px }
-	#draw-warn { padding: 8px 0px 7px }
-
-#drawgraph 
-{
-	height: 600px;
-	width: 1100px;
-	margin-left: -550px;
-	margin-top: -350px;
-}
-
-#drawgraph-actions {
-	padding-left : 100px;
-	bottom: 200px;
-	left: 200px;
-	float:left;
-}
-#drawgraph-actions p { padding: 10px; cursor: pointer; float:left;}
-#drawgraph-actions p:hover { background: black; color: white;}
-#drawgraph-actions p:first-of-type { padding-top: 10px; }
-#drawgraph-actions p:last-of-type { padding-bottom: 10px; }
-#drawgraph-actions-hide {
-	bottom: 60px;
-	left: 0px;
-	padding-left: 14px;
-	padding-right: 15px;
-}
 
 .create { bottom: 173px; }
 	.create p { padding: 8px 8px 7px; }

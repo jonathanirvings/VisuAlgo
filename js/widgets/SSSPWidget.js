@@ -40,8 +40,8 @@ var SSSP = function(){
     return graphWidget;
   }
 
-  this.draw = function(graph) {
-   console.log(graph);
+  takeJSON = function(graph)
+  {
     graph = JSON.parse(graph);
     amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
     amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
@@ -50,18 +50,29 @@ var SSSP = function(){
 
     for (var key in internalEdgeList)
     {
-      internalEdgeList[key]["type"] = EDGE_TYPE_UDE;
-      internalEdgeList[key]["displayWeight"] = true;
+      delete internalEdgeList[key]["type"];
+      delete internalEdgeList[key]["displayWeight"];
     }
     for (var key in internalAdjList)
       internalAdjList[key]["text"] = key;
     for (var key in internalEdgeList)
     {
-      internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
-      internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
+      internalEdgeList[key]["weight"] = +internalEdgeList[key]["weight"];
     }
-    
-    //check source-sink connected
+  }
+
+  statusChecking = function()
+  {
+    if (amountVertex == 0)
+      $("#draw-status p").html("Graph is empty");
+    else
+      $("#draw-status p").html("");
+  }
+
+  warnChecking = function()
+  {
+    var warn = "";
+
     var visited = [];
     var stack = [];
     stack.push(0);
@@ -78,15 +89,43 @@ var SSSP = function(){
         }
       }
     }
-    for (var key in internalAdjList) if(!visited[key])
+    for (var i = 0; i < amountVertex; ++i)
+      if (!visited[i]) warn = "Vertex " + i + " is not reachable from vertex 0";
+
+    if (warn == "") $("#draw-warn p").html("No Warning");
+    else $("#draw-warn p").html(warn);
+  }
+
+  errorChecking = function()
+  {
+    var error = "";
+    if (amountVertex == 0)
     {
-      $("#draw-warn").html("Vertex 0 is not connected to vertex " + (+key));
-      break;
+      $("#draw-err p").html("Graph cannot be empty. ");
+      return;
     }
 
+    if (error == "") $("#draw-err p").html("No Error");
+    else $("#draw-err p").html(error);
+  }
+
+  setInterval(function()
+  {
+    takeJSON(JSONresult);
+    statusChecking();
+    warnChecking();
+    errorChecking();
+  },100);
+  
+  this.draw = function() 
+  {
+    if ($("#draw-err p").html() != "No Error") return false;
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
+  
+    $('#sourcevertex').val(0);
+    $('#sinkvertex').val(amountVertex-1);
     return true;
   }
 
