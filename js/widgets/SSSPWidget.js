@@ -76,6 +76,9 @@ var SSSP = function(){
   {
     var warn = "";
 
+    if (amountVertex >= 10)
+      warn += "Too much vertex on screen, consider drawing smaller graph. ";
+
     var visited = [];
     var stack = [];
     stack.push(0);
@@ -93,7 +96,7 @@ var SSSP = function(){
       }
     }
     for (var i = 0; i < amountVertex; ++i)
-      if (!visited[i]) warn = "Vertex " + i + " is not reachable from vertex 0";
+      if (!visited[i]) warn += "Vertex " + i + " is not reachable from vertex 0. ";
 
     if (warn == "") $("#draw-warn p").html("No Warning");
     else $("#draw-warn p").html(warn);

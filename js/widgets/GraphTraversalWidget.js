@@ -77,7 +77,12 @@ var GraphTraversal = function(){
 
   warnChecking = function()
   {
+    var warn = "";
+    if (amountVertex >= 10)
+      warn += "Too much vertex on screen, consider drawing smaller graph. ";
 
+    if (warn == "") $("#draw-warn p").html("No Error");
+    else $("#draw-warn p").html(warn);
   }
 
   errorChecking = function()

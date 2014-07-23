@@ -10,7 +10,7 @@ function GraphVisu(arg1, arg2, arg3)
 	$("#menu"+menu.toString()).toggleClass('selected-viz');
 	
 	var UNDIRECTED = arg1, UNWEIGHTED = arg2;
-	var maxNumberVertex = 10;
+	var maxNumberVertex = 100;
 	var grid = 20;
 
 	var width = 960,
@@ -880,7 +880,7 @@ function GraphVisu(arg1, arg2, arg3)
 	 
 	  // insert new node at point
 	  
-	  if (nodes.length === 10)
+	  /*if (nodes.length === 10)
 	  {
 	    restart();
 	    svg.append('svg:g').append('svg:text')
@@ -889,7 +889,7 @@ function GraphVisu(arg1, arg2, arg3)
 			.text('You cannot have more than 10 vertices');
 			
 		return;
-	  }
+	  }*/
 	  
 	  var point = d3.mouse(this),
 		  node = {id: lastNodeId};
