@@ -54,7 +54,10 @@ var SSSP = function(){
       delete internalEdgeList[key]["displayWeight"];
     }
     for (var key in internalAdjList)
+    {
       internalAdjList[key]["text"] = key;
+      internalAdjList[key]["extratext"] = "";
+    }
     for (var key in internalEdgeList)
     {
       internalEdgeList[key]["weight"] = +internalEdgeList[key]["weight"];

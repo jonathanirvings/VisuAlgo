@@ -132,13 +132,29 @@ var MAXFLOW = function(){
   this.draw = function() 
   {
     if ($("#draw-err p").html() != "No Error") return false;
-
+    this.submit(JSONresult);
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
 	
     $('#sourcevertex').val(0);
     $('#sinkvertex').val(amountVertex-1);
     return true;
+  }
+
+  this.submit = function(graph)
+  {
+    $.ajax({
+      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + "17",
+      type: "POST",
+      data: {canvasSize: 100, graphTopics: 'MST, Graph Traversal', graphState: graph},
+        error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
+        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+
+        alert("There was an error submitting your graph " + errorMessage);
+      }
+    }).done(function(data) {
+      $("#submit-graph-result").text(data);
+    });
   }
 
   //returns index of edge in internalEdgeList that connects vertexA to vertexB
