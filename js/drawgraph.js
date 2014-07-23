@@ -15,8 +15,6 @@ function write(bool1,bool2)
 	      <text x = "400" y = "150"> &bull; Select + Delete to delete vertex/edge</text>\
 	      <text x = "400" y = "175"> &bull; Select Edge + Enter to change edge\'s weight</text>\
 	      <text x = "400" y = "200"> &bull; Press Ctrl to Drag vertex around</text>\
-	      <text x = "400" y = "250"> &bull; Click anywhere to switch to our default mode undirected/unweighted </text>\
-	      <text x = "400" y = "275"> or choose another graph drawing mode </text>\
 	    </svg>\
 	  </div>\
 \
