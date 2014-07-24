@@ -137,7 +137,12 @@ var MAXFLOW = function(){
   this.draw = function() 
   {
     if ($("#draw-err p").html() != "No Error") return false;
-    this.submit(JSONresult);
+    var n = $( "input:checked" ).length;
+    if(n > 0)
+    {
+      this.submit(JSONresult);
+    }
+
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
 	
@@ -149,9 +154,9 @@ var MAXFLOW = function(){
   this.submit = function(graph)
   {
     $.ajax({
-      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + "17",
+      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH,
       type: "POST",
-      data: {canvasSize: 100, graphTopics: 'MST, Graph Traversal', graphState: graph},
+      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Max Flow', graphState: graph},
         error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
         var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
 

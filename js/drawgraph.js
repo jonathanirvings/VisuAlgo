@@ -20,11 +20,13 @@ function write(bool1,bool2)
 \
 \
 	  <div id="drawgraph-actions">\
-	    <p onclick=drawDone()>Done</p>\
 	    <p onclick=drawCancel()>Cancel</p>\
 	    <p onclick=GraphVisu('+bool1+','+bool2+')>Clear</p>\
+	    <p onclick=drawDone()>Done</p>\
+	    <form id="submit">\
+	   		<input type="checkbox" name="submit" value="submit" checked="checked">Submit drawn graph to database for random graph and online quiz purposes\
+	   	</form>\
 	  </div>\
-	  <div id="draw-err" class="err"></div>\
 \
 	';
 	$('#drawgraph').html(toWrite);

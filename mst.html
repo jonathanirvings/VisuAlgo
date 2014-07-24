@@ -67,8 +67,18 @@
           
         </div>
         <div class="create action-menu-pullout">
-          <div id="create-err" class="err"></div>
+            <div id="rate-sample-graph" class="new-menu-option">
+                Rate This Graph:&nbsp;
+                <span id="rate-sample-graph-1" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-2" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-3" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-4" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-5" class="colour rating-star">&#9734;</span>
+            </div>
+            <div id="create-err" class="err"></div>
+
         </div>
+
         <div class="samples action-menu-pullout">
             <div id="sample1" class="execAction new-menu-option coloured-menu-option" onclick=sample1()><p>CP 4.10</p></div>
             <div id="sample2" class="execAction new-menu-option coloured-menu-option" onclick=sample2()><p>CP 4.14</p></div>
@@ -216,10 +226,13 @@
     if (mode=="exploration") {
       var n = Math.floor(5 + Math.random()*6);
       $.ajax({
-        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/php/Graph.php?numVertex="+n+"&directed="+0+"&connected="+1
-      }).done(function(graph){
-        graph = extractQnGraph(JSON.parse(graph));
+        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_GET_RANDOM_SUBMITTED_GRAPH + "&directed=" + 0 + "&connected=" + 1
+      }).done(function(data){
+        data = JSON.parse(data);
+        var graph = extractQnGraph(data.graph);
+        randomGraphID = data.graphID;
         mstWidget.initRandom(graph);
+        $('#rate-sample-graph').show();
       })
       $('#progress-bar').slider( "option", "max", 0);
       closeSamples();

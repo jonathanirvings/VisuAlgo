@@ -126,6 +126,11 @@ var SSSP = function(){
   this.draw = function() 
   {
     if ($("#draw-err p").html() != "No Error") return false;
+    var n = $( "input:checked" ).length;
+    if(n > 0)
+    {
+      this.submit(JSONresult);
+    }
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
@@ -133,6 +138,22 @@ var SSSP = function(){
     $('#sourcevertex').val(0);
     $('#sinkvertex').val(amountVertex-1);
     return true;
+  }
+
+  this.submit = function(graph)
+  {
+    $.ajax({
+      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH,
+      type: "POST",
+      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Max Flow', graphState: graph},
+        error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
+        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+
+        alert("There was an error submitting your graph " + errorMessage);
+      }
+    }).done(function(data) {
+      $("#submit-graph-result").text(data);
+    });
   }
 
   this.bfs = function(sourceVertex) {
