@@ -128,7 +128,7 @@ var GraphTraversal = function(){
     $.ajax({
       url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH,
       type: "POST",
-      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Max Flow', graphState: graph},
+      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Graph Traversal', graphState: graph},
         error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
         var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
 
