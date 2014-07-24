@@ -1682,18 +1682,24 @@ var MAXFLOW = function(){
     for (var i in internalEdgeList) ++amountEdge;
     var newState = createState(internalAdjList, internalEdgeList);
     graphWidget.updateGraph(newState, 500);
-    return true;
-  }
 
-  this.initRandom = function(randomType) {
-    if (randomType == "complete") this.completelyRandom();
-    if (randomType == "bipartite0") this.bipartiteRandom(0);
-    if (randomType == "bipartite1") this.bipartiteRandom(1);
-    if (randomType == "bipartite2") this.bipartiteRandom(2);
-    if (randomType == "bipartite3") this.bipartiteRandom(3);
     $('#sourcevertex').val(0);
     $('#sinkvertex').val(amountVertex-1);
     return true;
+  }
+
+  this.initRandom = function(graph) {
+    internalAdjList = graph.internalAdjList;
+    internalEdgeList = graph.internalEdgeList;
+    amountVertex = internalAdjList.length;
+    amountEdge = internalEdgeList.length;
+
+    for (var key in internalAdjList)
+      internalAdjList[key]["text"] = key;
+
+    var newState = createState(internalAdjList, internalEdgeList);
+
+    graphWidget.updateGraph(newState, 500);
   }
 
   function createState(internalAdjListObject, internalEdgeListObject, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow, edgeBlue, edgeGrey){

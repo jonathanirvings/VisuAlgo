@@ -9,6 +9,10 @@
 	margin-top: -235px;
 }
 
+.create { bottom: 307px; }
+	.create p { padding: 5px 8px; }
+	#create-err { padding: 5px 0px; }
+
 .samples { bottom: 279px; }
 	.samples p { padding: 5px 8px; }
 	#samples-err { padding: 5px 0px; }

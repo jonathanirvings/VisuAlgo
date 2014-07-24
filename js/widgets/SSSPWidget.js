@@ -663,6 +663,20 @@ var SSSP = function(){
     return true;
   }
 
+  this.initRandom = function(graph) {
+    internalAdjList = graph.internalAdjList;
+    internalEdgeList = graph.internalEdgeList;
+    amountVertex = internalAdjList.length;
+    amountEdge = internalEdgeList.length;
+
+    for (var key in internalAdjList)
+      internalAdjList[key]["text"] = key;
+
+    var newState = createState(internalAdjList, internalEdgeList);
+
+    graphWidget.updateGraph(newState, 500);
+  }
+
 /*version that uses php graph generator, buggy because of graph form and createState()
   this.initRandom = function(graph) {
     internalAdjList = graph.internalAdjList;
@@ -674,7 +688,7 @@ var SSSP = function(){
   }*/
 
   //Temporary version
-  this.initRandom = function(allowNegative) {
+  /*this.initRandom = function(allowNegative) {
     var templateNo = Math.floor(Math.random()*4); // choose one of the template 0-3
 
     internalAdjList = $.extend(true, {}, TEMPLATES[templateNo][0]);
@@ -729,7 +743,7 @@ var SSSP = function(){
     var newState = createState(internalAdjList, internalEdgeList);
     graphWidget.updateGraph(newState, 500);
     return true;
-  }
+  }*/
 
   function createState(internalAdjListObject, internalEdgeListObject, vertexHighlighted, edgeHighlighted, vertexTraversed, edgeTraversed, edgeGrey){
     if(vertexHighlighted == null) vertexHighlighted = {};

@@ -68,6 +68,14 @@
     <div id="actions-extras">
     <!--put all the extra action pullouts (input) and error messages here-->
         <div class="create action-menu-pullout">
+            <div id="rate-sample-graph" class="new-menu-option">
+                Rate This Graph:&nbsp;
+                <span id="rate-sample-graph-1" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-2" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-3" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-4" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-5" class="colour rating-star">&#9734;</span>
+            </div>
             <div id="create-err" class="err"></div>
         </div>
         <div class="samples action-menu-pullout">
@@ -250,12 +258,21 @@
     $('#dark-overlay').fadeOut();
   }
 
-  function createRandom(allowNegative) {
+  function createRandom() {
     if(isPlaying) { stop(); }
     if (mode=="exploration") {
-      gtWidget.initRandom(allowNegative);
+      var n = Math.floor(5 + Math.random()*6);
+      $.ajax({
+        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_GET_RANDOM_SUBMITTED_GRAPH + "&directed=" + 1 + "&connected=" + 1
+      }).done(function(data){
+        data = JSON.parse(data);
+        var graph = extractQnGraph(data.graph);
+        randomGraphID = data.graphID;
+        gtWidget.initRandom(graph);
+        $('#rate-sample-graph').show();
+      })
       $('#progress-bar').slider( "option", "max", 0);
-      closeCreate();
+      closeSamples();
       isPlaying = false;
     }
   }

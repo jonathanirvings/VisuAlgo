@@ -103,7 +103,7 @@ function extractQnGraph(graph) {
 function rateGraph() {
     var rating = $(this).attr('id').substring(18);
     $.ajax({
-            url: 'php/Graph.php?mode=' + MODE_ADD_SUBMITTED_GRAPH_RATING,
+            url: 'http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=' + MODE_ADD_SUBMITTED_GRAPH_RATING,
             type: "POST",
             data: {graphID: randomGraphID, rating: rating}
         }).done(function(data) {

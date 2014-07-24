@@ -2069,6 +2069,22 @@ var GraphTraversal = function(){
     graphWidget.updateGraph(newState, 500);
     return true;
   }
+
+  this.initRandom = function(graph) {
+    internalAdjList = graph.internalAdjList;
+    internalEdgeList = graph.internalEdgeList;
+    amountVertex = internalAdjList.length;
+    amountEdge = internalEdgeList.length;
+
+    for (var key in internalAdjList)
+      internalAdjList[key]["text"] = key;
+
+    var newState = createState(internalAdjList, internalEdgeList);
+
+    graphWidget.updateGraph(newState, 500);
+  }
+
+  /*
   //Temporary version
   this.initRandom = function(allowNegative) {
     var templateNo = Math.floor(Math.random()*7); //0-6
@@ -2116,6 +2132,8 @@ var GraphTraversal = function(){
     graphWidget.updateGraph(newState, 500);
     return true;
   }
+
+  */
 
   function createState(internalAdjListObject, internalEdgeListObject, vertexHighlighted, edgeHighlighted, vertexTraversed, edgeTraversed, vertexTraversing, treeEdge, backEdge, crossEdge, forwardEdge, hiddenEdge){
     if(vertexHighlighted == null) vertexHighlighted = {};

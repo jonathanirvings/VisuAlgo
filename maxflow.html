@@ -55,7 +55,6 @@
 		<p id="draw" class="execAction" onclick=drawGraph()>Draw Graph</p>
         <p id="modeling" class="execAction">Modeling</p>
         <p id="create" class="execAction" onclick=createRandom("complete")>Random Graph</p>
-        <!--<p id="bipartite" class="execAction">Bipartite Graph</p>-->
         <p id="sample" class="execAction">Sample Graphs</p>
         <p id="countmaxflow" class="execAction">Count Maximum Flow</p>
     </div>
@@ -83,10 +82,10 @@
             <div id="bipartite" class="execAction new-menu-option coloured-menu-option" onclick=modelingOpen("bipartite")>
               <p>Bipartite Matching</p>
               <div id="bipartite-input" class="new-menu-option">
-                <div id="bipartite0" class="execAction new-menu-option coloured-menu-option" onclick=createRandom("bipartite0")><p>random</p></div>
-                <div id="bipartite1" class="execAction new-menu-option coloured-menu-option" onclick=createRandom("bipartite1")><p>left 1</p></div>
-                <div id="bipartite2" class="execAction new-menu-option coloured-menu-option" onclick=createRandom("bipartite2")><p>right 1</p></div>
-                <div id="bipartite3" class="execAction new-menu-option coloured-menu-option" onclick=createRandom("bipartite3")><p>all 1</p></div>
+                <div id="bipartite0" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(0)><p>random</p></div>
+                <div id="bipartite1" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(1)><p>left 1</p></div>
+                <div id="bipartite2" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(2)><p>right 1</p></div>
+                <div id="bipartite3" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(3)><p>all 1</p></div>
               </div>
             </div>
 
@@ -94,6 +93,14 @@
         </div>
 
         <div class="create action-menu-pullout">
+            <div id="rate-sample-graph" class="new-menu-option">
+                Rate This Graph:&nbsp;
+                <span id="rate-sample-graph-1" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-2" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-3" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-4" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-5" class="colour rating-star">&#9734;</span>
+            </div>
             <div id="create-err" class="err"></div>
         </div>
 
@@ -248,14 +255,26 @@
     $('#dark-overlay').fadeOut();
   }
 
-  function createRandom(randomType) {
-    closeModeling();
+  function bipartiteRandom(randomType)
+  {
+    maxflowWidget.bipartiteRandom(randomType);
+  }
+
+  function createRandom() {
     if(isPlaying) { stop(); }
     if (mode=="exploration") {
-      maxflowWidget.initRandom(randomType);
+      var n = Math.floor(5 + Math.random()*6);
+      $.ajax({
+        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_GET_RANDOM_SUBMITTED_GRAPH + "&directed=" + 1 + "&connected=" + 1
+      }).done(function(data){
+        data = JSON.parse(data);
+        var graph = extractQnGraph(data.graph);
+        randomGraphID = data.graphID;
+        maxflowWidget.initRandom(graph);
+        $('#rate-sample-graph').show();
+      })
       $('#progress-bar').slider( "option", "max", 0);
       closeSamples();
-      closeCountMaximumFlow();
       isPlaying = false;
     }
   }
