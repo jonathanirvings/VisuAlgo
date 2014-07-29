@@ -61,7 +61,7 @@ var BIT = function(){
         for (var j = i; j <= numberOfData; j += LSOne(j))
           internalAdjList[j]["text"] += internalAdjList[i + numberOfData]["text"];
       }
-    } else if (BITType == RANGE_UPDATE_POINT_QUERY)
+    } /*else if (BITType == RANGE_UPDATE_POINT_QUERY)
     {
       for (var i = 1; i <= numberOfData; ++i)
       {
@@ -71,7 +71,7 @@ var BIT = function(){
         for (var j = i+1; j <= numberOfData; j += LSOne(j))
           internalAdjList[j]["text"] -= internalAdjList[i + numberOfData]["text"];
       }
-    } /*else if (BITType == RANGE_UPDATE_RANGE_QUERY)
+    } *//*else if (BITType == RANGE_UPDATE_RANGE_QUERY)
     {
       for (var i = 1; i <= numberOfData; ++i)
       {
@@ -812,13 +812,14 @@ var BIT = function(){
       for (var i = 0; i < data.length; ++i)
         maxData = Math.max(maxData,data[i]);
 
-      if (maxData < 2 || maxData > 16)
+      if (maxData < 2 || maxData > 15)
       {
-        $(actions[BITType] + '#create-err').html('size of data must be between 2 and 16 inclusive');
+        $(actions[BITType] + '#create-err').html('size of data must be between 2 and 15 inclusive');
         return false;
       }
       psuedocode = 6;
       stateList = [];
+      ++maxData;
       this.resize(maxData);
       currentState = createState(internalAdjList, internalEdgeList);
       currentState["status"] = 'resize N = ' + maxData;
@@ -860,13 +861,14 @@ var BIT = function(){
       for (var i = 0; i < data.length; ++i)
         maxData = Math.max(maxData,data[i]);
 
-      if (maxData < 2 || maxData > 16)
+      if (maxData < 2 || maxData > 15)
       {
-        $(actions[BITType] + '#create-err').html('size of data must be between 2 and 16 inclusive');
+        $(actions[BITType] + '#create-err').html('size of data must be between 2 and 15 inclusive');
         return false;
       }
       psuedocode = 6;
       stateList = [];
+      ++maxData;
       this.resize(maxData);
       currentState = createState(internalAdjList, internalEdgeList);
       currentState["status"] = 'resize N = ' + maxData;
