@@ -57,7 +57,7 @@
     
     <div id="actions" class="panel">
         <p id="create" class="execAction">Create</p>
-        <p id="query" class="execAction">RSQ</p>
+        <p id="query" class="execAction">RSQ / Query</p>
         <p id="update" class="execAction">Update</p>
     </div>
     <div id="actions-hide" class="panel-hide"><img src="img/arrow_white_right.png" title="show/hide actions panel"/></div>
@@ -200,29 +200,57 @@
   <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
 </div>
 <div id="bit-tutorial-2" class="tutorial-dialog">
-  Create an array and try running the update or query algorithms on it. IMPORTANT : Creating the array means creating the frequency table, not the s[] array. Each query and update algorithm is O(log N)
+  There are three types of Binary Indexed Tree. The first type is a BIT than can handle range query but only able to handle point update.
     <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
 </div>
 <div id="bit-tutorial-3" class="tutorial-dialog">
-  The vertices at the top shows the value of BIT[], while the vertices at the bottom shows the value of the data.
+  Create an array and try running the update or query algorithms on it. IMPORTANT : Creating the array means creating the frequency table, not the s[] array. Each query and update algorithm is O(log N)
     <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
 </div>
 <div id="bit-tutorial-4" class="tutorial-dialog">
-	The status bar explains the execution of the algorithm at each animation step.
+  The vertices at the top shows the value of BIT[], while the vertices at the bottom shows the value of the data.
     <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
 </div>
 <div id="bit-tutorial-5" class="tutorial-dialog">
-	You can also follow the psuedocode highlights to trace the algorithm.
+  The second type of BIT is a BIT than can handle range update but only able to handle point query.
     <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
 </div>
 <div id="bit-tutorial-6" class="tutorial-dialog">
+  Create the data and try running the update or query algorithms on it. Creating the data is inserting several intervals. 
+    <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
+</div>
+<div id="bit-tutorial-7" class="tutorial-dialog">
+  The vertices at the top shows the value of BIT[], while the vertices at the bottom shows the value of the data.
+    <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
+</div>
+<div id="bit-tutorial-8" class="tutorial-dialog">
+  The third type of BIT is a BIT than can handle range update and range query.
+    <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
+</div>
+<div id="bit-tutorial-9" class="tutorial-dialog">
+  Create the data and try running the update or query algorithms on it. Creating the data is inserting several intervals. 
+    <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
+</div>
+<div id="bit-tutorial-10" class="tutorial-dialog">
+  In Range Update Range Query BIT, we need to have 2 BITs. The vertices at the top shows the value of BIT1[], the vertices at the middle shows the value of BIT2[], while the vertices at the bottom shows the value of the data.
+    <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
+</div>
+<div id="bit-tutorial-11" class="tutorial-dialog">
+	The status bar explains the execution of the algorithm at each animation step.
+    <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
+</div>
+<div id="bit-tutorial-12" class="tutorial-dialog">
+	You can also follow the psuedocode highlights to trace the algorithm.
+    <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
+</div>
+<div id="bit-tutorial-13" class="tutorial-dialog">
   Control the animation with the player controls! Keyboard shortcuts are:<br/>
     <div style="margin-top: 8px;"><strong>Spacebar:</strong> play/pause/replay</div>
     <strong>Left/right arrows:</strong> step backward/step forward<br/>
     <strong>-/+:</strong> decrease/increase speed<br/>
     <div class="tutorial-next">Next<img src="img/arrow_white_right.png"/></div>
 </div>
-<div id="bit-tutorial-7" class="tutorial-dialog">
+<div id="bit-tutorial-14" class="tutorial-dialog">
   Return to "Exploration Mode" to start exploring!
 </div>
 
@@ -253,7 +281,6 @@
     $('#point-update-range-query').click(function()
     {
       if(isPlaying) { stop(); }
-      showActionsPanel();
       hideEntireActionsPanel();
       hideStatusPanel();
       hideCodetracePanel();
@@ -267,7 +294,6 @@
     $('#range-update-point-query').click(function()
     {
       if(isPlaying) { stop(); }
-      showActionsPanel();
       hideEntireActionsPanel();
       hideStatusPanel();
       hideCodetracePanel();
@@ -281,7 +307,6 @@
     $('#range-update-range-query').click(function()
     {
       if(isPlaying) { stop(); }
-      showActionsPanel();
       hideEntireActionsPanel();
       hideStatusPanel();
       hideCodetracePanel();

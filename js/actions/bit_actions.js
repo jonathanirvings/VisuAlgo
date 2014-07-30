@@ -52,6 +52,7 @@ function hideEntireActionsPanel() {
 	closeUpdate();
 	closeQuery();
 	closeCreate();
+	hideActionsPanel();
 }
 
 $( document ).ready(function() {
@@ -75,19 +76,41 @@ $( document ).ready(function() {
 		
 	//tutorial mode
 	$('#bit-tutorial-1 .tutorial-next').click(function() {
-		showActionsPanel();
+
 	});
 	$('#bit-tutorial-2 .tutorial-next').click(function() {
-		hideEntireActionsPanel();
+		$('#point-update-range-query').click();
+		showActionsPanel();
 	});
 	$('#bit-tutorial-3 .tutorial-next').click(function() {
-		showStatusPanel();
+		hideEntireActionsPanel();
 	});
 	$('#bit-tutorial-4 .tutorial-next').click(function() {
+	});
+	$('#bit-tutorial-5 .tutorial-next').click(function() {
+		$('#range-update-point-query').click();
+		showActionsPanel();
+	});
+	$('#bit-tutorial-6 .tutorial-next').click(function() {
+		hideEntireActionsPanel();
+	});
+	$('#bit-tutorial-7 .tutorial-next').click(function() {
+	});
+	$('#bit-tutorial-8 .tutorial-next').click(function() {
+		$('#range-update-range-query').click();
+		showActionsPanel();
+	});
+	$('#bit-tutorial-9 .tutorial-next').click(function() {
+		hideEntireActionsPanel();
+	});
+	$('#bit-tutorial-10 .tutorial-next').click(function() {
+		showStatusPanel();
+	});
+	$('#bit-tutorial-11 .tutorial-next').click(function() {
 		hideStatusPanel();
 		showCodetracePanel();
 	});
-	$('#bit-tutorial-5 .tutorial-next').click(function() {
+	$('#bit-tutorial-12 .tutorial-next').click(function() {
 		hideCodetracePanel();
 	});
 });

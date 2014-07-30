@@ -272,7 +272,7 @@ $(document).ready(function() {
     //tutorial mode
     $('.tutorial-dialog .tutorial-next').click(function() {
         var vizname = $(this).parent().attr('id').split('-')[0];
-        var nextNo = parseInt($(this).parent().attr('id').slice(-1)) + 1;
+        var nextNo = parseInt($(this).parent().attr('id').split('-')[2]) + 1;
         var nextId = vizname + '-tutorial-' + nextNo;
         $(this).parent().fadeOut(500, function() {
             $('#' + nextId).fadeIn(500);

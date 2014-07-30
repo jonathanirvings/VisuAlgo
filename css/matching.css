@@ -1,0 +1,82 @@
+@charset "utf-8";
+
+/*all action pullout (input) stuff here*/
+.create { bottom: 173px; }
+	#create-err { padding: 8px 0px 7px }
+
+.sample { bottom: 148px; }
+	.sample p { padding: 5px 8px; }
+	#samples-err { padding: 5px 0px; }
+
+.augpath { bottom: 173px; }
+	#augpath-err { padding: 8px 0px 7px }
+
+.greedyaug { bottom: 173px; }
+	#greedyaug-err { padding: 8px 0px 7px }
+
+.hopcroftkarp { bottom: 173px; }
+	#hopcroftkarp-err { padding: 8px 0px 0px}
+
+
+/*all tutorial stuff here*/
+#aug-tutorial-1 {
+	top: 60px;
+	left: 60px;
+	width: 250px;
+}
+#aug-tutorial-2 {
+	bottom: 225px;
+	left: 60px;
+	width: 350px;
+}
+	#aug-tutorial-2:before {
+		top: 100%;
+		left: 15%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#aug-tutorial-3 {
+	top: 400px;
+	left: 50%;
+	width: 200px;
+	margin-left: -110px;
+}
+	#aug-tutorial-3:before {
+		bottom: 100%;
+		left: 50%;
+		border-bottom-color: black;
+		margin-left: -10px;
+	}
+#aug-tutorial-4 {
+	bottom: 335px;
+	right: 150px;
+	width: 200px;
+}
+	#aug-tutorial-4:before {
+		top: 100%;
+		left: 20%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#aug-tutorial-5 {
+	bottom: 275px;
+	right: 170px;
+	width: 180px;
+}
+	#aug-tutorial-5:before {
+		top: 100%;
+		left: 20%;
+		border-top-color: black;
+		margin-left: -10px;
+	}
+#aug-tutorial-6 {
+	top: 70px;
+	right: 60px;
+	width: 150px;
+}
+	#aug-tutorial-7:before {
+		bottom: 100%;
+		left: 50%;
+		border-bottom-color: black;
+		margin-left: -10px;
+	}

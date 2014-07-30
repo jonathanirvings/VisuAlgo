@@ -396,34 +396,34 @@ var BIT = function(){
     return true;
   }
 
-  var updateRangeV2 = function(positionLeft,positionRight,value)  
+  var updateRangeV2 = function(positionLeft,positionRight,value,lineNumber)  
   {
     currentState = createState(internalAdjList, internalEdgeList);
     currentState["status"] = 'BIT1 updating(' + positionLeft + ',' + value + ')';
-    currentState["lineNo"] = [2];
+    currentState["lineNo"] = [lineNumber == null ? 2 : lineNumber];
     stateList.push(currentState);
-    if (!updatePointV2(positionLeft,value,0,2))
+    if (!updatePointV2(positionLeft,value,0,lineNumber == null ? 2 : lineNumber))
       return false;
 
     currentState = createState(internalAdjList, internalEdgeList);
     currentState["status"] = 'BIT1 updating(' + (positionRight + 1) + ',' + ( -value ) + ')';
-    currentState["lineNo"] = [3];
+    currentState["lineNo"] = [lineNumber == null ? 3 : lineNumber];
     stateList.push(currentState);
-    if (!updatePointV2(positionRight + 1,-value,0,3))
+    if (!updatePointV2(positionRight + 1,-value,0,lineNumber == null ? 3 : lineNumber))
       return false;
 
     currentState = createState(internalAdjList, internalEdgeList);
     currentState["status"] = 'BIT2 updating(' + (positionLeft) + ',' + ( value * (positionLeft - 1) ) + ')';
-    currentState["lineNo"] = [4];
+    currentState["lineNo"] = [lineNumber == null ? 4 : lineNumber];
     stateList.push(currentState);
-    if (!updatePointV2(positionLeft,value * (positionLeft - 1),numberOfData,4))
+    if (!updatePointV2(positionLeft,value * (positionLeft - 1),numberOfData,lineNumber == null ? 4 : lineNumber))
       return false;
 
     currentState = createState(internalAdjList, internalEdgeList);
     currentState["status"] = 'BIT2 updating(' + (positionRight + 1) + ',' + ( -value * positionRight ) + ')';
-    currentState["lineNo"] = [5];
+    currentState["lineNo"] = [lineNumber == null ? 5 : lineNumber];
     stateList.push(currentState);
-    if (!updatePointV2(positionRight + 1,-value * positionRight,numberOfData,5))
+    if (!updatePointV2(positionRight + 1,-value * positionRight,numberOfData,lineNumber == null ? 5 : lineNumber))
       return false;
 
     currentState = createState(internalAdjList, internalEdgeList);
@@ -895,7 +895,7 @@ var BIT = function(){
         for (var j = data[i]; j <= data[i+1]; ++j)
           internalAdjList[j + 2 * numberOfData]["state"] = VERTEX_BLUE_FILL;
 
-        updateRangeV2(data[i],data[i+1],1);
+        updateRangeV2(data[i],data[i+1],1,3);
       }
 
       graphWidget.startAnimation(stateList);

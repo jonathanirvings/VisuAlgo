@@ -33,68 +33,150 @@
 	width: 250px;
 }
 #bit-tutorial-2 {
+	top: 60px;
+	left: 230px;
+	width: 350px;
+}
+#bit-tutorial-2:before {
+	bottom: 100%;
+	left: 15%;
+	border-bottom-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-3 {
 	bottom: 225px;
 	left: 60px;
 	width: 350px;
 }
-#bit-tutorial-2:before {
+#bit-tutorial-3:before {
 	top: 100%;
 	left: 15%;
 	border-top-color: black;
 	margin-left: -10px;
 }
-#bit-tutorial-3 {
+#bit-tutorial-4 {
 	top: 400px;
 	left: 50%;
 	width: 200px;
 	margin-left: -110px;
 }
-#bit-tutorial-3:before {
+#bit-tutorial-4:before {
 	bottom: 100%;
 	left: 50%;
 	border-bottom-color: black;
 	margin-left: -10px;
 }
-#bit-tutorial-4 {
+
+#bit-tutorial-5 {
+	top: 60px;
+	left: 600px;
+	width: 350px;
+}
+#bit-tutorial-5:before {
+	bottom: 100%;
+	left: 15%;
+	border-bottom-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-6 {
+	bottom: 225px;
+	left: 60px;
+	width: 350px;
+}
+#bit-tutorial-6:before {
+	top: 100%;
+	left: 15%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-7 {
+	top: 400px;
+	left: 50%;
+	width: 200px;
+	margin-left: -110px;
+}
+#bit-tutorial-7:before {
+	bottom: 100%;
+	left: 50%;
+	border-bottom-color: black;
+	margin-left: -10px;
+}
+
+#bit-tutorial-8 {
+	top: 60px;
+	left: 800px;
+	width: 350px;
+}
+#bit-tutorial-8:before {
+	bottom: 100%;
+	left: 15%;
+	border-bottom-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-9 {
+	bottom: 225px;
+	left: 60px;
+	width: 350px;
+}
+#bit-tutorial-9:before {
+	top: 100%;
+	left: 15%;
+	border-top-color: black;
+	margin-left: -10px;
+}
+#bit-tutorial-10 {
+	top: 400px;
+	left: 50%;
+	width: 200px;
+	margin-left: -110px;
+}
+#bit-tutorial-10:before {
+	bottom: 100%;
+	left: 50%;
+	border-bottom-color: black;
+	margin-left: -10px;
+}
+
+#bit-tutorial-11 {
 	bottom: 335px;
 	right: 150px;
 	width: 200px;
 }
-#bit-tutorial-4:before {
+#bit-tutorial-11:before {
 	top: 100%;
 	left: 20%;
 	border-top-color: black;
 	margin-left: -10px;
 }
-#bit-tutorial-5 {
+#bit-tutorial-12 {
 	bottom: 275px;
 	right: 170px;
 	width: 180px;
 }
-#bit-tutorial-5:before {
+#bit-tutorial-12:before {
 	top: 100%;
 	left: 20%;
 	border-top-color: black;
 	margin-left: -10px;
 }
-#bit-tutorial-6 {
+#bit-tutorial-13 {
 	bottom: 70px;
 	left: 50%;
 	width: 260px;
 	margin-left: -142px;
 }
-#bit-tutorial-6:before {
+#bit-tutorial-13:before {
 	top: 100%;
 	left: 50%;
 	border-top-color: black;
 	margin-left: -10px;
 }
-#bit-tutorial-7 {
+#bit-tutorial-14 {
 	top: 70px;
 	right: 60px;
 	width: 150px;
 }
-#bit-tutorial-7:before {
+#bit-tutorial-14:before {
 	bottom: 100%;
 	left: 50%;
 	border-bottom-color: black;
