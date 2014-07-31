@@ -56,6 +56,7 @@
     <div id="actions" class="panel">
     	<p id="draw" class="execAction" onclick=drawGraph()>Draw Graph</p>
         <p id="create" class="execAction" onclick=createRandom()>Random Graph</p>
+        <p id="modeling" class="execAction">Modeling</p>
         <p id="sample" class="execAction">Sample Graph</p>
 		<p id="augpath" class="execAction">Augmenting Path</p>
 		<p id="hopcroftkarp" class="execAction" onclick=hopcroftKarp()>Hopcroft Karp</p>
@@ -63,9 +64,39 @@
     <div id="actions-hide" class="panel-hide"><img src="img/arrow_white_right.png" title="show/hide actions panel"/></div>
     <div id="actions-extras">
     <!--put all the extra action pullouts (input) and error messages here-->
-    	<div class="create action-menu-pullout">
-    		<div id="create-err" class="err"></div>
-    	</div>
+    	<div class="modeling action-menu-pullout">
+            <div id="rookattack" class="execAction new-menu-option coloured-menu-option" onclick=modelingOpen("rookattack")><p>Rook Attack Modeling</p>
+              <div id="rookattack-input" class="new-menu-option">
+                <input type="text" id="rows" title="Enter the number of rows" autocomplete="off" value=5 />
+                <input type="text" id="columns" title="Enter the number of column" autocomplete="off" value=5 />
+                <div id="rookattack-go" class="execAction coloured-menu-option" onclick=modeling('rookattack') title="Generate the board"><p>GO</p></div>
+              </div>
+            </div>
+
+            <div id="bipartite" class="execAction new-menu-option coloured-menu-option" onclick=modelingOpen("bipartite")>
+              <p>Bipartite Matching</p>
+              <div id="bipartite-input" class="new-menu-option">
+                <div id="bipartite0" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(0)><p>random</p></div>
+                <div id="bipartite1" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(1)><p>left 1</p></div>
+                <div id="bipartite2" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(2)><p>right 1</p></div>
+                <div id="bipartite3" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(3)><p>all 1</p></div>
+              </div>
+            </div>
+
+            <div id="modeling-err" class="err"></div>
+        </div>
+
+        <div class="create action-menu-pullout">
+            <div id="rate-sample-graph" class="new-menu-option">
+                Rate This Graph:&nbsp;
+                <span id="rate-sample-graph-1" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-2" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-3" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-4" class="colour rating-star">&#9734;</span>
+                <span id="rate-sample-graph-5" class="colour rating-star">&#9734;</span>
+            </div>
+            <div id="create-err" class="err"></div>
+        </div>
 
     	<div class="sample action-menu-pullout">
 	    <div id="sample1" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_42)><p>CP3 4.42 (unweighted)</p></div>
@@ -295,6 +326,15 @@
     		}
     	}, 500);
     }
+
+    function modelingOpen(modelingType)
+	  {
+	    $(".modeling").css("bottom","117px");
+	    if (modelingType != "rookattack") $('#rookattack-input').fadeOut('fast');
+	    if (modelingType != "baseball")   $('#baseball-input').fadeOut('fast');
+	    if (modelingType != "bipartite")  $('#bipartite-input').fadeOut('fast');
+	    $('#' + modelingType + '-input').fadeIn('fast');
+	  }
 	
 
 	//playback controls might fit better in viz.js, but put here in case some viz does not use GraphWidgetNew.js

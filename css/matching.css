@@ -1,8 +1,68 @@
 @charset "utf-8";
 
 /*all action pullout (input) stuff here*/
-.create { bottom: 148px; }
+.create { bottom: 180px; }
 	#create-err { padding: 8px 0px 7px }
+
+.modeling { bottom: 120px; }
+.modeling p { padding: 5px 10px; }
+#modeling-err { padding: 8px 0px 7px }
+
+#rookattack-input input {
+	width: 20px;
+	padding: 8px;
+	margin-right: 2px;
+	float:left;
+}
+#rookattack-input p { padding: 5px 8px; float : left;}
+#rookattack-go p
+{ 
+	padding: 8px 8px 7px; 
+	float:right;
+}
+#rookattack-board 
+{
+	height: 470px;
+	width: 600px;
+	margin-left: -300px;
+	margin-top: -235px;
+}
+
+.modeling-actions {
+	bottom: 200px;
+	left: 200px;
+	float:left;
+}
+	.modeling-actions p { padding: 5px 10px; cursor: pointer; }
+	.modeling-actions p:hover { background: black; color: white;}
+	.modeling-actions p:first-of-type { padding-top: 10px; }
+	.modeling-actions p:last-of-type { padding-bottom: 10px; }
+	.modeling-actions-hide {
+		bottom: 60px;
+		left: 0px;
+		padding-left: 14px;
+		padding-right: 15px;
+	}
+#bipartite0
+{
+	float:left;
+	padding: 2px;
+}
+#bipartite1
+{
+	float:left;
+	padding: 2px;
+}
+#bipartite2
+{
+	float:left;
+	padding: 2px;
+}
+#bipartite3
+{
+	float:left;
+	padding: 2px;
+}
 
 .sample { bottom: 120px; }
 	.sample p { padding: 5px 8px; }

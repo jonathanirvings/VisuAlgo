@@ -2,6 +2,7 @@ var actionsWidth = 150;
 var statusCodetraceWidth = 410;
 
 var isCreateOpen = false;
+var isModelingOpen = false;
 var isSampleOpen = false;
 var isAugPathOpen = false;
 var isGreedyOpen = false;
@@ -9,15 +10,32 @@ var isHopcroftOpen = false;
 
 function openCreate() {
     if(!isCreateOpen) {
-	$('.create').fadeIn('fast');
-	isCreateOpen = true;
+		$('.create').fadeIn('fast');
+		isCreateOpen = true;
     }
 }
 function closeCreate() {
     if (isCreateOpen) {
-	$('.create').fadeOut('fast');
-	$('#create-err').html("");
-	isCreateOpen = false;
+		$('.create').fadeOut('fast');
+		$('#create-err').html("");
+		isCreateOpen = false;
+    }
+}
+function openModeling() {
+	$(".modeling").css("bottom","150px");
+	$('#rookattack-input').hide();
+	$('#baseball-input').hide();
+	$('#bipartite-input').hide();
+	if(!isModelingOpen) {
+		$('.modeling').fadeIn('fast');
+		isModelingOpen = true;
+	}
+}
+function closeModeling() {
+    if (isModelingOpen) {
+		$('.modeling').fadeOut('fast');
+		$('#modeling-err').html("");
+		isModelingOpen = false;
     }
 }
 function openSample() {
@@ -74,6 +92,7 @@ function closeHopcroft(){
 }
 function hideEntireActionsPanel(){
     closeCreate();
+    closeModeling();
     closeSample();
     closeAugPath();
     closeGreedy();
@@ -84,6 +103,15 @@ function hideEntireActionsPanel(){
 $(document).ready(function() {
     $('#create').click(function() {
 		openCreate();
+		closeModeling();
+		closeSample();
+		closeAugPath();
+		closeGreedy();
+		closeHopcroft();
+    });
+    $('#modeling').click(function() {
+		closeCreate();
+		openModeling();
 		closeSample();
 		closeAugPath();
 		closeGreedy();
@@ -91,6 +119,7 @@ $(document).ready(function() {
     });
     $('#sample').click(function() {
 		closeCreate();
+		closeModeling();
 		openSample();
 		closeAugPath();
 		closeGreedy();
@@ -98,6 +127,7 @@ $(document).ready(function() {
     });
     $('#augpath').click(function() {
 		closeCreate();
+		closeModeling();
 		closeSample();
 		openAugPath();
 		closeGreedy();
@@ -105,6 +135,7 @@ $(document).ready(function() {
     });
     $('#greedyaug').click(function(){
 	    closeCreate();
+	    closeModeling();
 	    closeSample();
 	    closeAugPath();
 	    openGreedy();
@@ -112,6 +143,7 @@ $(document).ready(function() {
     });
     $('#hopcroftkarp').click(function(){
     	closeCreate();
+    	closeModeling();
     	closeSample();
     	closeAugPath();
     	closeGreedy();
