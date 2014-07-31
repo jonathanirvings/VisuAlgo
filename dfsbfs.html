@@ -241,6 +241,7 @@
       $('#dark-overlay').fadeIn(function(){
         $('#drawgraph').fadeIn();
       });
+      gtWidget.startLoop();
       isPlaying = false;
     }
   }
@@ -248,12 +249,14 @@
   function drawDone()
   {
     if (!gtWidget.draw()) return false;
+    gtWidget.stopLoop();
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
   }
 
   function drawCancel()
   {
+    gtWidget.stopLoop();
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
   }

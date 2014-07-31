@@ -120,22 +120,32 @@ var MST = function(){
       }
     }
     for (var i = 0; i < amountVertex; ++i) if(!visited[i]) 
-	{
+    {
       error = error + "Vertex 0 and vertex " + (i) + " is not connected. "
-	  break;
-	}
+      break;
+    }
 
     if (error == "") $("#draw-err p").html("No Error");
     else $("#draw-err p").html(error);
   }
 
-  setInterval(function()
+  var intervalID;
+
+  this.startLoop = function()
   {
-    takeJSON(JSONresult);
-    statusChecking();
-    warnChecking();
-    errorChecking();
-  },100);
+    intervalID = setInterval(function()
+    {
+      takeJSON(JSONresult);
+      warnChecking();
+      errorChecking();
+      statusChecking();
+    },100);
+  }
+
+  this.stopLoop = function()
+  {
+    clearInterval(intervalID);
+  }
   
   this.draw = function() 
   {

@@ -41,24 +41,6 @@ var MCBM = function(){
     }
   }
 
-  var intervalID;
-
-  this.startLoop = function()
-  {
-    intervalID = setInterval(function()
-    {
-      takeJSON(JSONresult);
-      warnChecking();
-      errorChecking();
-      statusChecking();
-    },100);
-  }
-
-  this.stopLoop = function()
-  {
-    clearInterval(intervalID);
-  }
-
   var whichSide = new Array;
   var bipartite;
 
@@ -206,6 +188,24 @@ var MCBM = function(){
     else $("#draw-err p").html(error);
   }
   
+  var intervalID;
+
+  this.startLoop = function()
+  {
+    intervalID = setInterval(function()
+    {
+      takeJSON(JSONresult);
+      warnChecking();
+      errorChecking();
+      statusChecking();
+    },100);
+  }
+
+  this.stopLoop = function()
+  {
+    clearInterval(intervalID);
+  }
+
   this.draw = function() 
   {
     if ($("#draw-err p").html() != "No Error") return false;

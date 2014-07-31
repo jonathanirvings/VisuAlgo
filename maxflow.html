@@ -238,6 +238,7 @@
       $('#dark-overlay').fadeIn(function(){
         $('#drawgraph').fadeIn();
       });
+      maxflowWidget.startLoop();
       isPlaying = false;
     }
   }
@@ -245,12 +246,14 @@
   function drawDone()
   {
     if (!maxflowWidget.draw()) return false;
+    maxflowWidget.stopLoop();
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
   }
 
   function drawCancel()
   {
+    maxflowWidget.stopLoop();
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
   }

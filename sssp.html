@@ -219,6 +219,7 @@
       $('#dark-overlay').fadeIn(function(){
         $('#drawgraph').fadeIn();
       });
+      ssspWidget.startLoop();
       isPlaying = false;
     }
   }
@@ -226,12 +227,14 @@
   function drawDone()
   {
     if (!ssspWidget.draw()) return false;
+    ssspWidget.stopLoop();
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
   }
 
   function drawCancel()
   {
+    ssspWidget.stopLoop();
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
   }

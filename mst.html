@@ -203,6 +203,7 @@
       $('#dark-overlay').fadeIn(function(){
         $('#drawgraph').fadeIn();
       });
+      mstWidget.startLoop();
       isPlaying = false;
     }
   }
@@ -210,12 +211,14 @@
   function drawDone()
   {
     if (!mstWidget.draw()) return false;
+    mstWidget.stopLoop();
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
   }
 
   function drawCancel()
   {
+    mstWidget.stopLoop();
     $('#drawgraph').fadeOut();
     $('#dark-overlay').fadeOut();
   }
