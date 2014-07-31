@@ -20,7 +20,236 @@ var MCBM = function(){
   this.getGraphWidget = function(){
     return graphWidget;
   }
+  
+  takeJSON = function(graph)
+  {
+    graph = JSON.parse(graph);
+    amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
+    amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
+    internalAdjList = graph["vl"];
+    internalEdgeList = graph["el"];
+
+    for (var key in internalEdgeList)
+    {
+      delete internalEdgeList[key]["type"];
+      delete internalEdgeList[key]["displayWeight"];
+    }
+    for (var key in internalAdjList)
+    {
+      internalAdjList[key]["text"] = +key;
+      delete internalAdjList[key]["state"];
+    }
+  }
+
+  var intervalID;
+
+  this.startLoop = function()
+  {
+    intervalID = setInterval(function()
+    {
+      takeJSON(JSONresult);
+      warnChecking();
+      errorChecking();
+      statusChecking();
+    },100);
+  }
+
+  this.stopLoop = function()
+  {
+    clearInterval(intervalID);
+  }
+
+  var whichSide = new Array;
+  var bipartite;
+
+  bipartiteChecking = function(now)
+  {
+    for (var i in internalEdgeList) 
+    {
+      if (internalEdgeList[i]["vertexA"] == now)
+      {
+        if (whichSide[internalEdgeList[i]["vertexB"]] == -1)
+        {
+          whichSide[internalEdgeList[i]["vertexB"]] = 1 - whichSide[internalEdgeList[i]["vertexA"]];
+          bipartiteChecking(internalEdgeList[i]["vertexB"]);
+        } else if (whichSide[internalEdgeList[i]["vertexB"]] == whichSide[internalEdgeList[i]["vertexA"]])
+        {
+          bipartite = false;
+        }
+      } else if (internalEdgeList[i]["vertexB"] == now)
+      {
+        if (whichSide[internalEdgeList[i]["vertexA"]] == -1)
+        {
+          whichSide[internalEdgeList[i]["vertexA"]] = 1 - whichSide[internalEdgeList[i]["vertexB"]];
+          bipartiteChecking(internalEdgeList[i]["vertexA"]);
+        } else if (whichSide[internalEdgeList[i]["vertexA"]] == whichSide[internalEdgeList[i]["vertexB"]])
+        {
+          bipartite = false;
+        }
+      }
+    }
+  }
+
+  statusChecking = function()
+  {
+    if (amountVertex == 0)
+      $("#draw-status p").html("Graph is empty");
+    else
+    {
+      if ($("#draw-err p").html() == "No Error")
+      {
+        for (var border = 0; border < amountVertex - 1; ++border) //check whether left side = [0,border]
+        {
+          var okay = true;
+          for (var i = 0; i <= border; ++i)
+          {
+            for (var j = 0; j <= border; ++j)
+            {
+              for (var k in internalEdgeList)
+              {
+                if (internalEdgeList[k]["vertexA"] == i && internalEdgeList[k]["vertexB"] == j)
+                  okay = false;
+              }
+            }
+          }
+          for (var i = border+1; i < amountVertex; ++i)
+          {
+            for (var j = border+1; j < amountVertex; ++j)
+            {
+              for (var k in internalEdgeList)
+              {
+                if (internalEdgeList[k]["vertexA"] == i && internalEdgeList[k]["vertexB"] == j)
+                  okay = false;
+              }
+            }
+          }
+          if (okay)
+          {
+            $("#draw-status p").html("Left side vertices = [0," + border + "]. Right side vertices = [" + (border+1) + "," + (amountVertex-1) + "]");
+            return;
+          }
+        }
+      } else $("#draw-status p").html("");
+    }
+  }
+
+  warnChecking = function()
+  {
+    var warn = "";
+    if (amountVertex >= 10)
+      warn += "Too much vertex on screen, consider drawing smaller graph. ";
+
+    if (warn == "") $("#draw-warn p").html("No Warning");
+    else $("#draw-warn p").html(warn);
+  }
+
+  errorChecking = function()
+  {
+    var error = "";
+    if (amountVertex < 2)
+    {
+      $("#draw-err p").html("There must be at least 2 vertices. ");
+      return;
+    }
     
+    for (var i = 0; i < amountVertex; ++i) whichSide[i] = -1;
+    bipartite = true;
+    for (var i = 0; i < amountVertex; ++i) 
+    {
+      if(whichSide[i] == -1)
+      {
+        whichSide[i] = i % 2;
+        bipartiteChecking(i);
+      }
+    }
+
+    if (!bipartite) 
+      error += "Graph is not bipartite. Currently Graph Matching only supports Bipartite Graph. :( ";
+    
+    var separatable = false;
+    for (var border = 0; border < amountVertex - 1; ++border) //check whether left side = [0,border]
+    {
+      var okay = true;
+      for (var i = 0; i <= border; ++i)
+      {
+        for (var j = 0; j <= border; ++j)
+        {
+          for (var k in internalEdgeList)
+          {
+            if (internalEdgeList[k]["vertexA"] == i && internalEdgeList[k]["vertexB"] == j)
+              okay = false;
+          }
+        }
+      }
+      for (var i = border+1; i < amountVertex; ++i)
+      {
+        for (var j = border+1; j < amountVertex; ++j)
+        {
+          for (var k in internalEdgeList)
+          {
+            if (internalEdgeList[k]["vertexA"] == i && internalEdgeList[k]["vertexB"] == j)
+              okay = false;
+          }
+        }
+      }
+      if (okay) 
+      {
+        separatable = true;
+        amountLeftSet = border + 1;
+      }
+    }
+
+    if (bipartite && !separatable)
+      error += "There is no X such that the left vertices are numbered [0,X] and the right vertices are numbered (X,|V|) ";
+
+    if (error == "") $("#draw-err p").html("No Error");
+    else $("#draw-err p").html(error);
+  }
+  
+  this.draw = function() 
+  {
+    if ($("#draw-err p").html() != "No Error") return false;
+    var n = $( "input:checked" ).length;
+    if(n > 0)
+    {
+      this.submit(JSONresult);
+    }
+
+    graph = createState(internalAdjList,internalEdgeList);
+    graphWidget.updateGraph(graph, 500);
+    return true;
+  }
+
+  this.submit = function(graph)
+  {
+    $.ajax({
+      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH,
+      type: "POST",
+      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Graph Matching', graphState: graph},
+        error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
+        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+
+        alert("There was an error submitting your graph " + errorMessage);
+      }
+    }).done(function(data) {
+      $("#submit-graph-result").text(data);
+    });
+  }
+    
+  this.initRandom = function(graph) {
+    internalAdjList = graph.internalAdjList;
+    internalEdgeList = graph.internalEdgeList;
+    amountVertex = internalAdjList.length;
+    amountEdge = internalEdgeList.length;
+
+    for (var key in internalAdjList)
+      internalAdjList[key]["text"] = key;
+
+    var newState = createState(internalAdjList, internalEdgeList);
+
+    graphWidget.updateGraph(newState, 500);
+  }
+
   this.generateRandom = function(){
     amountVertex = Math.floor(Math.random() * 9) + 4; //4 to 12
     var leftVertex = Math.floor(Math.random() * (amountVertex - 3)) + 1; //1 to N-3
@@ -79,6 +308,9 @@ var MCBM = function(){
   }
 
   this.augmentingPath = function(isGreedy){
+
+
+
     var key;
     var stateList = [];
     var vertexTraversed = {};
@@ -98,7 +330,7 @@ var MCBM = function(){
     var edgeDict = {};
 
     if (amountVertex == 0) { // no graph
-        $('#bfs-err').html("There is no graph to run this on." + 
+        $('#augpath-err').html("There is no graph to run this on." + 
                            "Please select a sample graph first.");
         return false;
     }
@@ -781,22 +1013,22 @@ function populatePseudocode(act) {
 var templates = 
 [[{
     0:{
-        "cx":40,
+        "cx":250,
         "cy":40,
         "text":1,
     },
     1:{
-        "cx":40,
+        "cx":250,
         "cy":120,
         "text":2,
     },
     2:{
-        "cx":120,
+        "cx":450,
         "cy":40,
         "text":3
     },
     3:{
-        "cx":120,
+        "cx":450,
         "cy":120,
         "text":4
    }
@@ -820,32 +1052,32 @@ var templates =
   },4,3,2],
  [{
      0:{
-         "cx":30,
+         "cx":250,
          "cy":30,
          "text":1
      },
      1:{
-         "cx":30,
+         "cx":250,
          "cy":90,
          "text":7
      },
      2:{
-         "cx":30,
+         "cx":250,
          "cy":150,
          "text":11
      },
      3:{
-         "cx":90,
+         "cx":450,
          "cy":30,
          "text":4
      },
      4:{
-         "cx":90,
+         "cx":450,
          "cy":90,
          "text":10
      },
      5:{
-         "cx":90,
+         "cx":450,
          "cy":150,
          "text":12
      }
@@ -889,27 +1121,27 @@ var templates =
   },6,7,3],
  [{
      0:{
-         "cx":40,
+         "cx":250,
          "cy":40,
          "text":1
      },
      1:{
-         "cx":40,
+         "cx":250,
          "cy":120,
          "text":2,
      },
      2:{
-         "cx":120,
+         "cx":450,
          "cy":40,
          "text":3
      },
      3:{
-         "cx":120,
+         "cx":450,
          "cy":120,
          "text":4
      },
      4:{
-         "cx":120,
+         "cx":450,
          "cy":200,
          "text":5
      }
@@ -948,52 +1180,52 @@ var templates =
 },5,6,2],
 [{
       0:{
-          "cx":40,
+          "cx":250,
           "cy":40,
           "text":1
       },
       1:{
-          "cx":40,
+          "cx":250,
           "cy":100,
           "text":2
       },
       2:{
-          "cx":40,
+          "cx":250,
           "cy":160,
           "text":3
       },
       3:{
-          "cx":40,
+          "cx":250,
           "cy":220,
           "text":4
       },
       4:{
-          "cx":40,
+          "cx":250,
           "cy":280,
           "text":5
       },
       5:{
-          "cx":120,
+          "cx":450,
           "cy":40,
           "text":6
       },
       6:{
-          "cx":120,
+          "cx":450,
           "cy":100,
           "text":7
       },
       7:{
-          "cx":120,
+          "cx":450,
           "cy":160,
           "text":8
       },
       8:{
-          "cx":120,
+          "cx":450,
           "cy":220,
           "text":9
       },
       9:{
-          "cx":120,
+          "cx":450,
           "cy":280,
           "text":10
       }

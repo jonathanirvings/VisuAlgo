@@ -1,14 +1,15 @@
 @charset "utf-8";
 
 /*all action pullout (input) stuff here*/
-.create { bottom: 173px; }
+.create { bottom: 148px; }
 	#create-err { padding: 8px 0px 7px }
 
-.sample { bottom: 148px; }
+.sample { bottom: 120px; }
 	.sample p { padding: 5px 8px; }
 	#samples-err { padding: 5px 0px; }
 
-.augpath { bottom: 173px; }
+.augpath { bottom: 90px; }
+	.augpath p { padding: 5px 8px; }
 	#augpath-err { padding: 8px 0px 7px }
 
 .greedyaug { bottom: 173px; }

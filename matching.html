@@ -54,10 +54,10 @@
     <div id="current-action" class="panel"><p></p></div>
     
     <div id="actions" class="panel">
-    	<p id="create" class="execAction" onclick=createRandom()>Random Graph</p>
+    	<p id="draw" class="execAction" onclick=drawGraph()>Draw Graph</p>
+        <p id="create" class="execAction" onclick=createRandom()>Random Graph</p>
         <p id="sample" class="execAction">Sample Graph</p>
-		<p id="augpath" class="execAction" onclick=augmentingpath()>Augmenting Path</p>
-		<p id="greedyaug" class="execAction" onclick=greedyAug()>Greedy Augmenting Path</p>
+		<p id="augpath" class="execAction">Augmenting Path</p>
 		<p id="hopcroftkarp" class="execAction" onclick=hopcroftKarp()>Hopcroft Karp</p>
     </div>
     <div id="actions-hide" class="panel-hide"><img src="img/arrow_white_right.png" title="show/hide actions panel"/></div>
@@ -68,14 +68,16 @@
     	</div>
 
     	<div class="sample action-menu-pullout">
-	    <div id="sample1" class="new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_42)><p>CP3 4.42 (unweighted)</p></div>
-            <div id="sample2" class="new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_43)><p>CP3 4.43 (unweighted)</p></div>
-            <div id="sample3" class="new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_44)><p>CP3 4.44 (unweighted)</p></div>
-            <div id="sample4" class="new-menu-option coloured-menu-option" onclick=sample(COMPLETE_GRAPH)><p>Complete Bipartite Graph</p></div>
+	    <div id="sample1" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_42)><p>CP3 4.42 (unweighted)</p></div>
+            <div id="sample2" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_43)><p>CP3 4.43 (unweighted)</p></div>
+            <div id="sample3" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_44)><p>CP3 4.44 (unweighted)</p></div>
+            <div id="sample4" class="execAction new-menu-option coloured-menu-option" onclick=sample(COMPLETE_GRAPH)><p>Complete Bipartite Graph</p></div>
             <div id="sample-err" class="err"></div>
         </div>
         
         <div class="augpath action-menu-pullout">
+        	<div id="augpathnormal" class="execAction new-menu-option coloured-menu-option" onclick=augmentingpath()><p>Normal</p></div>
+        	<div id="augpathgreedy" class="execAction new-menu-option coloured-menu-option" onclick=greedyAug()><p>With Greedy Preprocessing</p></div>
             <div id="augpath-err" class="err"></div>
         </div>
 
@@ -123,6 +125,7 @@
 </div>
 
 <div id="dark-overlay"></div>
+<div id="drawgraph" class="overlays"></div>
 <div id="about" class="overlays"></div>
 <div id="team" class="overlays"></div>
 <div id="termsofuse" class="overlays"></div>
@@ -168,15 +171,51 @@
 <script src="js/graph_library/GraphVertexWidget.js"></script>
 <script src="js/graph_library/GraphEdgeWidget.js"></script>
 
+<!-- graph drawing purposes -->
+<script src="js/drawgraph.js"></script>
+<script src="visual_final.js"></script>
+<link rel="stylesheet" href="./visual.css">
+<link rel="stylesheet" href="css/drawgraph.css">
+
 <script type="text/javascript">
 	$('#play').hide();
+
+	write(true,true);
 
 	//this viz-specific code
 	var mcbmWidget = new MCBM();
 	var gw = mcbmWidget.getGraphWidget();
 	
+	createRandom();
+
+	function drawGraph() {
+	    if(isPlaying) { stop(); }
+	    if (mode=="exploration") 
+	    {
+	      $('#dark-overlay').fadeIn(function(){
+	        $('#drawgraph').fadeIn();
+	      });
+	      mcbmWidget.startLoop();
+	      isPlaying = false;
+	    }
+	  }
+	  
+	  function drawDone()
+	  {
+	    if (!mcbmWidget.draw()) return false;
+	    mcbmWidget.stopLoop();
+	    $('#drawgraph').fadeOut();
+	    $('#dark-overlay').fadeOut();
+	  }
+
+	  function drawCancel()
+	  {
+	  	mcbmWidget.stopLoop();
+	    $('#drawgraph').fadeOut();
+	    $('#dark-overlay').fadeOut();
+	  }
 	
-	function createRandom() {
+	/*function createRandom() {
 		if(isPlaying) {	stop(); }
 		setTimeout( function() {
 			if((mode=="exploration")&&mcbmWidget.generateRandom()) {
@@ -184,7 +223,28 @@
 				isPlaying = false;
 			}
 		}, 500);
-	}
+	}*/
+
+	function createRandom() {
+	    if(isPlaying) { stop(); }
+	    if (mode=="exploration") 
+	    {
+	      var n = Math.floor(5 + Math.random()*6);
+	      $.ajax({
+	        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_GET_RANDOM_SUBMITTED_GRAPH + "&directed=" + 1 + "&connected=" + 1
+	      }).done(function(data){
+	        data = JSON.parse(data);
+	        var graph = extractQnGraph(data.graph);
+	        randomGraphID = data.graphID;
+	        mcbmWidget.initRandom(graph);
+	        $('#rate-sample-graph').show();
+	      })
+	      setTimeout(function(){
+	      	$('#progress-bar').slider( "option", "max", 0);
+	      	isPlaying = false;
+	      },500);
+    	}
+  	}
 
 	function sample(id) {
 	  if(isPlaying) {stop();}
