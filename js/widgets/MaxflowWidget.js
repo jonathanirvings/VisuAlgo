@@ -879,7 +879,7 @@ var MAXFLOW = function(){
             ++amountEdge;
             edgeRed[amountEdge-1] = true;
             currentState = createState(internalAdjList, internalEdgeList,vertexHighlighted, edgeRed);
-            currentState["status"] = 'Adding edge from R' + i + ' to C' + j;
+            currentState["status"] = 'Adding edge from R' + (i+1) + ' to C' + (j+1);
             currentState["lineNo"] = [4,5];
             stateList.push(currentState);
             delete edgeRed[amountEdge-1];

@@ -73,14 +73,8 @@
               </div>
             </div>
 
-            <div id="bipartite" class="execAction new-menu-option coloured-menu-option" onclick=modelingOpen("bipartite")>
+            <div id="bipartite" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(3)>
               <p>Bipartite Matching</p>
-              <div id="bipartite-input" class="new-menu-option">
-                <div id="bipartite0" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(0)><p>random</p></div>
-                <div id="bipartite1" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(1)><p>left 1</p></div>
-                <div id="bipartite2" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(2)><p>right 1</p></div>
-                <div id="bipartite3" class="execAction new-menu-option coloured-menu-option" onclick=bipartiteRandom(3)><p>all 1</p></div>
-              </div>
             </div>
 
             <div id="modeling-err" class="err"></div>
@@ -157,6 +151,7 @@
 
 <div id="dark-overlay"></div>
 <div id="drawgraph" class="overlays"></div>
+<div id="rookattack-board" class="overlays"></div>
 <div id="about" class="overlays"></div>
 <div id="team" class="overlays"></div>
 <div id="termsofuse" class="overlays"></div>
@@ -335,6 +330,21 @@
 	    if (modelingType != "bipartite")  $('#bipartite-input').fadeOut('fast');
 	    $('#' + modelingType + '-input').fadeIn('fast');
 	  }
+
+	function modeling(modelingType)
+	{
+	    if(isPlaying) { stop(); }
+	    setTimeout( function() 
+	    {
+	      if (mode != "exploration") return;
+	      if (!mcbmWidget.modeling(modelingType)) return;
+		}, 500);
+	}
+
+	function bipartiteRandom(randomType)
+  	{
+    	mcbmWidget.bipartiteRandom(randomType);
+  	}
 	
 
 	//playback controls might fit better in viz.js, but put here in case some viz does not use GraphWidgetNew.js

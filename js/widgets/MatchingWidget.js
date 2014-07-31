@@ -359,7 +359,7 @@ var MCBM = function(){
       currentState = createState(internalAdjList, internalEdgeList, 
                                  vertexHighlighted, edgeHighlighted, 
                                  vertexTraversed, edgeTraversed);
-      currentState["status"] = 'Pick random greedy pairing';
+      currentState["status"] = 'Random greedy pairing has been picked';
       currentState["lineNo"] = 1;
       stateList.push(currentState);
     }
@@ -593,14 +593,39 @@ var MCBM = function(){
       return 0;
     }
 
-    function greedyMatch(){
-      for(key in internalEdgeList){
-        var x = internalEdgeList[key]["vertexA"];
+    function greedyMatch()
+    {
+      for (var x in internalAdjList) for (var key in internalEdgeList) if(internalEdgeList[key]["vertexA"] == x)
+      {
         var y = internalEdgeList[key]["vertexB"];
-        if(match[x]==-1&&match[y]==-1){
+        edgeTraversed[key] = true;
+        currentState = createState(internalAdjList, internalEdgeList,
+                               vertexHighlighted, edgeHighlighted,
+                               vertexTraversed, edgeTraversed);
+        currentState["status"] = 'Try to match ' + internalAdjList[x]["text"] + ' with ' + internalAdjList[y]["text"];
+        currentState["lineNo"] = [];
+        stateList.push(currentState);
+        delete edgeTraversed[key];
+        if(match[x]==-1&&match[y]==-1)
+        {
           match[x] = y;
           match[y] = x;
           edgeHighlighted[key] = true;
+          currentState = createState(internalAdjList, internalEdgeList,
+                               vertexHighlighted, edgeHighlighted,
+                               vertexTraversed, edgeTraversed);
+          currentState["status"] = 'Both ' + internalAdjList[x]["text"] + ' and ' + internalAdjList[y]["text"] + ' has not been matched yet. Matching succeeds.';
+          currentState["lineNo"] = [];
+          stateList.push(currentState);
+          break;
+        } else
+        {
+          currentState = createState(internalAdjList, internalEdgeList,
+                               vertexHighlighted, edgeHighlighted,
+                               vertexTraversed, edgeTraversed);
+          currentState["status"] = 'Either ' + internalAdjList[x]["text"] + ' or ' + internalAdjList[y]["text"] + ' has been matched. Matching fails.';
+          currentState["lineNo"] = [];
+          stateList.push(currentState);
         }
       }
       return match;
@@ -904,6 +929,253 @@ var MCBM = function(){
 
   }
 
+  this.rookattack = function()
+  {
+    var numOfRows = parseInt($('#rows').val());
+    var numOfColumns = parseInt($('#columns').val());
+    var blocked = new Array(numOfRows);
+
+    for (var i = 0; i < numOfRows; ++i)
+    {
+      blocked[i] = new Array(numOfColumns);
+      for (var j = 0; j < numOfColumns; ++j)
+        blocked[i][j] = false;
+    }
+
+    if (numOfRows < 1 || numOfColumns < 1 || numOfRows > 6 || numOfColumns > 6) { // no graph
+      $('#modeling-err').html("Invalid size. Row and column size must be between 1 and 6 inclusive.");
+      return false;
+    }
+
+    this.changeState = function(rowIndex,columnIndex)
+    {
+      var temp = '#cell' + rowIndex + columnIndex;
+      if (blocked[rowIndex][columnIndex])
+      {
+        $(temp).attr("bgcolor","white");
+        blocked[rowIndex][columnIndex] = false;
+      }
+      else 
+      {
+        $(temp).attr("bgcolor","black");
+        blocked[rowIndex][columnIndex] = true;
+      }
+    }
+
+    this.createBipartiteGraph = function()
+    {
+      internalAdjList = {};
+      internalEdgeList = {};
+      vertexHighlighted = {};
+      edgeRed = {};
+      stateList = [];
+      var currentState;
+      amountEdge = 0;
+      amountVertex = numOfRows + numOfColumns;
+      amountLeftSet = numOfRows;
+
+      for (var i = 1; i <= numOfRows; ++i)
+      {
+        internalAdjList[i-1] = 
+        {
+          "cx": 225,
+          "cy": (175 + (i - (numOfRows + 1) / 2) * (numOfRows == 1 ? 0 : 300 / (numOfRows - 1))),
+          "text": "R" + i
+        }
+        vertexHighlighted[i - 1] = true;
+      }
+
+      currentState = createState(internalAdjList, internalEdgeList,vertexHighlighted);
+      currentState["status"] = 'Create a node for each rows';
+      currentState["status"] += '<br>and connect source vertex to each node with capacity 1</br>';
+      currentState["lineNo"] = [2];
+      stateList.push(currentState);
+      for (var i = 1; i <= numOfRows; ++i)
+        delete vertexHighlighted[i - 1];
+
+      for (var i = 1; i <= numOfColumns; ++i)
+      {
+        internalAdjList[i + numOfRows - 1] = 
+        {
+          "cx": 425,
+          "cy": (175 + (i - (numOfColumns + 1) / 2) * (numOfColumns == 1 ? 0 : 300 / (numOfColumns - 1))),
+          "text": "C" + i
+        }
+        vertexHighlighted[i + numOfRows - 1] = true;
+      }
+      currentState = createState(internalAdjList, internalEdgeList,vertexHighlighted);
+      currentState["status"] = 'Create a node for each columns';
+      currentState["status"] += '<br>and connect each node to sink vertex with capacity 1</br>';
+      currentState["lineNo"] = [3];
+      stateList.push(currentState);
+      for (var i = 1; i <= numOfColumns; ++i)
+        delete vertexHighlighted[i + numOfRows - 1];
+
+
+      for (var i = 0; i < numOfRows; ++i)
+      {
+        for (var j = 0; j < numOfColumns; ++j)
+        {
+          var existEdge = 1 - blocked[i][j];
+          if (existEdge == 1)
+          {
+            internalEdgeList[amountEdge] = 
+            {
+              "vertexA": i,
+              "vertexB": j + numOfRows,
+              "weight": 9
+            }
+            ++amountEdge;
+            edgeRed[amountEdge-1] = true;
+            currentState = createState(internalAdjList, internalEdgeList,vertexHighlighted, edgeRed);
+            currentState["status"] = 'Adding edge from R' + (i+1) + ' to C' + (j+1);
+            currentState["lineNo"] = [4,5];
+            stateList.push(currentState);
+            delete edgeRed[amountEdge-1];
+          }
+        }
+      }
+
+      amountVertex = 0;
+      amountEdge = 0;
+      for (var i in internalAdjList) ++amountVertex;
+      for (var i in internalEdgeList) ++amountEdge;
+
+      currentState = createState(internalAdjList, internalEdgeList);
+      currentState["status"] = 'Run any Max Cardinality Bipartite Matching';
+      currentState["status"] += '<br>to get the value of the maximum rooks that can be placed</br>';
+      currentState["lineNo"] = [6];
+      stateList.push(currentState);
+      graphWidget.startAnimation(stateList);
+      return true;
+    }
+
+    this.inputFinished = function()
+    {
+      $('.overlays').hide("slow");
+      $('#dark-overlay').hide("slow");
+      $('#rookattack-board').hide("slow");
+      mcbmWidget.createBipartiteGraph();
+      $('#current-action').show();
+      $('#current-action p').html("Modeling()");
+      $('#progress-bar').slider( "option", "max", gw.getTotalIteration()-1);
+      triggerRightPanels();
+      populatePseudocode(2);
+      isPlaying = true;
+      return true;
+    }
+
+    this.cancel = function()
+    {
+      $('.overlays').hide("slow");
+      $('#dark-overlay').hide("slow");
+      $('#rookattack-board').hide("slow");
+      $('#progress-bar').slider( "option", "max", gw.getTotalIteration()-1);
+      return true;
+    }
+
+    this.inputRandomized = function()
+    {
+      for (var i = 0; i < numOfRows; ++i)
+        for (var j = 0; j < numOfColumns; ++j)
+          if (Math.random() < 0.5) this.changeState(i,j);
+    }
+
+    $('#dark-overlay').show("slow");
+    var toWrite = '<html>\n';
+    toWrite += '<p>Click on any cell to toggle between black/white cell</p>\n';
+    toWrite += '<p>Rooks can\'t be placed in black cells</p>\n';
+    toWrite += '<table border="1" id="board">'
+    for (var j = 0; j < numOfColumns; ++j)
+      toWrite += '<col width="50">';
+    for (var i = 0; i < numOfRows; ++i)
+    {
+      toWrite += '<tr>';
+      for (var j = 0; j < numOfColumns; ++j)
+        toWrite += '<td height="50" bgcolor="white" id="cell' + i + j + '" onclick=mcbmWidget.changeState('+i+','+j+')></td>';
+      toWrite += '</tr>';
+    }
+
+    toWrite += '</table>\n';
+    toWrite += '<div class="modeling-actions">';
+    toWrite += '<p onclick=mcbmWidget.inputRandomized()>Randomized</p>';
+    toWrite += '<p onclick=mcbmWidget.inputFinished()>Done</p>';
+    toWrite += '<p onclick=mcbmWidget.cancel()>Cancel</p>';
+    toWrite += '</div>\n'
+    toWrite += '</html>\n';
+    $('#rookattack-board').html(toWrite);
+    $('#rookattack-board').show("slow");
+  }
+
+  this.modeling = function(modelingType)
+  {
+    internalEdgeList = {};
+    internalAdjList = {};
+    if (modelingType == "rookattack") this.rookattack();
+    if (modelingType == "baseball") this.baseball();
+    return true;
+  }
+
+  this.bipartiteRandom = function(randomType) { 
+    //0 : random, 1 : left 1, 2 : right 1, 3 : all 1.
+    amountVertex = Math.floor(Math.random() * 9) + 4; //4 to 12
+    var leftVertex = Math.floor(Math.random() * (amountVertex - 3)) + 1; //1 to N-3
+    if (leftVertex > 6) leftVertex = 6;
+    var numberOfFemales = amountVertex- leftVertex;
+    amountLeftSet = leftVertex;
+    
+    internalAdjList = new Object();
+    internalEdgeList = new Object();
+    amountEdge = 0;
+
+    for (var i = 1; i <= leftVertex; ++i)
+    {
+      internalAdjList[i-1] = 
+      {
+        "cx": 250,
+        "cy": (175 + (i - (leftVertex + 1) / 2) * (leftVertex == 1 ? 0 : 300 / (leftVertex - 1))),
+        "text": (i - 1)
+      }
+    }
+
+    for (var i = 1; i <= numberOfFemales; ++i)
+    {
+      internalAdjList[i + leftVertex - 1] = 
+      {
+        "cx": 450,
+        "cy": (175 + (i - (numberOfFemales + 1) / 2) * (numberOfFemales == 1 ? 0 : 300 / (numberOfFemales - 1))),
+        "text": (leftVertex + i - 1)
+      }
+    }
+
+    for (var i = 0; i < leftVertex; ++i)
+    {
+      for (var j = 0; j < numberOfFemales; ++j)
+      {
+        var existEdge = Math.floor(Math.random() * 2);
+        if (existEdge == 1)
+        {
+          internalEdgeList[amountEdge] = 
+          {
+            "vertexA": i,
+            "vertexB": j + leftVertex,
+            "weight": 1
+          }
+          ++amountEdge;
+        }
+      }
+    }
+
+    amountVertex = 0;
+    amountEdge = 0;
+    for (var i in internalAdjList) ++amountVertex;
+    for (var i in internalEdgeList) ++amountEdge;
+    var newState = createState(internalAdjList, internalEdgeList);
+    graphWidget.updateGraph(newState, 500);
+
+    return true;
+  }
+
   this.examples = function(egConstant){
     templateToUse = templates[egConstant];
   	internalAdjList = $.extend(true,{},templateToUse[0]);
@@ -1006,6 +1278,14 @@ function populatePseudocode(act) {
         document.getElementById('code4').innerHTML = '&nbsp&nbsp&nbsp&nbsp' +
             '&nbsp&nbspflip edges in augmenting path';
         document.getElementById('code5').innerHTML = 'return';
+      case 2: //rook attack modeling
+        $('#code1').html('Create source and sink vertex');
+        $('#code2').html('Create one vertex Ri for each row i');
+        $('#code3').html('Create one vertex Cj for each column j');
+        $('#code4').html('For each rook-placable cell (i,j)');
+        $('#code5').html('&nbsp;&nbsp;Add an edge from Ri to Cj');
+        $('#code6').html('Run any Max Cardinality Bipartite Matching algorithm');
+        $('#code7').html('');
     }
 }
 
