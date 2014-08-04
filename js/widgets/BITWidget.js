@@ -310,9 +310,9 @@ var BIT = function(){
       $(actions[BITType] + '#update-err').html('left position must be between 1 and ' + numberOfData + ' inclusive.');
       return false;
     }
-    if (positionRight > numberOfData)
+    if (positionRight >= numberOfData)
     {
-      $(actions[BITType] + '#update-err').html('left position must be between 1 and ' + numberOfData + ' inclusive.');
+      $(actions[BITType] + '#update-err').html('left position must be between 1 and ' + (numberOfData-1) + ' inclusive.');
       return false;
     }
     
@@ -445,9 +445,9 @@ var BIT = function(){
       $(actions[BITType] + '#update-err').html('left position must be between 1 and ' + numberOfData + ' inclusive.');
       return false;
     }
-    if (positionRight > numberOfData)
+    if (positionRight >= numberOfData)
     {
-      $(actions[BITType] + '#update-err').html('left position must be between 1 and ' + numberOfData + ' inclusive.');
+      $(actions[BITType] + '#update-err').html('left position must be between 1 and ' + (numberOfData-1) + ' inclusive.');
       return false;
     }
     

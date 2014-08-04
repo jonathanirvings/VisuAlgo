@@ -23,8 +23,8 @@ function write(bool1,bool2)
 	    <p onclick=drawCancel()>Cancel</p>\
 	    <p onclick=GraphVisu('+bool1+','+bool2+')>Clear</p>\
 	    <p onclick=drawDone()>Done</p>\
-	    <form id="submit">\
-	   		<input type="checkbox" name="submit" value="submit" checked="checked">Submit drawn graph to database for random graph and online quiz purposes\
+	    <form id="drawgraph-form">\
+	   		<input type="checkbox" id="submit" name="submit" value="submit" checked="checked">Submit drawn graph to database for random graph and online quiz purposes\
 	   	</form>\
 	  </div>\
 \

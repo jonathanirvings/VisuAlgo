@@ -20,6 +20,22 @@ var MCBM = function(){
   this.getGraphWidget = function(){
     return graphWidget;
   }
+
+  fixJSON = function()
+  {
+    for (var key in internalEdgeList)
+    {
+      delete internalEdgeList[key]["type"];
+      delete internalEdgeList[key]["displayWeight"];
+      if (internalEdgeList[key]["vertexA"] > internalEdgeList[key]["vertexB"])
+        internalEdgeList[key]["vertexA"] ^= internalEdgeList[key]["vertexB"] ^= internalEdgeList[key]["vertexA"] ^= internalEdgeList[key]["vertexB"]; 
+    }
+    for (var key in internalAdjList)
+    {
+      internalAdjList[key]["text"] = +key;
+      delete internalAdjList[key]["state"];
+    }
+  }
   
   takeJSON = function(graph)
   {
@@ -28,17 +44,7 @@ var MCBM = function(){
     amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
     internalAdjList = graph["vl"];
     internalEdgeList = graph["el"];
-
-    for (var key in internalEdgeList)
-    {
-      delete internalEdgeList[key]["type"];
-      delete internalEdgeList[key]["displayWeight"];
-    }
-    for (var key in internalAdjList)
-    {
-      internalAdjList[key]["text"] = +key;
-      delete internalAdjList[key]["state"];
-    }
+    fixJSON();
   }
 
   var whichSide = new Array;
@@ -206,14 +212,37 @@ var MCBM = function(){
     clearInterval(intervalID);
   }
 
+  relayout = function()
+  {
+    var amountRightSet = amountVertex - amountLeftSet;
+    for (var i = 1; i <= amountLeftSet; ++i)
+    {
+      internalAdjList[i-1] = 
+      {
+        "cx": 250,
+        "cy": (250 + (i - (amountLeftSet + 1) / 2) * (amountLeftSet == 1 ? 0 : 450 / (amountLeftSet - 1))),
+        "text": (i - 1)
+      }
+    }
+
+    for (var i = 1; i <= amountRightSet; ++i)
+    {
+      internalAdjList[i + amountLeftSet - 1] = 
+      {
+        "cx": 450,
+        "cy": (250 + (i - (amountRightSet + 1) / 2) * (amountRightSet == 1 ? 0 : 450 / (amountRightSet - 1))),
+        "text": (amountLeftSet + i - 1)
+      }
+    }
+  }
+
   this.draw = function() 
   {
     if ($("#draw-err p").html() != "No Error") return false;
-    var n = $( "input:checked" ).length;
-    if(n > 0)
-    {
+    if ($("#submit").is(':checked'))
       this.submit(JSONresult);
-    }
+    if ($("#relayout").is(':checked'))
+      relayout();
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
@@ -241,10 +270,7 @@ var MCBM = function(){
     internalEdgeList = graph.internalEdgeList;
     amountVertex = internalAdjList.length;
     amountEdge = internalEdgeList.length;
-
-    for (var key in internalAdjList)
-      internalAdjList[key]["text"] = key;
-
+    fixJSON();
     var newState = createState(internalAdjList, internalEdgeList);
 
     graphWidget.updateGraph(newState, 500);
@@ -265,7 +291,7 @@ var MCBM = function(){
       internalAdjList[i] = 
       {
         "cx": 250,
-        "cy": (175 + (i + 1 - (leftVertex + 1) / 2) * (leftVertex == 1 ? 0 : 300 / (leftVertex - 1))),
+        "cy": (250 + (i + 1 - (leftVertex + 1) / 2) * (leftVertex == 1 ? 0 : 450 / (leftVertex - 1))),
         "text": i
       }
     }
@@ -274,7 +300,7 @@ var MCBM = function(){
       internalAdjList[i + leftVertex] = 
       {
         "cx": 450,
-        "cy": (175 + (i + 1 - (rightVertex + 1) / 2) * (rightVertex == 1 ? 0 : 300 / (rightVertex - 1))),
+        "cy": (250 + (i + 1 - (rightVertex + 1) / 2) * (rightVertex == 1 ? 0 : 450 / (rightVertex - 1))),
         "text": (leftVertex + i)
       }
     }
@@ -355,6 +381,7 @@ var MCBM = function(){
     }
 
     if(isGreedy){
+      populatePseudocode(3);
       match = greedyMatch();
       currentState = createState(internalAdjList, internalEdgeList, 
                                  vertexHighlighted, edgeHighlighted, 
@@ -362,14 +389,17 @@ var MCBM = function(){
       currentState["status"] = 'Random greedy pairing has been picked';
       currentState["lineNo"] = 1;
       stateList.push(currentState);
+    } else
+    {
+      populatePseudocode(0);
     }
 
     currentState = createState(internalAdjList, internalEdgeList, 
                                vertexHighlighted, edgeHighlighted, 
                                vertexTraversed, edgeTraversed);
-    currentState["status"] = 'For each node on the left hand set' + 
+    currentState["status"] = 'For each vertex on the left hand set' + 
         ', look for an augmenting path';
-    currentState["lineNo"] = 1;
+    currentState["lineNo"] = isGreedy ? 4 : 1;
     stateList.push(currentState);
 
 
@@ -380,9 +410,9 @@ var MCBM = function(){
       currentState = createState(internalAdjList, internalEdgeList,
                                  vertexHighlighted, edgeHighlighted,
                                  vertexTraversed, edgeTraversed);
-      currentState["status"] = 'For node ' + 
+      currentState["status"] = 'For vertex ' + 
       internalAdjList[i]["text"] + ':';
-      currentState["lineNo"] = 1;
+      currentState["lineNo"] = isGreedy ? 4 : 1;
       stateList.push(currentState);	   
       for (key in internalAdjList){
         if (key=="cx"||key=="cy") continue;
@@ -413,7 +443,7 @@ var MCBM = function(){
                                   internalAdjList[LeftToRightEdge[x][2]]["text"]
                                    + " added to " +
                                  "augmenting path";
-        currentState["lineNo"] = 2;
+        currentState["lineNo"] = isGreedy ? 4 : 2;
         stateList.push(currentState);
         toSet.push(LeftToRightEdge[x]);
 
@@ -430,7 +460,7 @@ var MCBM = function(){
                                   internalAdjList[RightToLeftEdge[x][2]]["text"]
                                    + " added to " +
                                  "augmenting path";
-        currentState["lineNo"] = 2;
+        currentState["lineNo"] = isGreedy ? 4 : 2;
         stateList.push(currentState);
         toUnSet.push(RightToLeftEdge[x]);
 
@@ -451,7 +481,7 @@ var MCBM = function(){
                                   internalAdjList[LeftToRightEdge[x][2]]["text"]
                                    + " added to " +
                                  "augmenting path";
-        currentState["lineNo"] = 2;
+        currentState["lineNo"] = isGreedy ? 4 : 2;
         stateList.push(currentState);
         toSet.push(LeftToRightEdge[x]);
       }
@@ -463,7 +493,7 @@ var MCBM = function(){
                                  vertexTraversed, edgeTraversed,
                                  vertexTraversed2, edgeTraversed2);
       currentState["status"] = 'No more edges to add. Augmenting path found';
-      currentState["lineNo"] = 2;
+      currentState["lineNo"] = isGreedy ? 4 : 2;
       stateList.push(currentState);
 
       for(var x = 0; x < toUnSet.length; x++){
@@ -478,7 +508,7 @@ var MCBM = function(){
                                   + " to " +
                                   internalAdjList[LeftToRightEdge[x][2]]["text"]
                                    + " to status taken";
-        currentState["lineNo"] = 3;
+        currentState["lineNo"] = isGreedy ? 4 : 3;
         stateList.push(currentState);
 
         delete edgeHighlighted[RightToLeftEdge[x][0]];
@@ -491,7 +521,7 @@ var MCBM = function(){
                                    + " to " +
                                   internalAdjList[RightToLeftEdge[x][2]]["text"]
                                    + " to status not taken";
-        currentState["lineNo"] = 3;
+        currentState["lineNo"] = isGreedy ? 4 : 3;
         stateList.push(currentState);
       }
 
@@ -508,7 +538,7 @@ var MCBM = function(){
                                   + " to " +
                                   internalAdjList[LeftToRightEdge[x][2]]["text"]
                                    + " to status taken";
-        currentState["lineNo"] = 3;
+        currentState["lineNo"] = isGreedy ? 4 : 3;
         stateList.push(currentState);
       }
 
@@ -520,21 +550,24 @@ var MCBM = function(){
                                  vertexHighlighted, edgeHighlighted,
                                  vertexTraversed, edgeTraversed);
       currentState["status"] = 'All edges in path flipped';
-      currentState["lineNo"] = 3;
+      currentState["lineNo"] = isGreedy ? 4 : 3;
       stateList.push(currentState);            
     }
 
     vertexTraversed = {};
+
+    var numberOfMatchings = 0;
+    for (var i = 0; i < amountLeftSet; ++i)
+      if (match[i] != -1) ++numberOfMatchings;
+
     currentState = createState(internalAdjList, internalEdgeList,
                                vertexHighlighted, edgeHighlighted,
                                vertexTraversed, edgeTraversed);
-    currentState["status"] = 'Done';
-    currentState["lineNo"] = 4;
+    currentState["status"] = 'Done. Found ' + numberOfMatchings + ' matchings';
+    currentState["lineNo"] = isGreedy ? 4 : 4;
     stateList.push(currentState);
 
     graphWidget.startAnimation(stateList);
-    populatePseudocode(0);
-    console.log(stateList);
     return true;
 
     function uncolourAllEdges(v){
@@ -595,36 +628,63 @@ var MCBM = function(){
 
     function greedyMatch()
     {
-      for (var x in internalAdjList) for (var key in internalEdgeList) if(internalEdgeList[key]["vertexA"] == x)
+      for (var x in internalAdjList) 
       {
-        var y = internalEdgeList[key]["vertexB"];
-        edgeTraversed[key] = true;
-        currentState = createState(internalAdjList, internalEdgeList,
-                               vertexHighlighted, edgeHighlighted,
-                               vertexTraversed, edgeTraversed);
-        currentState["status"] = 'Try to match ' + internalAdjList[x]["text"] + ' with ' + internalAdjList[y]["text"];
-        currentState["lineNo"] = [];
-        stateList.push(currentState);
-        delete edgeTraversed[key];
-        if(match[x]==-1&&match[y]==-1)
+        x = +x;
+        var unmatchedNeighbour = new Array();
+        for (var key in internalEdgeList) if(internalEdgeList[key]["vertexA"] == x)
         {
-          match[x] = y;
-          match[y] = x;
-          edgeHighlighted[key] = true;
+          var y = internalEdgeList[key]["vertexB"];
+          if (match[y] != -1) continue;
+          edgeTraversed[key] = true;  
+          unmatchedNeighbour.push(y);
+        }
+        if (unmatchedNeighbour.length > 0)
+        {
           currentState = createState(internalAdjList, internalEdgeList,
-                               vertexHighlighted, edgeHighlighted,
-                               vertexTraversed, edgeTraversed);
-          currentState["status"] = 'Both ' + internalAdjList[x]["text"] + ' and ' + internalAdjList[y]["text"] + ' has not been matched yet. Matching succeeds.';
-          currentState["lineNo"] = [];
+                                 vertexHighlighted, edgeHighlighted,
+                                 vertexTraversed, edgeTraversed);
+          currentState["status"] = 'Unmatched neighbour of ' + internalAdjList[x]["text"] + ' are ';
+          for (var i = 0; i < unmatchedNeighbour.length; ++i)
+          {
+            currentState["status"] += internalAdjList[unmatchedNeighbour[i]]["text"];
+            if (i < unmatchedNeighbour.length - 1) currentState["status"] += ',';
+          }
+          currentState["lineNo"] = [2];
           stateList.push(currentState);
-          break;
+
+          var randomSelect = unmatchedNeighbour[Math.floor(Math.random() * unmatchedNeighbour.length)];
+          randomSelect = unmatchedNeighbour[0];
+          for (var key in internalEdgeList) if(internalEdgeList[key]["vertexA"] == x)
+          {
+            var y = internalEdgeList[key]["vertexB"];
+            if (match[y] != -1) continue;
+            if (y != randomSelect) 
+              delete edgeTraversed[key];
+          }
+          currentState = createState(internalAdjList, internalEdgeList,
+                                 vertexHighlighted, edgeHighlighted,
+                                 vertexTraversed, edgeTraversed);
+          currentState["status"] = 'Randomly choose ' + internalAdjList[randomSelect]["text"] + ' to be matched with ' + internalAdjList[x]["text"];
+          currentState["lineNo"] = [3];
+          stateList.push(currentState);
+
+          match[x] = randomSelect;
+          match[randomSelect] = x;
+
+          for (var key in internalEdgeList) if(internalEdgeList[key]["vertexA"] == x && internalEdgeList[key]["vertexB"] == randomSelect)
+          {
+            delete edgeTraversed[key];
+            edgeHighlighted[key] = true;
+          }
+
         } else
         {
           currentState = createState(internalAdjList, internalEdgeList,
-                               vertexHighlighted, edgeHighlighted,
-                               vertexTraversed, edgeTraversed);
-          currentState["status"] = 'Either ' + internalAdjList[x]["text"] + ' or ' + internalAdjList[y]["text"] + ' has been matched. Matching fails.';
-          currentState["lineNo"] = [];
+                                 vertexHighlighted, edgeHighlighted,
+                                 vertexTraversed, edgeTraversed);
+          currentState["status"] = 'There is no unmatched neighbour of ' + internalAdjList[x]["text"];
+          currentState["lineNo"] = [2];
           stateList.push(currentState);
         }
       }
@@ -979,15 +1039,15 @@ var MCBM = function(){
         internalAdjList[i-1] = 
         {
           "cx": 225,
-          "cy": (175 + (i - (numOfRows + 1) / 2) * (numOfRows == 1 ? 0 : 300 / (numOfRows - 1))),
+          "cy": (250 + (i - (numOfRows + 1) / 2) * (numOfRows == 1 ? 0 : 450 / (numOfRows - 1))),
           "text": "R" + i
         }
         vertexHighlighted[i - 1] = true;
       }
 
       currentState = createState(internalAdjList, internalEdgeList,vertexHighlighted);
-      currentState["status"] = 'Create a node for each rows';
-      currentState["status"] += '<br>and connect source vertex to each node with capacity 1</br>';
+      currentState["status"] = 'Create a vertex for each rows';
+      currentState["status"] += '<br>and connect source vertex to each vertex with capacity 1</br>';
       currentState["lineNo"] = [2];
       stateList.push(currentState);
       for (var i = 1; i <= numOfRows; ++i)
@@ -998,14 +1058,14 @@ var MCBM = function(){
         internalAdjList[i + numOfRows - 1] = 
         {
           "cx": 425,
-          "cy": (175 + (i - (numOfColumns + 1) / 2) * (numOfColumns == 1 ? 0 : 300 / (numOfColumns - 1))),
+          "cy": (250 + (i - (numOfColumns + 1) / 2) * (numOfColumns == 1 ? 0 : 450 / (numOfColumns - 1))),
           "text": "C" + i
         }
         vertexHighlighted[i + numOfRows - 1] = true;
       }
       currentState = createState(internalAdjList, internalEdgeList,vertexHighlighted);
-      currentState["status"] = 'Create a node for each columns';
-      currentState["status"] += '<br>and connect each node to sink vertex with capacity 1</br>';
+      currentState["status"] = 'Create a vertex for each columns';
+      currentState["status"] += '<br>and connect each vertex to sink vertex with capacity 1</br>';
       currentState["lineNo"] = [3];
       stateList.push(currentState);
       for (var i = 1; i <= numOfColumns; ++i)
@@ -1133,7 +1193,7 @@ var MCBM = function(){
       internalAdjList[i-1] = 
       {
         "cx": 250,
-        "cy": (175 + (i - (leftVertex + 1) / 2) * (leftVertex == 1 ? 0 : 300 / (leftVertex - 1))),
+        "cy": (250 + (i - (leftVertex + 1) / 2) * (leftVertex == 1 ? 0 : 450 / (leftVertex - 1))),
         "text": (i - 1)
       }
     }
@@ -1143,7 +1203,7 @@ var MCBM = function(){
       internalAdjList[i + leftVertex - 1] = 
       {
         "cx": 450,
-        "cy": (175 + (i - (numberOfFemales + 1) / 2) * (numberOfFemales == 1 ? 0 : 300 / (numberOfFemales - 1))),
+        "cy": (250 + (i - (numberOfFemales + 1) / 2) * (numberOfFemales == 1 ? 0 : 450 / (numberOfFemales - 1))),
         "text": (leftVertex + i - 1)
       }
     }
@@ -1260,7 +1320,7 @@ function createState(internalAdjListObject, internalEdgeListObject, vertexHighli
 function populatePseudocode(act) {
     switch (act) {
       case 0: // Augmenting Path
-        document.getElementById('code1').innerHTML = 'for each node in' +
+        document.getElementById('code1').innerHTML = 'for each vertex in' +
             ' the left set'
         document.getElementById('code2').innerHTML = '&nbsp&nbspif there' +
             ' exists an augmenting path'
@@ -1278,6 +1338,7 @@ function populatePseudocode(act) {
         document.getElementById('code4').innerHTML = '&nbsp&nbsp&nbsp&nbsp' +
             '&nbsp&nbspflip edges in augmenting path';
         document.getElementById('code5').innerHTML = 'return';
+        break;
       case 2: //rook attack modeling
         $('#code1').html('Create source and sink vertex');
         $('#code2').html('Create one vertex Ri for each row i');
@@ -1286,6 +1347,16 @@ function populatePseudocode(act) {
         $('#code5').html('&nbsp;&nbsp;Add an edge from Ri to Cj');
         $('#code6').html('Run any Max Cardinality Bipartite Matching algorithm');
         $('#code7').html('');
+        break;
+      case 3: //Augmenting Path with greedy preprocessing
+        $('#code1').html('For each vertex v in the left set');
+        $('#code2').html('&nbsp&nbspRandomly choose unmatched neighbour x in the right set');
+        $('#code3').html('&nbsp&nbspMatch v with x');
+        $('#code4').html('Do the normal augmenting path algorithm');
+        $('#code5').html('');
+        $('#code6').html('');
+        $('#code7').html('');
+        break;
     }
 }
 

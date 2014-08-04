@@ -209,6 +209,8 @@
 	write(true,true);
 
 	//this viz-specific code
+	$('#drawgraph-form').append('<input type="checkbox" id="relayout" name="submit" value="submit" checked="checked">Relayout');
+	$('#relayout').removeAttr('checked');
 	var mcbmWidget = new MCBM();
 	var gw = mcbmWidget.getGraphWidget();
 	
@@ -257,7 +259,7 @@
 	    {
 	      var n = Math.floor(5 + Math.random()*6);
 	      $.ajax({
-	        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_GET_RANDOM_SUBMITTED_GRAPH + "&directed=" + 1 + "&connected=" + 1
+	        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_GET_RANDOM_SUBMITTED_GRAPH + "&directed=" + 0 + "&connected=" + 1 + "&bipartite=" + 1
 	      }).done(function(data){
 	        data = JSON.parse(data);
 	        var graph = extractQnGraph(data.graph);

@@ -119,11 +119,8 @@ var GraphTraversal = function(){
   this.draw = function() 
   {
     if ($("#draw-err p").html() != "No Error") return false;
-    var n = $( "input:checked" ).length;
-    if(n > 0)
-    {
+    if ($("#submit").is(':checked'))
       this.submit(JSONresult);
-    }
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
