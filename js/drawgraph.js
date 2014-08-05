@@ -25,9 +25,11 @@ function write(bool1,bool2)
 	    <p onclick=drawDone()>Done</p>\
 	    <form id="drawgraph-form">\
 	   		<input type="checkbox" id="submit" name="submit" value="submit" checked="checked">Submit drawn graph to database for random graph and online quiz purposes\
+	   		<br><input type="checkbox" id="copy" name="submit" value="submit" checked="checked">Copy JSON text to clipboard\
 	   	</form>\
 	  </div>\
 \
-	';
+	';	
 	$('#drawgraph').html(toWrite);
+	$('#copy').removeAttr('checked');
 }

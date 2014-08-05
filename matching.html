@@ -93,10 +93,12 @@
         </div>
 
     	<div class="sample action-menu-pullout">
-	    <div id="sample1" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_42)><p>CP3 4.42 (unweighted)</p></div>
+	    	<div id="sample1" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_42)><p>CP3 4.42 (unweighted)</p></div>
             <div id="sample2" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_43)><p>CP3 4.43 (unweighted)</p></div>
             <div id="sample3" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_44)><p>CP3 4.44 (unweighted)</p></div>
             <div id="sample4" class="execAction new-menu-option coloured-menu-option" onclick=sample(COMPLETE_GRAPH)><p>Complete Bipartite Graph</p></div>
+            <input type="text" id="samplejson-input" title="Enter JSON text" autocomplete="off" value=5 />
+			<div id="samplejson-go" class="execAction new-menu-option coloured-menu-option" onclick=importjson() title="Import JSON"><p>Go</p></div>
             <div id="sample-err" class="err"></div>
         </div>
         
@@ -209,12 +211,17 @@
 	write(true,true);
 
 	//this viz-specific code
-	$('#drawgraph-form').append('<input type="checkbox" id="relayout" name="submit" value="submit" checked="checked">Relayout');
+	$('#drawgraph-form').append('<br><input type="checkbox" id="relayout" name="submit" value="submit" checked="checked">Relayout');
 	$('#relayout').removeAttr('checked');
 	var mcbmWidget = new MCBM();
 	var gw = mcbmWidget.getGraphWidget();
 	
 	createRandom();
+
+	function importjson()
+	{
+		mcbmWidget.importjson();
+	}
 
 	function drawGraph() {
 	    if(isPlaying) { stop(); }

@@ -28,7 +28,12 @@ var MCBM = function(){
       delete internalEdgeList[key]["type"];
       delete internalEdgeList[key]["displayWeight"];
       if (internalEdgeList[key]["vertexA"] > internalEdgeList[key]["vertexB"])
-        internalEdgeList[key]["vertexA"] ^= internalEdgeList[key]["vertexB"] ^= internalEdgeList[key]["vertexA"] ^= internalEdgeList[key]["vertexB"]; 
+      {
+        var temp = internalEdgeList[key]["vertexA"];
+        internalEdgeList[key]["vertexA"] = internalEdgeList[key]["vertexB"];
+        internalEdgeList[key]["vertexB"] = temp;
+      }
+
     }
     for (var key in internalAdjList)
     {
@@ -114,6 +119,7 @@ var MCBM = function(){
           if (okay)
           {
             $("#draw-status p").html("Left side vertices = [0," + border + "]. Right side vertices = [" + (border+1) + "," + (amountVertex-1) + "]");
+            amountLeftSet = border + 1;
             return;
           }
         }
@@ -183,7 +189,6 @@ var MCBM = function(){
       if (okay) 
       {
         separatable = true;
-        amountLeftSet = border + 1;
       }
     }
 
@@ -241,6 +246,10 @@ var MCBM = function(){
     if ($("#draw-err p").html() != "No Error") return false;
     if ($("#submit").is(':checked'))
       this.submit(JSONresult);
+    if ($("#copy").is(':checked'))
+    {
+      window.prompt("Copy to clipboard:",JSONresult);
+    }
     if ($("#relayout").is(':checked'))
       relayout();
 
@@ -264,6 +273,15 @@ var MCBM = function(){
       $("#submit-graph-result").text(data);
     });
   }
+
+  this.importjson = function()
+  {
+    var text = $("#samplejson-input").val();
+    takeJSON(text);
+    statusChecking();
+    graph = createState(internalAdjList,internalEdgeList);
+    graphWidget.updateGraph(graph, 500);
+  }
     
   this.initRandom = function(graph) {
     internalAdjList = graph.internalAdjList;
@@ -271,6 +289,7 @@ var MCBM = function(){
     amountVertex = internalAdjList.length;
     amountEdge = internalEdgeList.length;
     fixJSON();
+    statusChecking();
     var newState = createState(internalAdjList, internalEdgeList);
 
     graphWidget.updateGraph(newState, 500);
@@ -492,7 +511,7 @@ var MCBM = function(){
                                  vertexHighlighted, edgeHighlighted,
                                  vertexTraversed, edgeTraversed,
                                  vertexTraversed2, edgeTraversed2);
-      currentState["status"] = 'No more edges to add. Augmenting path found';
+      currentState["status"] = 'No more edges to add.';
       currentState["lineNo"] = isGreedy ? 4 : 2;
       stateList.push(currentState);
 
@@ -557,7 +576,7 @@ var MCBM = function(){
     vertexTraversed = {};
 
     var numberOfMatchings = 0;
-    for (var i = 0; i < amountLeftSet; ++i)
+    for (var i = amountLeftSet; i < amountVertex; ++i)
       if (match[i] != -1) ++numberOfMatchings;
 
     currentState = createState(internalAdjList, internalEdgeList,

@@ -17,7 +17,7 @@
 	float:left;
 }
 #drawgraph-actions p { padding: 10px; cursor: pointer; float:left;}
-#drawgraph-actions #submit { padding: 10px; cursor: pointer; float:left;}
+#drawgraph-actions #drawgraph-form { padding: 10px; cursor: pointer; float:left;}
 #drawgraph-actions p:hover { background: black; color: white;}
 #drawgraph-actions p:first-of-type { padding-top: 10px; }
 #drawgraph-actions p:last-of-type { padding-bottom: 10px; }
@@ -26,4 +26,11 @@
 	left: 0px;
 	padding-left: 14px;
 	padding-right: 15px;
+}
+
+#samplejson-input { padding: 5px 8px; }
+#samplejson-go p
+{
+	padding: 8px 8px 7px; 
+	float:right;
 }
