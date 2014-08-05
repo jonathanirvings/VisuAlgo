@@ -99,7 +99,7 @@
             <div id="sample3" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_44)><p>CP3 4.44 (unweighted)</p></div>
             <div id="sample4" class="execAction new-menu-option coloured-menu-option" onclick=sample(COMPLETE_GRAPH)><p>Complete Bipartite Graph</p></div>
             <input type="text" id="samplejson-input" title="Enter JSON text" autocomplete="off" value=5 />
-			<div id="samplejson-go" class="execAction new-menu-option coloured-menu-option" onclick=importjson() title="Import JSON"><p>Go</p></div>
+			<div id="samplejson-go" class="execAction new-menu-option coloured-menu-option" onclick=importjson();closeSample()  title="Import JSON"><p>Go</p></div>
             <div id="sample-err" class="err"></div>
         </div>
         
@@ -267,7 +267,7 @@
 	    {
 	      var n = Math.floor(5 + Math.random()*6);
 	      $.ajax({
-	        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_GET_RANDOM_SUBMITTED_GRAPH + "&directed=" + 0 + "&connected=" + 1 + "&bipartite=" + 1
+	        url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_GET_RANDOM_SUBMITTED_GRAPH + "&directed=" + 0 + "&connected=" + 1 + "&bipartite=" + 1 + "&separatable=" + 1
 	      }).done(function(data){
 	        data = JSON.parse(data);
 	        var graph = extractQnGraph(data.graph);

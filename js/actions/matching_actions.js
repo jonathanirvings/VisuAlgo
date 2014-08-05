@@ -101,6 +101,14 @@ function hideEntireActionsPanel(){
 }
 
 $(document).ready(function() {
+	$('#draw').click(function() {
+		closeCreate();
+	    closeModeling();
+	    closeSample();
+	    closeAugPath();
+	    closeGreedy();
+	    closeHopcroft();
+	});
     $('#create').click(function() {
 		openCreate();
 		closeModeling();
