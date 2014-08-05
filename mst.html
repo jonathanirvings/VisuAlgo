@@ -84,6 +84,8 @@
             <div id="sample3" class="execAction new-menu-option coloured-menu-option" onclick=sample3()><p>K5</p></div>
             <div id="sample4" class="execAction new-menu-option coloured-menu-option" onclick=sample4()><p>Rail</p></div>
             <div id="sample5" class="execAction new-menu-option coloured-menu-option" onclick=sample5()><p>Tessellation</p></div>
+            <input type="text" id="samplejson-input" title="Enter JSON text" autocomplete="off" value=5 />
+            <div id="samplejson-go" class="execAction new-menu-option coloured-menu-option" onclick=importjson() title="Import JSON"><p>Go</p></div>
             <div id="samples-err" class="err"></div>
         </div>
         
@@ -186,6 +188,7 @@
 <script src="visual_final.js"></script>
 <link rel="stylesheet" href="./visual.css">
 <link rel="stylesheet" href="css/drawgraph.css">
+<script src="js/jquery.cookie.js"></script>
 
 <script type="text/javascript">
 
@@ -195,6 +198,16 @@
   var mstWidget = new MST();
   var gw = mstWidget.getGraphWidget();
   mstWidget.examples(MST_EXAMPLE_CP4P10);
+
+  function importjson()
+    {
+      if(isPlaying) { stop(); }
+      if (mode=="exploration") {
+        mstWidget.importjson();
+        closeSample();
+        isPlaying = false;
+      }
+    }
 
   function drawGraph() {
     if(isPlaying) { stop(); }

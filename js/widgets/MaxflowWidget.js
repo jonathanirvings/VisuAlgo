@@ -43,13 +43,12 @@ var MAXFLOW = function(){
     return graphWidget;
   }
 
-  takeJSON = function(graph)
+  fixJSON = function()
   {
-    graph = JSON.parse(graph);
-    amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
-    amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
-    internalAdjList = graph["vl"];
-    internalEdgeList = graph["el"];
+    amountVertex = 0;
+    amountEdge = 0;
+    for (var key in internalAdjList) ++amountVertex;
+    for (var key in internalEdgeList) ++amountEdge;
 
     for (var key in internalEdgeList)
     {
@@ -62,8 +61,16 @@ var MAXFLOW = function(){
     {
       internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
       internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
-	  internalEdgeList[key]["weight"] = +internalEdgeList[key]["weight"];
+      internalEdgeList[key]["weight"] = +internalEdgeList[key]["weight"];
     }
+  }
+
+  takeJSON = function(graph)
+  {
+    graph = JSON.parse(graph);
+    internalAdjList = graph["vl"];
+    internalEdgeList = graph["el"];
+    fixJSON();
   }
 
   statusChecking = function()
@@ -72,6 +79,7 @@ var MAXFLOW = function(){
       $("#draw-status p").html("Graph is empty");
     else
       $("#draw-status p").html("Source is vertex #0. Sink is vertex #" + (amountVertex-1));
+    $("#sinkvertex").val(amountVertex-1);
   }
 
   warnChecking = function()
@@ -149,29 +157,51 @@ var MAXFLOW = function(){
     if ($("#draw-err p").html() != "No Error") return false;
     if ($("#submit").is(':checked'))
       this.submit(JSONresult);
+    if ($("#copy").is(':checked'))
+    {
+      window.prompt("Copy to clipboard:",JSONresult);
+    }
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
-	
-    $('#sourcevertex').val(0);
-    $('#sinkvertex').val(amountVertex-1);
     return true;
   }
 
   this.submit = function(graph)
   {
     $.ajax({
-      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH,
-      type: "POST",
-      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Max Flow', graphState: graph},
-        error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
-        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH + "&sessionID=" + $.cookie("sessionID"),
+                    type: "POST",
+                    data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Max Flow', graphState: graph},
+                    error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
+                        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
 
-        alert("There was an error submitting your graph " + errorMessage);
-      }
-    }).done(function(data) {
-      $("#submit-graph-result").text(data);
-    });
+                        alert("There was an error submitting your graph " + errorMessage);
+                    }
+                }).done(function(data) {
+                    console.log(data);
+                });
+  }
+
+  this.importjson = function()
+  {
+    var text = $("#samplejson-input").val();
+    takeJSON(text);
+    statusChecking();
+    graph = createState(internalAdjList,internalEdgeList);
+    graphWidget.updateGraph(graph, 500);
+  }
+    
+  this.initRandom = function(graph) {
+    internalAdjList = graph.internalAdjList;
+    internalEdgeList = graph.internalEdgeList;
+    amountVertex = internalAdjList.length;
+    amountEdge = internalEdgeList.length;
+    fixJSON();
+    statusChecking();
+    var newState = createState(internalAdjList, internalEdgeList);
+
+    graphWidget.updateGraph(newState, 500);
   }
 
   //returns index of edge in internalEdgeList that connects vertexA to vertexB
@@ -1693,20 +1723,6 @@ var MAXFLOW = function(){
     $('#sourcevertex').val(0);
     $('#sinkvertex').val(amountVertex-1);
     return true;
-  }
-
-  this.initRandom = function(graph) {
-    internalAdjList = graph.internalAdjList;
-    internalEdgeList = graph.internalEdgeList;
-    amountVertex = internalAdjList.length;
-    amountEdge = internalEdgeList.length;
-
-    for (var key in internalAdjList)
-      internalAdjList[key]["text"] = key;
-
-    var newState = createState(internalAdjList, internalEdgeList);
-
-    graphWidget.updateGraph(newState, 500);
   }
 
   function createState(internalAdjListObject, internalEdgeListObject, vertexHighlighted, edgeRed, vertexTraversed, edgeYellow, edgeBlue, edgeGrey){

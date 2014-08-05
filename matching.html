@@ -21,7 +21,6 @@
 <script src="js/common.js"></script>
 <script src="js/actions/matching_actions.js"></script>
 <script src="js/widgets/MatchingWidget.js"></script>
-<script src="js/jquery.cookie.js"></script>
 <!--script src="//connect.facebook.net/en_US/all.js"></script-->
 <!-- more scripts are below-->
 
@@ -99,7 +98,7 @@
             <div id="sample3" class="execAction new-menu-option coloured-menu-option" onclick=sample(MCBM_EXAMPLE_CP3_4_44)><p>CP3 4.44 (unweighted)</p></div>
             <div id="sample4" class="execAction new-menu-option coloured-menu-option" onclick=sample(COMPLETE_GRAPH)><p>Complete Bipartite Graph</p></div>
             <input type="text" id="samplejson-input" title="Enter JSON text" autocomplete="off" value=5 />
-			<div id="samplejson-go" class="execAction new-menu-option coloured-menu-option" onclick=importjson();closeSample()  title="Import JSON"><p>Go</p></div>
+			<div id="samplejson-go" class="execAction new-menu-option coloured-menu-option" onclick=importjson() title="Import JSON"><p>Go</p></div>
             <div id="sample-err" class="err"></div>
         </div>
         
@@ -205,6 +204,7 @@
 <script src="visual_final.js"></script>
 <link rel="stylesheet" href="./visual.css">
 <link rel="stylesheet" href="css/drawgraph.css">
+<script src="js/jquery.cookie.js"></script>
 
 <script type="text/javascript">
 	$('#play').hide();
@@ -220,9 +220,14 @@
 	createRandom();
 
 	function importjson()
-	{
-		mcbmWidget.importjson();
-	}
+	  {
+	    if(isPlaying) { stop(); }
+	    if (mode=="exploration") {
+	      mcbmWidget.importjson();
+	      closeSample();
+	      isPlaying = false;
+	    }
+	  }
 
 	function drawGraph() {
 	    if(isPlaying) { stop(); }

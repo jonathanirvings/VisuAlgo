@@ -23,6 +23,11 @@ var MCBM = function(){
 
   fixJSON = function()
   {
+    amountVertex = 0;
+    amountEdge = 0;
+    for (var key in internalAdjList) ++amountVertex;
+    for (var key in internalEdgeList) ++amountEdge;
+    
     for (var key in internalEdgeList)
     {
       delete internalEdgeList[key]["type"];

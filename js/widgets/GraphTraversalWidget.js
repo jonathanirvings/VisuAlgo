@@ -44,13 +44,12 @@ var GraphTraversal = function(){
     return graphWidget;
   }
 
-  takeJSON = function(graph)
+  fixJSON = function()
   {
-    graph = JSON.parse(graph);
-    amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
-    amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
-    internalAdjList = graph["vl"];
-    internalEdgeList = graph["el"];
+    amountVertex = 0;
+    amountEdge = 0;
+    for (var key in internalAdjList) ++amountVertex;
+    for (var key in internalEdgeList) ++amountEdge;
 
     for (var key in internalEdgeList)
     {
@@ -62,9 +61,18 @@ var GraphTraversal = function(){
     }
     for (var key in internalAdjList)
     {
-      internalAdjList[key]["text"] = key;
+      internalAdjList[key]["text"] = +key;
       delete internalAdjList[key]["state"];
     }
+
+  }
+
+  takeJSON = function(graph)
+  {
+    graph = JSON.parse(graph);
+    internalAdjList = graph["vl"];
+    internalEdgeList = graph["el"];
+    fixJSON();
   }
 
   statusChecking = function()
@@ -121,29 +129,51 @@ var GraphTraversal = function(){
     if ($("#draw-err p").html() != "No Error") return false;
     if ($("#submit").is(':checked'))
       this.submit(JSONresult);
+    if ($("#copy").is(':checked'))
+    {
+      window.prompt("Copy to clipboard:",JSONresult);
+    }
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
-  
-    $('#sourcevertex').val(0);
-    $('#sinkvertex').val(amountVertex-1);
     return true;
   }
 
   this.submit = function(graph)
   {
     $.ajax({
-      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH,
-      type: "POST",
-      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Graph Traversal', graphState: graph},
-        error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
-        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH + "&sessionID=" + $.cookie("sessionID"),
+                    type: "POST",
+                    data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Graph Traversal', graphState: graph},
+                    error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
+                        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
 
-        alert("There was an error submitting your graph " + errorMessage);
-      }
-    }).done(function(data) {
-      $("#submit-graph-result").text(data);
-    });
+                        alert("There was an error submitting your graph " + errorMessage);
+                    }
+                }).done(function(data) {
+                    console.log(data);
+                });
+  }
+
+  this.importjson = function()
+  {
+    var text = $("#samplejson-input").val();
+    takeJSON(text);
+    statusChecking();
+    graph = createState(internalAdjList,internalEdgeList);
+    graphWidget.updateGraph(graph, 500);
+  }
+    
+  this.initRandom = function(graph) {
+    internalAdjList = graph.internalAdjList;
+    internalEdgeList = graph.internalEdgeList;
+    amountVertex = internalAdjList.length;
+    amountEdge = internalEdgeList.length;
+    fixJSON();
+    statusChecking();
+    var newState = createState(internalAdjList, internalEdgeList);
+
+    graphWidget.updateGraph(newState, 500);
   }
 
   this.bfs = function(sourceVertex) {
@@ -2075,20 +2105,6 @@ var GraphTraversal = function(){
     var newState = createState(internalAdjList, internalEdgeList);
     graphWidget.updateGraph(newState, 500);
     return true;
-  }
-
-  this.initRandom = function(graph) {
-    internalAdjList = graph.internalAdjList;
-    internalEdgeList = graph.internalEdgeList;
-    amountVertex = internalAdjList.length;
-    amountEdge = internalEdgeList.length;
-
-    for (var key in internalAdjList)
-      internalAdjList[key]["text"] = key;
-
-    var newState = createState(internalAdjList, internalEdgeList);
-
-    graphWidget.updateGraph(newState, 500);
   }
 
   /*

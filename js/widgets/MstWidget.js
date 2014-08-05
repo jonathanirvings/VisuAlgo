@@ -45,30 +45,37 @@ var MST = function(){
     return graphWidget;
   }
   
-  takeJSON = function(graph)
+  fixJSON = function()
   {
-    graph = JSON.parse(graph);
-    amountVertex = $.map(graph["vl"], function(n, i) { return i; }).length;
-    amountEdge = $.map(graph["el"], function(n, i) { return i; }).length;
-    internalAdjList = graph["vl"];
-    internalEdgeList = graph["el"];
-
+    amountVertex = 0;
+    amountEdge = 0;
+    for (var key in internalAdjList) ++amountVertex;
+    for (var key in internalEdgeList) ++amountEdge;
+      
     for (var key in internalEdgeList)
     {
       delete internalEdgeList[key]["type"];
       delete internalEdgeList[key]["displayWeight"];
     }
     for (var key in internalAdjList)
-	{
+    {
       delete internalAdjList[key]["text"];
-	  delete internalAdjList[key]["state"];
-	}
-	for (var key in internalEdgeList)
+      delete internalAdjList[key]["state"];
+    }
+    for (var key in internalEdgeList)
     {
       internalAdjList[internalEdgeList[key]["vertexA"]][internalEdgeList[key]["vertexB"]] = +key;
       internalAdjList[internalEdgeList[key]["vertexB"]][internalEdgeList[key]["vertexA"]] = +key;
-	  internalEdgeList[key]["weight"] = +internalEdgeList[key]["weight"];
+      internalEdgeList[key]["weight"] = +internalEdgeList[key]["weight"];
     }
+  }
+
+  takeJSON = function(graph)
+  {
+    graph = JSON.parse(graph);
+    internalAdjList = graph["vl"];
+    internalEdgeList = graph["el"];
+    fixJSON();
   }
 
   statusChecking = function()
@@ -152,29 +159,51 @@ var MST = function(){
     if ($("#draw-err p").html() != "No Error") return false;
     if ($("#submit").is(':checked'))
       this.submit(JSONresult);
+    if ($("#copy").is(':checked'))
+    {
+      window.prompt("Copy to clipboard:",JSONresult);
+    }
 
     graph = createState(internalAdjList,internalEdgeList);
     graphWidget.updateGraph(graph, 500);
-  
-    $('#sourcevertex').val(0);
-    $('#sinkvertex').val(amountVertex-1);
     return true;
   }
 
   this.submit = function(graph)
   {
     $.ajax({
-      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH,
-      type: "POST",
-      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'MST', graphState: graph},
-        error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
-        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH + "&sessionID=" + $.cookie("sessionID"),
+                    type: "POST",
+                    data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'MST', graphState: graph},
+                    error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
+                        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
 
-        alert("There was an error submitting your graph " + errorMessage);
-      }
-    }).done(function(data) {
-      $("#submit-graph-result").text(data);
-    });
+                        alert("There was an error submitting your graph " + errorMessage);
+                    }
+                }).done(function(data) {
+                    console.log(data);
+                });
+  }
+
+  this.importjson = function()
+  {
+    var text = $("#samplejson-input").val();
+    takeJSON(text);
+    statusChecking();
+    graph = createState(internalAdjList,internalEdgeList);
+    graphWidget.updateGraph(graph, 500);
+  }
+    
+  this.initRandom = function(graph) {
+    internalAdjList = graph.internalAdjList;
+    internalEdgeList = graph.internalEdgeList;
+    amountVertex = internalAdjList.length;
+    amountEdge = internalEdgeList.length;
+    fixJSON();
+    statusChecking();
+    var newState = createState(internalAdjList, internalEdgeList);
+
+    graphWidget.updateGraph(newState, 500);
   }
 
   this.prim = function(startVertexText, mstTypeConstant){
@@ -999,16 +1028,6 @@ var MST = function(){
 
     graphWidget.updateGraph(newState, 500);
 	return true;
-  }
-
-  this.initRandom = function(graph) {
-    internalAdjList = graph.internalAdjList;
-    internalEdgeList = graph.internalEdgeList;
-    amountVertex = internalAdjList.length;
-    amountEdge = internalEdgeList.length;
-    var newState = createState(internalAdjList, internalEdgeList);
-
-    graphWidget.updateGraph(newState, 500);
   }
 
   function createState(internalAdjListObject, internalEdgeListObject, vertexHighlighted, edgeHighlighted, vertexTraversed, edgeTraversed, edgeQueued){
