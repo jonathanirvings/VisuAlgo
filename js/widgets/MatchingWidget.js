@@ -261,17 +261,17 @@ var MCBM = function(){
   this.submit = function(graph)
   {
     $.ajax({
-      url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH,
-      type: "POST",
-      data: {canvasWidth: 1000, canvasHeight: 500, graphTopics: 'Graph Matching', graphState: graph},
-        error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
-        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Graph.php?mode=" + MODE_SUBMIT_GRAPH + "&sessionID=" + $.cookie("sessionID"),
+                    type: "POST",
+                    data: {canvasWidth: 100, canvasHeight: 100, graphTopics: 'MST, Graph Traversal', graphState: '{"vl":{"1":{"text":80,"cx":1,"cy":10},"2":{"text":39,"cx":30,"cy":80},"3":{"text":4,"cx":80,"cy":80}},"el":{"2":{"vertexA":1,"vertexB":2,"type":0,"weight":1},"3":{"vertexA":1,"vertexB":3,"type":0,"weight":2},"4":{"vertexA":2,"vertexB":3,"type":0,"weight":1}}}'},
+                    error: function(xhr, errorType, exception) { //Triggered if an error communicating with server  
+                        var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
 
-        alert("There was an error submitting your graph " + errorMessage);
-      }
-    }).done(function(data) {
-      $("#submit-graph-result").text(data);
-    });
+                        alert("There was an error submitting your graph " + errorMessage);
+                    }
+                }).done(function(data) {
+                    $("#submit-graph-result").text(data);
+                });
   }
 
   this.importjson = function()

@@ -1,0 +1,39 @@
+<html>
+    <head></head>
+    <body>
+        Logged In As:<span id="name-name"></span>
+        <script src="http://www.comp.nus.edu.sg/~erinteo/js/jquery-1.10.2.js"></script>
+        <script src="http://www.comp.nus.edu.sg/~erinteo/js/jquery.cookie.js"></script>
+		<script>
+			// constants
+			const MODE_LOGIN = 6; //for test and ans key
+			const MODE_GET_LOGGED_IN_USER = 27;
+		</script>
+        <script>
+            $.ajax({
+                url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/Session.php"
+            }).done(function(sessionID) {
+                $.cookie("sessionID", sessionID);
+                loggin();
+            });
+            function loggin() {
+                // Loggin
+                $.ajax({
+                    url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/User.php?mode=" + MODE_LOGIN + "&sessionID=" + $.cookie("sessionID"),
+                    type: "POST",
+                    data: {username: 'Erin', password: 'qwaszx'}
+                }).done(function(passed) {
+                    checkLoggedInUser();
+                });
+            }
+            function checkLoggedInUser() {
+                $.ajax({
+                    url: "http://algorithmics.comp.nus.edu.sg/~onlinequiz/erinplayground/php/User.php",
+                    data: {mode: MODE_GET_LOGGED_IN_USER, sessionID: $.cookie("sessionID")}
+                }).done(function(username) {
+                    $('#name-name').text(username);
+                });
+            }
+        </script>
+    </body>
+</html>
